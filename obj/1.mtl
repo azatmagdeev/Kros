@@ -40,8 +40,8 @@ newmtl Material__63
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Map__33_Color_Correction.tga
-	map_Kd Map__33_Color_Correction.tga
+	map_Ka Map__33_Color_Correction_squoosh.jpg
+	map_Kd Map__33_Color_Correction_squoosh.jpg
 
 newmtl Material__65
 	Ns 10.0000
@@ -92,5 +92,5 @@ newmtl Material__60
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Map__32_Color_Correction.tga
-	map_Kd Map__32_Color_Correction.tga
+	map_Ka Map__32_Color_Correction_squoosh.jpg
+	map_Kd Map__32_Color_Correction_squoosh.jpg

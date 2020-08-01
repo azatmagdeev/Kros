@@ -1,17 +1,19 @@
 import * as THREE from "./lib/three.module.js";
 import {OBJLoader2} from "./lib/OBJLoader2.js";
 import {OrbitControls} from "./lib/OrbitControls.js";
+import {MTLLoader} from "./lib/MTLLoader.js";
+import {MtlObjBridge} from "./lib/MtlObjBridge.js";
 
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true, logarithmicDepthBuffer: true,});
 const camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 2000);
-camera.position.set(1000, 200, 600 );
+camera.position.set(1000, 200, 600);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('grey');
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 scene.add(light);
-const ambientLight = new THREE.AmbientLight("#cbc9bb");
+const ambientLight = new THREE.AmbientLight("#ffffff");
 scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, canvas);
@@ -30,6 +32,7 @@ controls.update();
         scene.add(line);
         return line;
     }
+
     makeLine(0, 0, 1000);
     makeLine(0, 0, -1000);
     makeLine(0, 1000, 0);
@@ -39,18 +42,29 @@ controls.update();
     console.log('tut');
 }
 
-    const objLoader = new OBJLoader2();
-    objLoader.load('model-shoe/Красовок.obj', (root) => {
-        console.log(root);
-        scene.add(root);
-    }, (xhr) => {
-        if (xhr.lengthComputable) {
-            const percentComplete = xhr.loaded / xhr.total * 100;
-            console.log(Math.round(percentComplete) + '% model downloaded');
-        }
-    })
 
-
+// const objLoader = new OBJLoader2();
+// objLoader.load('model-shoe/Красовок.obj', (root) => {
+//     console.log(root);
+//     scene.add(root);
+// }, (xhr) => {
+//     if (xhr.lengthComputable) {
+//         const percentComplete = xhr.loaded / xhr.total * 100;
+//         console.log(Math.round(percentComplete) + '% model downloaded');
+//     }
+// })
+{
+    const mtlLoader = new MTLLoader();
+    mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
+        const objLoader = new OBJLoader2();
+        const materials =  MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+        objLoader.addMaterials(materials);
+        objLoader.load('model-shoe/Красовок.obj', (root) => {
+            console.log(root);
+            scene.add(root);
+        });
+    });
+}
 
 function resizeRendererToDisplaySize(renderer) {
     const width = canvas.clientWidth;
