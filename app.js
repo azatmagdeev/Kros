@@ -53,16 +53,23 @@ controls.update();
 //         console.log(Math.round(percentComplete) + '% model downloaded');
 //     }
 // })
+const ked = new THREE.Object3D();
 {
     const mtlLoader = new MTLLoader();
     mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
         const objLoader = new OBJLoader2();
-        const materials =  MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+        const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
         objLoader.addMaterials(materials);
         objLoader.load('model-shoe/Красовок.obj', (root) => {
             console.log(root);
-            scene.add(root);
-        });
+            ked.children = root.children;
+            scene.add(ked);
+        }, (xhr) => {
+            if (xhr.lengthComputable) {
+                const percentComplete = xhr.loaded / xhr.total * 100;
+                console.log(Math.round(percentComplete) + '% model downloaded');
+            }
+        })
     });
 }
 
@@ -79,7 +86,84 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
+class PickHelper {
+    constructor() {
+        this.raycaster = new THREE.Raycaster();
+        this.pickedObject = null;
+        this.pickedObjectSavedColor = 0;
+    }
+
+    pick(normalizedPosition, scene, camera, time = 100) {
+        // восстановить цвет, если есть выбранный объект
+        if (this.pickedObject) {
+            this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+            this.pickedObject = undefined;
+        }
+
+        // пролить луч через усеченный конус
+        this.raycaster.setFromCamera(normalizedPosition, camera);
+        // получаем список объектов, которые пересек луч
+        const intersectedObjects = this.raycaster.intersectObjects(ked.children);
+        if (intersectedObjects.length) {
+            // выбираем первый объект. Это самый близкий
+            this.pickedObject = intersectedObjects[0].object;
+            console.log(this.pickedObject);
+            // сохранить его цвет
+            this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+            // установить его излучающий цвет на мигающий красный / желтый
+            this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+        }
+    }
+}
+
+const pickHelper = new PickHelper();
+
+
+const pickPosition = {x: 0, y: 0};
+clearPickPosition();
+
+function getCanvasRelativePosition(event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (event.clientX - rect.left) * canvas.width / rect.width,
+        y: (event.clientY - rect.top) * canvas.height / rect.height,
+    };
+}
+
+function setPickPosition(event) {
+    const pos = getCanvasRelativePosition(event);
+    pickPosition.x = (pos.x / canvas.width) * 2 - 1;
+    pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
+}
+
+function clearPickPosition() {
+    // в отличие от мыши, которая всегда имеет позицию
+    // если пользователь перестает касаться экрана, который мы хотим
+    // чтобы остановить выбор. Пока мы просто выбираем значение
+    // вряд ли что-то выберу
+    pickPosition.x = -100000;
+    pickPosition.y = -100000;
+}
+
+window.addEventListener('click', setPickPosition);
+// window.addEventListener('click', clearPickPosition);
+// window.addEventListener('mouseleave', clearPickPosition);
+
+// window.addEventListener('touchstart', (event) => {
+//     // предотвращаем прокрутку окна
+//     event.preventDefault();
+//     setPickPosition(event.touches[0]);
+// }, {passive: false});
+//
+// window.addEventListener('touchmove', (event) => {
+//     setPickPosition(event.touches[0]);
+// });
+//
+// window.addEventListener('touchend', clearPickPosition);
+
 function render() {
+
+    pickHelper.pick(pickPosition, scene, camera,  100);
     resizeRendererToDisplaySize(renderer);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
