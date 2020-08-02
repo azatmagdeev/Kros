@@ -45,7 +45,7 @@ controls.update();
 // }
 
 const textureLoader = new THREE.TextureLoader();
-const  downTexture =  textureLoader.load('model-shoe/textures/red2.jpg');
+const  soleTexture =  textureLoader.load('model-shoe/textures/tmb_6931_4916.jpg');
 const ked = new THREE.Object3D();
 {
     const mtlLoader = new MTLLoader();
@@ -55,23 +55,20 @@ const ked = new THREE.Object3D();
         objLoader.addMaterials(materials);
         objLoader.load('model-shoe/Красовок.obj', (root) => {
 
-            // scene.add(root);
             loadingEl.style.display = 'none';
-            root.children.find(mesh => mesh.name === 'Obj9').material.map(material=>{
-                material.color = new THREE.Color('black');
-                material.side = THREE.DoubleSide;
-            })
-
-            console.log(root.children.find(mesh => mesh.name === 'Obj9').material);
-
-            scene.add(root)
+            root.children.find(mesh => mesh.name === 'Obj9').material[0].map = soleTexture;
+            root.children.find(mesh => mesh.name === 'Obj9').material[1].map = soleTexture;
+            root.children.find(mesh => mesh.name === 'Obj9').material[0].side = 2;
+            // console.log(root.children.find(mesh => mesh.name === 'Obj9').material[2]);
+            root.children.find(mesh => mesh.name === 'Obj9').material.map(o=>{console.log(o.name);})
+            // console.log(root.children.length);
             ked.children = root.children;
+            scene.add(ked);
         }, (xhr) => {
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
                 loadingEl.style.display = 'block';
                 loadingEl.textContent = `Загрузка модели ${percentComplete} %`
-                // console.log(percentComplete + '% model downloaded');
             }
         })
     });
@@ -97,26 +94,40 @@ class PickHelper {
         this.pickedObjectSavedColor = 0;
     }
 
-    pick(normalizedPosition, scene, camera, time = 100) {
+    pick(normalizedPosition, scene, camera, time = 1000) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
-            this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+            if(this.pickedObject.material.length){
+                this.pickedObject.material[0].emissive.setHex(this.pickedObjectSavedColor);
+            }else{
+                this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+            }
             this.pickedObject = undefined;
         }
 
         // пролить луч через усеченный конус
         this.raycaster.setFromCamera(normalizedPosition, camera);
         // получаем список объектов, которые пересек луч
-        const intersectedObjects = this.raycaster.intersectObjects(scene.children);
+        const intersectedObjects = this.raycaster.intersectObjects(ked.children);
         console.log(intersectedObjects.length);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             console.log(this.pickedObject);
             // сохранить его цвет
-            this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-            // установить его излучающий цвет на мигающий красный / желтый
-            this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+            if(this.pickedObject.material.length){
+                this.pickedObjectSavedColor =  this.pickedObject.material[0].emissive.getHex()
+                // установить его излучающий цвет на мигающий красный / желтый
+                this.pickedObject.material[0].emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+            }else{
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // установить его излучающий цвет на мигающий красный / желтый
+                this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+            }
+
+
+
+
         }
     }
 }
