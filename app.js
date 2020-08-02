@@ -23,60 +23,80 @@ controls.maxDistance = 1000;
 controls.minDistance = 400;
 controls.update();
 
-{
-    function makeLine(x, y, z) {
-        const geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-        const material = new THREE.LineBasicMaterial({color: 0x0000ff});
-        const line = new THREE.Line(geometry, material);
-        scene.add(line);
-        return line;
-    }
-
-    makeLine(0, 0, 1000);
-    makeLine(0, 0, -1000);
-    makeLine(0, 1000, 0);
-    makeLine(0, -1000, 0);
-    makeLine(1000, 0, 0);
-    makeLine(-1000, 0, 0);
-    console.log('tut');
-}
-
-
-const objLoader = new OBJLoader2();
-objLoader.load('model-shoe/Красовок.obj', (root) => {
-    console.log(root);
-    scene.add(root);
-    loadingEl.style.display = 'none';
-}, (xhr) => {
-    if (xhr.lengthComputable) {
-        const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
-        loadingEl.style.display = 'block';
-        loadingEl.textContent = `Загрузка модели ${percentComplete} %`
-        console.log(percentComplete + '% model downloaded');
-    }
-})
-// const ked = new THREE.Object3D();
+//lines
 // {
-//     const mtlLoader = new MTLLoader();
-//     mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
-//         const objLoader = new OBJLoader2();
-//         const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-//         objLoader.addMaterials(materials);
-//         objLoader.load('model-shoe/Красовок.obj', (root) => {
-//             console.log(root);
-//             // ked.children = root.children;
-//             // root.children.map(mesh => scene.add(mesh))
-//             // scene.add(ked);
-//         }, (xhr) => {
-//             if (xhr.lengthComputable) {
-//                 const percentComplete = xhr.loaded / xhr.total * 100;
-//                 console.log(Math.round(percentComplete) + '% model downloaded');
-//             }
-//         })
-//     });
+//     function makeLine(x, y, z) {
+//         const geometry = new THREE.Geometry();
+//         geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+//         geometry.vertices.push(new THREE.Vector3(x, y, z));
+//         const material = new THREE.LineBasicMaterial({color: 0x0000ff});
+//         const line = new THREE.Line(geometry, material);
+//         scene.add(line);
+//         return line;
+//     }
+//
+//     makeLine(0, 0, 1000);
+//     makeLine(0, 0, -1000);
+//     makeLine(0, 1000, 0);
+//     makeLine(0, -1000, 0);
+//     makeLine(1000, 0, 0);
+//     makeLine(-1000, 0, 0);
+//     console.log('tut');
 // }
+
+
+// const objLoader = new OBJLoader2();
+// objLoader.load('model-shoe/Красовок.obj', (root) => {
+//     console.log(root);
+//     scene.add(root);
+//     loadingEl.style.display = 'none';
+//
+//     root.children.map(mesh=>{
+//         mesh.name === 'Obj4'? mesh.material = new THREE.MeshLambertMaterial({color:'green'}):null;
+//     })
+// }, (xhr) => {
+//     if (xhr.lengthComputable) {
+//         const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
+//         loadingEl.style.display = 'block';
+//         loadingEl.textContent = `Загрузка модели ${percentComplete} %`
+//         console.log(percentComplete + '% model downloaded');
+//     }
+// })
+
+const textureLoader = new THREE.TextureLoader();
+const  downTexture =  textureLoader.load('model-shoe/textures/red2.jpg');
+// downTexture;
+// downTexture.rotation = THREE.MathUtils.degToRad(60);
+const ked = new THREE.Object3D();
+{
+    const mtlLoader = new MTLLoader();
+    mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
+        const objLoader = new OBJLoader2();
+        const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult,);
+        objLoader.addMaterials(materials);
+        objLoader.load('model-shoe/Красовок.obj', (root) => {
+            // console.log(root);
+            // ked.children = root.children;
+            // root.children.map(mesh => scene.add(mesh))
+            // scene.add(ked);
+            scene.add(root);
+            loadingEl.style.display = 'none';
+            root.children.find(mesh => mesh.name === 'Obj9').material.map(material=>{
+                material.color = new THREE.Color('black');
+                material.side = THREE.DoubleSide;
+            })
+
+            console.log(root.children.find(mesh => mesh.name === 'Obj9').material);
+        }, (xhr) => {
+            if (xhr.lengthComputable) {
+                const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
+                loadingEl.style.display = 'block';
+                loadingEl.textContent = `Загрузка модели ${percentComplete} %`
+                console.log(percentComplete + '% model downloaded');
+            }
+        })
+    });
+}
 
 function resizeRendererToDisplaySize(renderer) {
     const width = canvas.clientWidth;
