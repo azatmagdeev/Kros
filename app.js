@@ -44,29 +44,8 @@ controls.update();
 //     console.log('tut');
 // }
 
-
-// const objLoader = new OBJLoader2();
-// objLoader.load('model-shoe/Красовок.obj', (root) => {
-//     console.log(root);
-//     scene.add(root);
-//     loadingEl.style.display = 'none';
-//
-//     root.children.map(mesh=>{
-//         mesh.name === 'Obj4'? mesh.material = new THREE.MeshLambertMaterial({color:'green'}):null;
-//     })
-// }, (xhr) => {
-//     if (xhr.lengthComputable) {
-//         const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
-//         loadingEl.style.display = 'block';
-//         loadingEl.textContent = `Загрузка модели ${percentComplete} %`
-//         console.log(percentComplete + '% model downloaded');
-//     }
-// })
-
 const textureLoader = new THREE.TextureLoader();
 const  downTexture =  textureLoader.load('model-shoe/textures/red2.jpg');
-// downTexture;
-// downTexture.rotation = THREE.MathUtils.degToRad(60);
 const ked = new THREE.Object3D();
 {
     const mtlLoader = new MTLLoader();
@@ -75,11 +54,8 @@ const ked = new THREE.Object3D();
         const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult,);
         objLoader.addMaterials(materials);
         objLoader.load('model-shoe/Красовок.obj', (root) => {
-            // console.log(root);
-            // ked.children = root.children;
-            // root.children.map(mesh => scene.add(mesh))
-            // scene.add(ked);
-            scene.add(root);
+
+            // scene.add(root);
             loadingEl.style.display = 'none';
             root.children.find(mesh => mesh.name === 'Obj9').material.map(material=>{
                 material.color = new THREE.Color('black');
@@ -87,12 +63,15 @@ const ked = new THREE.Object3D();
             })
 
             console.log(root.children.find(mesh => mesh.name === 'Obj9').material);
+
+            scene.add(root)
+            ked.children = root.children;
         }, (xhr) => {
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
                 loadingEl.style.display = 'block';
                 loadingEl.textContent = `Загрузка модели ${percentComplete} %`
-                console.log(percentComplete + '% model downloaded');
+                // console.log(percentComplete + '% model downloaded');
             }
         })
     });
@@ -129,12 +108,13 @@ class PickHelper {
         this.raycaster.setFromCamera(normalizedPosition, camera);
         // получаем список объектов, которые пересек луч
         const intersectedObjects = this.raycaster.intersectObjects(scene.children);
+        console.log(intersectedObjects.length);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             console.log(this.pickedObject);
             // сохранить его цвет
-            // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+            this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
             // установить его излучающий цвет на мигающий красный / желтый
             this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
         }
@@ -159,6 +139,7 @@ function setPickPosition(event) {
     const pos = getCanvasRelativePosition(event);
     pickPosition.x = (pos.x / canvas.width) * 2 - 1;
     pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
+    pickHelper.pick(pickPosition, scene, camera,  100);
 }
 
 function clearPickPosition() {
@@ -170,7 +151,8 @@ function clearPickPosition() {
     pickPosition.y = -100000;
 }
 
-window.addEventListener('click', setPickPosition);
+window.addEventListener('click',
+    setPickPosition);
 // window.addEventListener('click', clearPickPosition);
 // window.addEventListener('mouseleave', clearPickPosition);
 
@@ -188,7 +170,7 @@ window.addEventListener('click', setPickPosition);
 
 function render() {
 
-    // pickHelper.pick(pickPosition, scene, camera,  100);
+
     resizeRendererToDisplaySize(renderer);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
