@@ -27,15 +27,43 @@
         }
 
         #loadingPercent {
-            position:absolute;
+            position: absolute;
             z-index: 5;
-            display:none;
+            display: none;
             background-color: white;
             border-radius: 10px;
             padding: 5px;
         }
 
+        #details, #mats {
+            visibility: hidden;
+            position: absolute;
+            display: flex;
+            width: 100%;
+            height: 20%;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
 
+        }
+
+        #details {
+            background-color: rgba(0%, 100%, 0%, .5);
+        }
+
+        #mats {
+            background-color: rgba(0%, 0%, 100%, .5);
+        }
+
+        .item {
+            width: 100%;
+            height: 100%;
+            background-color: tomato;
+            margin: 10px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +71,8 @@
     <canvas id="c">
     </canvas>
     <div id="loadingPercent"></div>
+    <div id="details"></div>
+    <div id="mats"></div>
 </div>
 
 <script src="app.js" type="module"></script>

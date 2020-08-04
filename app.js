@@ -56,14 +56,15 @@ const ked = new THREE.Object3D();
         objLoader.load('model-shoe/Красовок.obj', (root) => {
 
             loadingEl.style.display = 'none';
-            root.children.find(mesh => mesh.name === 'Obj9').material[0].map = soleTexture;
-            root.children.find(mesh => mesh.name === 'Obj9').material[1].map = soleTexture;
+            // root.children.find(mesh => mesh.name === 'Obj9').material[0].map = soleTexture;
+            // root.children.find(mesh => mesh.name === 'Obj9').material[1].map = soleTexture;
             root.children.find(mesh => mesh.name === 'Obj9').material[0].side = 2;
             // console.log(root.children.find(mesh => mesh.name === 'Obj9').material[2]);
             root.children.find(mesh => mesh.name === 'Obj9').material.map(o=>{console.log(o.name);})
             // console.log(root.children.length);
             ked.children = root.children;
             scene.add(ked);
+            showDetails();
         }, (xhr) => {
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
@@ -188,3 +189,36 @@ function render() {
 }
 
 render();
+
+
+const details = [
+    'Язык',
+    'Подошва',
+    'Пятка',
+    'Шнурки',
+    'Основа',
+];
+
+function showDetails(){
+    document.getElementById('details').style.visibility = 'visible';
+
+    // for (let i = 0; i < detailsCount; i++) {
+    //     const item = document.createElement('div');
+    //     item.className = 'item';
+    //     document.getElementById('details').appendChild(item);
+    //     item.addEventListener('click', ()=>{showMats(item)})
+    // }
+    details.map(item=>{
+        const itemEl = document.createElement('div');
+            itemEl.className = 'item';
+            itemEl.textContent = item;
+            document.getElementById('details').appendChild(itemEl);
+            itemEl.addEventListener('click', ()=>{showMats(item)})
+    })
+}
+
+function showMats(item){
+    document.getElementById('details').style.visibility = 'hidden';
+    document.getElementById('mats').style.visibility = 'visible';
+}
+
