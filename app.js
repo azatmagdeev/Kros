@@ -3,6 +3,7 @@ import {OBJLoader2} from "./lib/OBJLoader2.js";
 import {OrbitControls} from "./lib/OrbitControls.js";
 import {MTLLoader} from "./lib/MTLLoader.js";
 import {MtlObjBridge} from "./lib/MtlObjBridge.js";
+import {GLTFLoader} from "./lib/GLTFLoader.js";
 
 const loadingEl = document.getElementById('loadingPercent');
 const canvas = document.getElementById('c');
@@ -51,6 +52,7 @@ const ked = new THREE.Object3D();
     const mtlLoader = new MTLLoader();
     mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
         const objLoader = new OBJLoader2();
+
         const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult,);
         objLoader.addMaterials(materials);
         objLoader.load('model-shoe/Красовок.obj', (root) => {
@@ -74,6 +76,12 @@ const ked = new THREE.Object3D();
         })
     });
 }
+//
+// const gltfLoader = new GLTFLoader();
+//     gltfLoader.load('results/sneakers.gltf',gltf=>{
+//         const root = gltf.scene;
+//         scene.add(root);
+//     })
 
 function resizeRendererToDisplaySize(renderer) {
     const width = canvas.clientWidth;
