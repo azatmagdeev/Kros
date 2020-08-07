@@ -9,7 +9,7 @@ const loadingEl = document.getElementById('loadingPercent');
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true, logarithmicDepthBuffer: true,});
 const camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 100000);
-camera.position.set(1000, 200, 600);
+camera.position.set(-10,0,0);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('grey');
 
@@ -19,35 +19,35 @@ const ambientLight = new THREE.AmbientLight("#ffffff");
 scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, canvas);
-
-// controls.maxDistance = 1000;
-// controls.minDistance = 400;
+// controls.target.set(350, 100, 750);
+controls.maxDistance = 20;
+controls.minDistance = 3;
 controls.update();
 
-//lines
-{
-    function makeLine(x, y, z) {
-        const geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-        const material = new THREE.LineBasicMaterial({color: 0x0000ff});
-        const line = new THREE.Line(geometry, material);
-        scene.add(line);
-        return line;
-    }
-
-    makeLine(0, 0, 1000);
-    makeLine(0, 0, -1000);
-    makeLine(0, 1000, 0);
-    makeLine(0, -1000, 0);
-    makeLine(1000, 0, 0);
-    makeLine(-1000, 0, 0);
-    console.log('tut');
-}
+// //lines
+// {
+//     function makeLine(x, y, z) {
+//         const geometry = new THREE.Geometry();
+//         geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+//         geometry.vertices.push(new THREE.Vector3(x, y, z));
+//         const material = new THREE.LineBasicMaterial({color: 0x0000ff});
+//         const line = new THREE.Line(geometry, material);
+//         scene.add(line);
+//         return line;
+//     }
+//
+//     makeLine(0, 0, 1000);
+//     makeLine(0, 0, -1000);
+//     makeLine(0, 1000, 0);
+//     makeLine(0, -1000, 0);
+//     makeLine(1000, 0, 0);
+//     makeLine(-1000, 0, 0);
+//     console.log('tut');
+// }
 
 // const textureLoader = new THREE.TextureLoader();
 // const  soleTexture =  textureLoader.load('model-shoe/textures/tmb_6931_4916.jpg');
-// const ked = new THREE.Object3D();
+const ked = new THREE.Object3D();
 // {
 //     const mtlLoader = new MTLLoader();
 //     mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
@@ -82,7 +82,7 @@ gltfLoader.load('results/sneakers.gltf', gltf => {
     console.log(gltf);
     const root = gltf.scene;
     scene.add(root);
-    controls.target.set(350, 100, 750);
+    ked.children = root.children;
 
     loadingEl.style.display = 'none';
 }, (xhr) => {
