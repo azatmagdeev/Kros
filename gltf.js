@@ -9,9 +9,9 @@ const loadingEl = document.getElementById('loadingPercent');
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true, logarithmicDepthBuffer: true,});
 const camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 100000);
-camera.position.set(-10,0,0);
+camera.position.set(-10, 0, 0);
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('grey');
+scene.background = new THREE.Color('lightgrey');
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 scene.add(light);
@@ -45,7 +45,7 @@ controls.update();
 //     console.log('tut');
 // }
 
-// const textureLoader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader();
 // const  soleTexture =  textureLoader.load('model-shoe/textures/tmb_6931_4916.jpg');
 const ked = new THREE.Object3D();
 // {
@@ -78,11 +78,24 @@ const ked = new THREE.Object3D();
 // }
 
 const gltfLoader = new GLTFLoader();
-gltfLoader.load('results/sneakers.gltf', gltf => {
+gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
     console.log(gltf);
     const root = gltf.scene;
     scene.add(root);
-    ked.children = root.children;
+
+    // ked.children = root.children;
+
+    root.children.map(obj => {
+        if (obj.isMesh) {
+            ked.children.push(obj)
+        } else {
+            obj.children.map(o => {
+                ked.children.push(o)
+            })
+        }
+    })
+
+    console.log(ked);
 
     loadingEl.style.display = 'none';
 }, (xhr) => {
@@ -106,6 +119,8 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
+let currentMesh;
+
 class PickHelper {
     constructor() {
         this.raycaster = new THREE.Raycaster();
@@ -116,12 +131,13 @@ class PickHelper {
     pick(normalizedPosition, scene, camera, time = 1000) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
-            if (this.pickedObject.material.length) {
-                this.pickedObject.material[0].emissive.setHex(this.pickedObjectSavedColor);
-            } else {
-                this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-            }
-            this.pickedObject = undefined;
+            // if (this.pickedObject.material.length) {
+            //     this.pickedObject.material[0].emissive.setHex(this.pickedObjectSavedColor);
+            // } else {
+            this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+            // }
+            currentMesh = this.pickedObject = undefined;
+            document.getElementById('mats').style.display = 'none';
         }
 
         // пролить луч через усеченный конус
@@ -134,15 +150,17 @@ class PickHelper {
             this.pickedObject = intersectedObjects[0].object;
             console.log(this.pickedObject);
             // сохранить его цвет
-            if (this.pickedObject.material.length) {
-                this.pickedObjectSavedColor = this.pickedObject.material[0].emissive.getHex()
-                // установить его излучающий цвет на мигающий красный / желтый
-                this.pickedObject.material[0].emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
-            } else {
-                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                // установить его излучающий цвет на мигающий красный / желтый
-                this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
-            }
+            // if (this.pickedObject.material.length) {
+            //     this.pickedObjectSavedColor = this.pickedObject.material[0].emissive.getHex()
+            //     // установить его излучающий цвет на мигающий красный / желтый
+            //     this.pickedObject.material[0].emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+            // } else {
+            this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+            // установить его излучающий цвет на мигающий красный / желтый
+            this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+            document.getElementById('mats').style.display = 'flex';
+            currentMesh = this.pickedObject;
+            // }
 
 
         }
@@ -184,15 +202,15 @@ window.addEventListener('click',
 // window.addEventListener('click', clearPickPosition);
 // window.addEventListener('mouseleave', clearPickPosition);
 
-// window.addEventListener('touchstart', (event) => {
-//     // предотвращаем прокрутку окна
-//     event.preventDefault();
-//     setPickPosition(event.touches[0]);
-// }, {passive: false});
-//
-// window.addEventListener('touchmove', (event) => {
-//     setPickPosition(event.touches[0]);
-// });
+window.addEventListener('touchstart', (event) => {
+    // предотвращаем прокрутку окна
+    event.preventDefault();
+    setPickPosition(event.touches[0]);
+}, {passive: false});
+
+window.addEventListener('touchmove', (event) => {
+    setPickPosition(event.touches[0]);
+});
 //
 // window.addEventListener('touchend', clearPickPosition);
 
@@ -236,7 +254,33 @@ function showDetails() {
 }
 
 function showMats(item) {
-    document.getElementById('details').style.visibility = 'hidden';
-    document.getElementById('mats').style.visibility = 'visible';
+    // document.getElementById('details').style.visibility = 'hidden';
+    // document.getElementById('mats').style.visibility = 'visible';
+    document.getElementById('mats').style.display = 'flex';
 }
+
+const textureUrls = [
+    'results/textures/leather-texutre.jpg',
+    'results/textures/shoe_lace_texture.jpg',
+    'results/textures/texture1.jpg',
+    'results/textures/texture2.jpg',
+    'results/textures/texture3.jpg',
+    'results/textures/texture4.jpg',
+]
+
+textureUrls.map(url=>{
+    const item = document.createElement('div');
+    item.className += 'item';
+    item.style.backgroundImage = `url(${url})`;
+    // item.style.width = `${item.offsetHeight}px`;
+    document.getElementById('mats').appendChild(item);
+    item.addEventListener('click',()=>{
+        console.log(currentMesh.material);
+        currentMesh.material.map = textureLoader.load(url);
+    });
+    item.addEventListener('touchstart',()=>{
+        console.log(currentMesh.material);
+        currentMesh.material.map = textureLoader.load(url);
+    })
+})
 
