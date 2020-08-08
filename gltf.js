@@ -20,7 +20,7 @@ scene.background = new THREE.Color('lightgrey');
 
 const light = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(light);
-const ambientLight = new THREE.AmbientLight("#ffffff");
+const ambientLight = new THREE.AmbientLight("#ffffff",1.5);
 scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, canvas);
@@ -51,9 +51,9 @@ gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
         }
     })
 
-    // ked.children.map(mesh => {
-    //     mesh.material.color = new THREE.Color('red');
-    // })
+    ked.children.map(mesh => {
+        mesh.material.color.set({r: 1, g: 1, b: 1});
+    })
     // console.log(ked);
 
     loadingEl.style.display = 'none';
@@ -107,6 +107,8 @@ class PickHelper {
             if (this.pickedObject.name === 'Cube.001_2') {
                 this.pickedObject = ked.children.find(o => o.name === 'Cube.001_0');
             }
+           // if(this.pickedObject.name === 'Cube.001_0'||this.pickedObject.name === 'Cube.001_0'){}
+
             console.log(this.pickedObject);
             this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
             // установить его излучающий цвет на мигающий красный / желтый
