@@ -1,15 +1,20 @@
 import * as THREE from "./lib/three.module.js";
-import {OBJLoader2} from "./lib/OBJLoader2.js";
 import {OrbitControls} from "./lib/OrbitControls.js";
-import {MTLLoader} from "./lib/MTLLoader.js";
-import {MtlObjBridge} from "./lib/MtlObjBridge.js";
 import {GLTFLoader} from "./lib/GLTFLoader.js";
 
+const container = document.getElementById('c-wrapper');
+if (window.innerHeight > window.innerWidth) {
+    container["height"] = container.offsetWidth;
+}
 const loadingEl = document.getElementById('loadingPercent');
 const canvas = document.getElementById('c');
+
+
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true, logarithmicDepthBuffer: true,});
+
 const camera = new THREE.PerspectiveCamera(50, canvas.width / canvas.height, 0.1, 100000);
 camera.position.set(-10, 0, 0);
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('lightgrey');
 
@@ -30,7 +35,7 @@ const ked = new THREE.Object3D();
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
-    console.log(gltf);
+    // console.log(gltf);
     const root = gltf.scene;
     scene.add(root);
 
@@ -46,7 +51,10 @@ gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
         }
     })
 
-    console.log(ked);
+    // ked.children.map(mesh => {
+    //     mesh.material.color = new THREE.Color('red');
+    // })
+    // console.log(ked);
 
     loadingEl.style.display = 'none';
 }, (xhr) => {
@@ -84,22 +92,27 @@ class PickHelper {
         if (this.pickedObject) {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
             currentMesh = this.pickedObject = undefined;
-            document.getElementById('mats').style.display = 'none';
+            hideMats();
         }
+
 
         // пролить луч через усеченный конус
         this.raycaster.setFromCamera(normalizedPosition, camera);
         // получаем список объектов, которые пересек луч
         const intersectedObjects = this.raycaster.intersectObjects(ked.children);
-        console.log(intersectedObjects.length);
+        // console.log(intersectedObjects.length);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
+            if (this.pickedObject.name === 'Cube.001_2') {
+                this.pickedObject = ked.children.find(o => o.name === 'Cube.001_0');
+            }
             console.log(this.pickedObject);
             this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
             // установить его излучающий цвет на мигающий красный / желтый
             this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
-            document.getElementById('mats').style.display = 'flex';
+            // document.getElementById('mats').style.display = 'flex';
+            showMats(this.pickedObject);
             currentMesh = this.pickedObject;
         }
     }
@@ -163,31 +176,37 @@ function render() {
 render();
 
 
-const details = [
-    'Язык',
-    'Подошва',
-    'Пятка',
-    'Шнурки',
-    'Основа',
-];
+// const details = [
+//     'Язык',
+//     'Подошва',
+//     'Пятка',
+//     'Шнурки',
+//     'Основа',
+// ];
 
-function showDetails() {
-    document.getElementById('details').style.visibility = 'visible';
-    details.map(item => {
-        const itemEl = document.createElement('div');
-        itemEl.className = 'item';
-        itemEl.textContent = item;
-        document.getElementById('details').appendChild(itemEl);
-        itemEl.addEventListener('click', () => {
-            showMats(item)
-        })
-    })
-}
-
+// function showDetails() {
+//     document.getElementById('details').style.visibility = 'visible';
+//     details.map(item => {
+//         const itemEl = document.createElement('div');
+//         itemEl.className = 'item';
+//         itemEl.textContent = item;
+//         document.getElementById('details').appendChild(itemEl);
+//         itemEl.addEventListener('click', () => {
+//             showMats(item)
+//         })
+//     })
+// }
+//
 function showMats(item) {
     // document.getElementById('details').style.visibility = 'hidden';
-    // document.getElementById('mats').style.visibility = 'visible';
-    document.getElementById('mats').style.display = 'flex';
+    document.getElementById('mats-wrapper').style.visibility = 'visible';
+    // document.getElementById('mats').style.display = 'flex';
+}
+
+function hideMats() {
+    // document.getElementById('details').style.visibility = 'hidden';
+    document.getElementById('mats-wrapper').style.visibility = 'hidden';
+    // document.getElementById('mats').style.display = 'flex';
 }
 
 const textureUrls = [
@@ -197,27 +216,29 @@ const textureUrls = [
     'results/textures/texture2.jpg',
     'results/textures/texture3.jpg',
     'results/textures/texture4.jpg',
-    'results/textures/texture5.png'
 ]
 
 textureUrls.map(url => {
     const item = document.createElement('div');
     item.className += 'item';
     item.style.backgroundImage = `url(${url})`;
-    // item.style.width = `${item.offsetHeight}px`;
+    item.style.backgroundSize = `contain`;
     document.getElementById('mats').appendChild(item);
     item.addEventListener('click', () => {
-        console.log(currentMesh.material);
+
+
         currentMesh.material.map = textureLoader.load(url);
         currentMesh.material.map.wrapS = 1000;
         currentMesh.material.map.wrapT = 1000;
-        currentMesh.material.color = new THREE.Color(1, 1, 1)
+        // console.log(currentMesh.material);
+
 
     });
     item.addEventListener('touchstart', () => {
-        console.log(currentMesh.material);
+        // console.log(currentMesh.material);
         currentMesh.material.map = textureLoader.load(url);
-
+        currentMesh.material.map.wrapS = 1000;
+        currentMesh.material.map.wrapT = 1000;
     })
 })
 
