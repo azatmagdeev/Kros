@@ -13,69 +13,20 @@ camera.position.set(-10, 0, 0);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('lightgrey');
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
+const light = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(light);
 const ambientLight = new THREE.AmbientLight("#ffffff");
 scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, canvas);
-// controls.target.set(350, 100, 750);
 controls.maxDistance = 20;
 controls.minDistance = 3;
 controls.update();
 
-// //lines
-// {
-//     function makeLine(x, y, z) {
-//         const geometry = new THREE.Geometry();
-//         geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-//         geometry.vertices.push(new THREE.Vector3(x, y, z));
-//         const material = new THREE.LineBasicMaterial({color: 0x0000ff});
-//         const line = new THREE.Line(geometry, material);
-//         scene.add(line);
-//         return line;
-//     }
-//
-//     makeLine(0, 0, 1000);
-//     makeLine(0, 0, -1000);
-//     makeLine(0, 1000, 0);
-//     makeLine(0, -1000, 0);
-//     makeLine(1000, 0, 0);
-//     makeLine(-1000, 0, 0);
-//     console.log('tut');
-// }
 
 const textureLoader = new THREE.TextureLoader();
-// const  soleTexture =  textureLoader.load('model-shoe/textures/tmb_6931_4916.jpg');
 const ked = new THREE.Object3D();
-// {
-//     const mtlLoader = new MTLLoader();
-//     mtlLoader.load('obj/1.mtl', (mtlParseResult) => {
-//         const objLoader = new OBJLoader2();
-//
-//         const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult,);
-//         objLoader.addMaterials(materials);
-//         objLoader.load('model-shoe/Красовок.obj', (root) => {
-//
-//             loadingEl.style.display = 'none';
-//             // root.children.find(mesh => mesh.name === 'Obj9').material[0].map = soleTexture;
-//             // root.children.find(mesh => mesh.name === 'Obj9').material[1].map = soleTexture;
-//             root.children.find(mesh => mesh.name === 'Obj9').material[0].side = 2;
-//             // console.log(root.children.find(mesh => mesh.name === 'Obj9').material[2]);
-//             root.children.find(mesh => mesh.name === 'Obj9').material.map(o=>{console.log(o.name);})
-//             // console.log(root.children.length);
-//             ked.children = root.children;
-//             scene.add(ked);
-//             showDetails();
-//         }, (xhr) => {
-//             if (xhr.lengthComputable) {
-//                 const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
-//                 loadingEl.style.display = 'block';
-//                 loadingEl.textContent = `Загрузка модели ${percentComplete} %`
-//             }
-//         })
-//     });
-// }
+
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
@@ -131,11 +82,7 @@ class PickHelper {
     pick(normalizedPosition, scene, camera, time = 1000) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
-            // if (this.pickedObject.material.length) {
-            //     this.pickedObject.material[0].emissive.setHex(this.pickedObjectSavedColor);
-            // } else {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-            // }
             currentMesh = this.pickedObject = undefined;
             document.getElementById('mats').style.display = 'none';
         }
@@ -149,20 +96,11 @@ class PickHelper {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             console.log(this.pickedObject);
-            // сохранить его цвет
-            // if (this.pickedObject.material.length) {
-            //     this.pickedObjectSavedColor = this.pickedObject.material[0].emissive.getHex()
-            //     // установить его излучающий цвет на мигающий красный / желтый
-            //     this.pickedObject.material[0].emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
-            // } else {
             this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
             // установить его излучающий цвет на мигающий красный / желтый
             this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
             document.getElementById('mats').style.display = 'flex';
             currentMesh = this.pickedObject;
-            // }
-
-
         }
     }
 }
@@ -235,13 +173,6 @@ const details = [
 
 function showDetails() {
     document.getElementById('details').style.visibility = 'visible';
-
-    // for (let i = 0; i < detailsCount; i++) {
-    //     const item = document.createElement('div');
-    //     item.className = 'item';
-    //     document.getElementById('details').appendChild(item);
-    //     item.addEventListener('click', ()=>{showMats(item)})
-    // }
     details.map(item => {
         const itemEl = document.createElement('div');
         itemEl.className = 'item';
@@ -266,21 +197,27 @@ const textureUrls = [
     'results/textures/texture2.jpg',
     'results/textures/texture3.jpg',
     'results/textures/texture4.jpg',
+    'results/textures/texture5.png'
 ]
 
-textureUrls.map(url=>{
+textureUrls.map(url => {
     const item = document.createElement('div');
     item.className += 'item';
     item.style.backgroundImage = `url(${url})`;
     // item.style.width = `${item.offsetHeight}px`;
     document.getElementById('mats').appendChild(item);
-    item.addEventListener('click',()=>{
+    item.addEventListener('click', () => {
         console.log(currentMesh.material);
         currentMesh.material.map = textureLoader.load(url);
+        currentMesh.material.map.wrapS = 1000;
+        currentMesh.material.map.wrapT = 1000;
+        currentMesh.material.color = new THREE.Color(1, 1, 1)
+
     });
-    item.addEventListener('touchstart',()=>{
+    item.addEventListener('touchstart', () => {
         console.log(currentMesh.material);
         currentMesh.material.map = textureLoader.load(url);
+
     })
 })
 
