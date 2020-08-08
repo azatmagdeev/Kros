@@ -2,6 +2,8 @@ import * as THREE from "./lib/three.module.js";
 import {OrbitControls} from "./lib/OrbitControls.js";
 import {GLTFLoader} from "./lib/GLTFLoader.js";
 
+let textureUrls = [];
+
 const container = document.getElementById('c-wrapper');
 if (window.innerHeight > window.innerWidth) {
     container["height"] = container.offsetWidth;
@@ -20,7 +22,7 @@ scene.background = new THREE.Color('lightgrey');
 
 const light = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(light);
-const ambientLight = new THREE.AmbientLight("#ffffff",1.5);
+const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
 scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, canvas);
@@ -54,7 +56,6 @@ gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
     ked.children.map(mesh => {
         mesh.material.color.set({r: 1, g: 1, b: 1});
     })
-    // console.log(ked);
 
     loadingEl.style.display = 'none';
 }, (xhr) => {
@@ -93,29 +94,47 @@ class PickHelper {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
             currentMesh = this.pickedObject = undefined;
             hideMats();
+            ked.children.map(o=>{
+                o.material.emissive.setHex(this.pickedObjectSavedColor);
+            })
         }
-
 
         // пролить луч через усеченный конус
         this.raycaster.setFromCamera(normalizedPosition, camera);
         // получаем список объектов, которые пересек луч
         const intersectedObjects = this.raycaster.intersectObjects(ked.children);
-        // console.log(intersectedObjects.length);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             if (this.pickedObject.name === 'Cube.001_2') {
                 this.pickedObject = ked.children.find(o => o.name === 'Cube.001_0');
             }
-           // if(this.pickedObject.name === 'Cube.001_0'||this.pickedObject.name === 'Cube.001_0'){}
+            if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1') {
+                textureUrls = [
+                    'results/textures/texture4.jpg',
+                    'results/textures/white_rubber.png'
+                ]
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                ked.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+                ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+
+            }else{
+                textureUrls = [
+                    'results/textures/leather-texutre.jpg',
+                    'results/textures/shoe_lace_texture.jpg',
+                    'results/textures/texture1.jpg',
+                    'results/textures/texture2.jpg',
+                    'results/textures/texture3.jpg',
+                    'results/textures/texture4.jpg',
+                ]
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+            }
 
             console.log(this.pickedObject);
-            this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
             // установить его излучающий цвет на мигающий красный / желтый
-            this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
-            // document.getElementById('mats').style.display = 'flex';
-            showMats(this.pickedObject);
             currentMesh = this.pickedObject;
+            showMats(textureUrls)
         }
     }
 }
@@ -178,69 +197,58 @@ function render() {
 render();
 
 
-// const details = [
-//     'Язык',
-//     'Подошва',
-//     'Пятка',
-//     'Шнурки',
-//     'Основа',
-// ];
+function showMats(urls) {
+    document.getElementById('mats').innerHTML = '';
 
-// function showDetails() {
-//     document.getElementById('details').style.visibility = 'visible';
-//     details.map(item => {
-//         const itemEl = document.createElement('div');
-//         itemEl.className = 'item';
-//         itemEl.textContent = item;
-//         document.getElementById('details').appendChild(itemEl);
-//         itemEl.addEventListener('click', () => {
-//             showMats(item)
-//         })
-//     })
-// }
-//
-function showMats(item) {
-    // document.getElementById('details').style.visibility = 'hidden';
+    urls.map(url => {
+
+        const item = document.createElement('div');
+        item.className += 'item';
+        item.style.backgroundImage = `url(${url})`;
+        item.style.backgroundSize = `contain`;
+        const matsEl = document.getElementById('mats');
+        matsEl.appendChild(item);
+
+        item.addEventListener('click', () => {
+            setTexture(url)
+
+        });
+
+        item.addEventListener('touchstart', () => {
+            setTexture(url)
+            // currentMesh.material.map = textureLoader.load(url);
+            // currentMesh.material.map.wrapS = 1000;
+            // currentMesh.material.map.wrapT = 1000;
+        })
+    })
+
     document.getElementById('mats-wrapper').style.visibility = 'visible';
-    // document.getElementById('mats').style.display = 'flex';
 }
 
 function hideMats() {
-    // document.getElementById('details').style.visibility = 'hidden';
     document.getElementById('mats-wrapper').style.visibility = 'hidden';
-    // document.getElementById('mats').style.display = 'flex';
 }
 
-const textureUrls = [
-    'results/textures/leather-texutre.jpg',
-    'results/textures/shoe_lace_texture.jpg',
-    'results/textures/texture1.jpg',
-    'results/textures/texture2.jpg',
-    'results/textures/texture3.jpg',
-    'results/textures/texture4.jpg',
-]
-
-textureUrls.map(url => {
-    const item = document.createElement('div');
-    item.className += 'item';
-    item.style.backgroundImage = `url(${url})`;
-    item.style.backgroundSize = `contain`;
-    document.getElementById('mats').appendChild(item);
-    item.addEventListener('click', () => {
-
-
+function setTexture(url){
+    if(currentMesh.name === 'Cube.001_0'||currentMesh.name === 'Cube.001_1'){
+        if(url === 'results/textures/texture4.jpg'){
+            ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
+            ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/texture2.jpg');
+        }
+        if(url === 'results/textures/white_rubber.png'){
+            ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
+            ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/white_dotted_rubber.png');
+        }
+        ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapS = 1000;
+        ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapT = 1000;
+    }else{
         currentMesh.material.map = textureLoader.load(url);
-        currentMesh.material.map.wrapS = 1000;
-        currentMesh.material.map.wrapT = 1000;
-        // console.log(currentMesh.material);
+    }
+
+    currentMesh.material.map.wrapS = 1000;
+    currentMesh.material.map.wrapT = 1000;
+}
 
 
-    });
-    item.addEventListener('touchstart', () => {
-        // console.log(currentMesh.material);
-        currentMesh.material.map = textureLoader.load(url);
-        currentMesh.material.map.wrapS = 1000;
-        currentMesh.material.map.wrapT = 1000;
-    })
-})
+
 
