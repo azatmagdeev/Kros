@@ -36,7 +36,10 @@ const ked = new THREE.Object3D();
 
 
 const gltfLoader = new GLTFLoader();
-gltfLoader.load('results/sneakers_lower_quality.gltf', gltf => {
+gltfLoader.load(
+    // 'results/sneakers_lower_quality.gltf',
+    'results/sneakers.gltf',
+        gltf => {
     // console.log(gltf);
     const root = gltf.scene;
     scene.add(root);
@@ -115,8 +118,8 @@ class PickHelper {
                     'results/textures/white_rubber.png'
                 ]
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                ked.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
-                ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+                ked.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex(0x00FFFF);
+                ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
 
             }else{
                 textureUrls = [
@@ -128,7 +131,7 @@ class PickHelper {
                     'results/textures/texture4.jpg',
                 ]
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0x00FF00 : 0x00FF00);
+                this.pickedObject.material.emissive.setHex(0x00FFFF);
             }
 
             console.log(this.pickedObject);
