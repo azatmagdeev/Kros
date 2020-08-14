@@ -7,9 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        /*html{*/
+
+        /*    padding: 0;*/
+        /*    margin: 0;*/
+        /*}*/
+        body{
+            margin: 0;
+            height: 100%;
+            background-color: #D5CACA;
+        }
         .body {
             width: 1440px;
-            height: 668px;
+            height: 100vh;
             background: #FFFFFF;
             font-family: Roboto, serif;
             font-style: normal;
@@ -17,6 +27,7 @@
             font-size: 19px;
             line-height: 114.69%;
             color: #000;
+            margin: 0 auto;
         }
 
         .img-container {
@@ -32,17 +43,20 @@
         .main-content {
             width: 1200px;
             max-width: 1200px;
-            display: table;
-            margin: auto;
+            display: flex;
+            margin: 0 auto;
+            align-items: center;
+
         }
 
         .col-6 {
-            display: table-cell;
+            /*display: table-cell;*/
             width: 50%;
             position: relative;
             min-height: 1px;
             padding-right: 15px;
             padding-left: 15px;
+            margin-top: 3em;
         }
 
         /*.h1{*/
@@ -158,7 +172,9 @@
 
         #c {
             width: 100%;
-            height: 100%
+            height: 100vh;
+            max-width: 690px;
+            max-height: 540px;
         }
 
         #loadingPercent {
@@ -179,7 +195,7 @@
             bottom: 0;
             justify-content: center;
             align-items: center;
-            overflow: scroll;
+            /*overflow: scroll;*/
             flex-wrap: nowrap;
             z-index: 5;
             /*text-align: center;*/
