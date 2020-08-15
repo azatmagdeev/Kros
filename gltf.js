@@ -42,7 +42,7 @@ gltfLoader.load(
     // 'results/sneakers_lower_quality.gltf',
     // 'results/sneakers.gltf',
     // 'results/sneakers-with-nose.glb',
-    'results/sneakers_high_sole.glb',
+    'results/sneakers-with-nose.glb',
         gltf => {
     // console.log(gltf);
     const root = gltf.scene;
@@ -73,7 +73,18 @@ gltfLoader.load(
     }
 });
 
-
+function resizeRendererToDisplaySize(renderer) {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+        renderer.setSize(width, height, false);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
+    return needResize;
+}
 
 let currentMesh;
 
