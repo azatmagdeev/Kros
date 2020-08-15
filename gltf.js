@@ -7,6 +7,8 @@ let textureUrls = [];
 const container = document.getElementById('c-wrapper');
 if (window.innerHeight > window.innerWidth) {
     container["height"] = container.offsetWidth;
+}else{
+    container["width"] = container.offsetHeight;
 }
 const loadingEl = document.getElementById('loadingPercent');
 const canvas = document.getElementById('c');
@@ -38,7 +40,9 @@ const ked = new THREE.Object3D();
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
     // 'results/sneakers_lower_quality.gltf',
-    'results/sneakers.gltf',
+    // 'results/sneakers.gltf',
+    // 'results/sneakers-with-nose.glb',
+    'results/sneakers_high_sole.glb',
         gltf => {
     // console.log(gltf);
     const root = gltf.scene;
@@ -54,11 +58,11 @@ gltfLoader.load(
                 ked.children.push(o)
             })
         }
-    })
+    });
 
     ked.children.map(mesh => {
         mesh.material.color.set({r: 1, g: 1, b: 1});
-    })
+    });
 
     loadingEl.style.display = 'none';
 }, (xhr) => {
@@ -67,7 +71,7 @@ gltfLoader.load(
         loadingEl.style.display = 'block';
         loadingEl.textContent = `Загрузка модели ${percentComplete} %`
     }
-})
+});
 
 function resizeRendererToDisplaySize(renderer) {
     const width = canvas.clientWidth;
@@ -91,7 +95,7 @@ class PickHelper {
         this.pickedObjectSavedColor = 0;
     }
 
-    pick(normalizedPosition, scene, camera, time = 1000) {
+    pick(normalizedPosition, scene, camera) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
@@ -116,10 +120,11 @@ class PickHelper {
                 textureUrls = [
                     'results/textures/texture4.jpg',
                     'results/textures/white_rubber.png'
-                ]
+                ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 ked.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex(0x00FFFF);
                 ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
+                ked.children.find(o => o.name === 'Cube.001_2').material.emissive.setHex(0x00FFFF);
 
             }else{
                 textureUrls = [
@@ -129,7 +134,7 @@ class PickHelper {
                     'results/textures/texture2.jpg',
                     'results/textures/texture3.jpg',
                     'results/textures/texture4.jpg',
-                ]
+                ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 this.pickedObject.material.emissive.setHex(0x00FFFF);
             }
@@ -223,7 +228,7 @@ function showMats(urls) {
             // currentMesh.material.map.wrapS = 1000;
             // currentMesh.material.map.wrapT = 1000;
         })
-    })
+    });
 
     document.getElementById('mats-wrapper').style.visibility = 'visible';
 }
