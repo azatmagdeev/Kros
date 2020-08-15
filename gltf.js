@@ -73,18 +73,7 @@ gltfLoader.load(
     }
 });
 
-function resizeRendererToDisplaySize(renderer) {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-    }
-    return needResize;
-}
+
 
 let currentMesh;
 
