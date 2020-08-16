@@ -1,13 +1,21 @@
 import * as THREE from "./lib/three.module.js";
 import {OrbitControls} from "./lib/OrbitControls.js";
 import {GLTFLoader} from "./lib/GLTFLoader.js";
+import mindMap from "./mindmap.js";
 
 let textureUrls = [];
+let compUrls = [
+    'results/components/Component-body.png',
+    'results/components/Component-inside.png',
+    'results/components/Component-label.png',
+    'results/components/Component-podblock.png',
+    'results/components/Component-sole.png',
+];
 
 const container = document.getElementById('c-wrapper');
 if (window.innerHeight > window.innerWidth) {
     container["height"] = container.offsetWidth;
-}else{
+} else {
     container["width"] = container.offsetHeight;
 }
 const loadingEl = document.getElementById('loadingPercent');
@@ -39,39 +47,70 @@ const ked = new THREE.Object3D();
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
-    // 'results/sneakers_lower_quality.gltf',
-    // 'results/sneakers.gltf',
-    // 'results/sneakers-with-nose.glb',
-    'results/sneakers-with-nose.glb',
-        gltf => {
-    // console.log(gltf);
-    const root = gltf.scene;
-    scene.add(root);
+    'results/sneakers_lower_quality.gltf',
+    gltf => {
+        const root = gltf.scene;
+        scene.add(root);
 
-    // ked.children = root.children;
+        // ked.children = root.children;
 
-    root.children.map(obj => {
-        if (obj.isMesh) {
-            ked.children.push(obj)
-        } else {
-            obj.children.map(o => {
-                ked.children.push(o)
-            })
+        root.children.map(obj => {
+            if (obj.isMesh) {
+                ked.children.push(obj)
+            } else {
+                obj.children.map(o => {
+                    ked.children.push(o)
+                })
+            }
+        });
+
+        ked.children.map(mesh => {
+            mesh.material.color.set({r: 1, g: 1, b: 1});
+        });
+
+        loadingEl.style.display = 'none';
+
+        showItems(mindMap.components);
+
+    }, (xhr) => {
+        if (xhr.lengthComputable) {
+            const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
+            loadingEl.style.display = 'block';
+            loadingEl.textContent = `Загрузка модели ${percentComplete} %`
         }
     });
 
-    ked.children.map(mesh => {
-        mesh.material.color.set({r: 1, g: 1, b: 1});
+function showItems(items) {
+    document.getElementById('mats').innerHTML = '';
+
+    items.map((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+            <img src=${item.url} alt=${item.name}>
+            <p>${item.name}</p>        
+        `;
+        document.getElementById('mats').appendChild(div);
+        div.addEventListener('click',()=>{
+            item.textures? showItems(item.textures): console.warn('No Textures!');
+            lightUpComponent(item.mesh_name);
+        })
     });
 
-    loadingEl.style.display = 'none';
-}, (xhr) => {
-    if (xhr.lengthComputable) {
-        const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
-        loadingEl.style.display = 'block';
-        loadingEl.textContent = `Загрузка модели ${percentComplete} %`
+    document.getElementById('mats').style.visibility = 'visible';
+}
+
+function lightUpComponent(name) {
+    if (Array.isArray(name)){
+        name.map(n=>{
+            ked.children.find(o => o.name === n).material.emissive.setHex(0x00FF00);
+        })
+    }else{
+        // ked.children.find(o => o.name === name).material.emissive.setHex(0x00FF00);
+        pickHelper.pickedObject = ked.children.find(o => o.name === name);
+        pickHelper.pick(pickPosition,scene,camera)
     }
-});
+}
 
 function resizeRendererToDisplaySize(renderer) {
     const width = canvas.clientWidth;
@@ -101,7 +140,7 @@ class PickHelper {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
             currentMesh = this.pickedObject = undefined;
             hideMats();
-            ked.children.map(o=>{
+            ked.children.map(o => {
                 o.material.emissive.setHex(this.pickedObjectSavedColor);
             })
         }
@@ -126,7 +165,7 @@ class PickHelper {
                 ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
                 ked.children.find(o => o.name === 'Cube.001_2').material.emissive.setHex(0x00FFFF);
 
-            }else{
+            } else {
                 textureUrls = [
                     'results/textures/leather-texutre.jpg',
                     'results/textures/shoe_lace_texture.jpg',
@@ -205,7 +244,7 @@ function render() {
 render();
 
 
-function showMats(urls) {
+function showMats(urls, type) {
     document.getElementById('mats').innerHTML = '';
 
     urls.map(url => {
@@ -213,20 +252,20 @@ function showMats(urls) {
         const item = document.createElement('div');
         item.className += 'item';
         item.style.backgroundImage = `url(${url})`;
-        item.style.backgroundSize = `contain`;
         const matsEl = document.getElementById('mats');
         matsEl.appendChild(item);
 
         item.addEventListener('click', () => {
-            setTexture(url)
-
+            if (type === 'components') {
+                if (url === 'results/components/Component-sole.png') {
+                    showMats()
+                }
+            }
+            setTexture(url);
         });
 
         item.addEventListener('touchstart', () => {
-            setTexture(url)
-            // currentMesh.material.map = textureLoader.load(url);
-            // currentMesh.material.map.wrapS = 1000;
-            // currentMesh.material.map.wrapT = 1000;
+            setTexture(url);
         })
     });
 
@@ -237,19 +276,19 @@ function hideMats() {
     document.getElementById('mats-wrapper').style.visibility = 'hidden';
 }
 
-function setTexture(url){
-    if(currentMesh.name === 'Cube.001_0'||currentMesh.name === 'Cube.001_1'){
-        if(url === 'results/textures/texture4.jpg'){
+function setTexture(url) {
+    if (currentMesh.name === 'Cube.001_0' || currentMesh.name === 'Cube.001_1') {
+        if (url === 'results/textures/texture4.jpg') {
             ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
             ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/texture2.jpg');
         }
-        if(url === 'results/textures/white_rubber.png'){
+        if (url === 'results/textures/white_rubber.png') {
             ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
             ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/white_dotted_rubber.png');
         }
         ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapS = 1000;
         ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapT = 1000;
-    }else{
+    } else {
         currentMesh.material.map = textureLoader.load(url);
     }
 

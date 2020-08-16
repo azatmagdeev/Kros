@@ -310,7 +310,6 @@ select:-moz-focusring {
 .selects-item:hover{
     background-color: #FE843F;
     color:white;
-
 }
 
 #low-ked, #high-ked{
@@ -319,4 +318,16 @@ select:-moz-focusring {
 
 #loadingPercent{
     display: none;
+    padding-left: 2em;
+}
+
+#spinner{
+    position:absolute;
+    width: 2em;
+    left:0;
+    top:-.25rem;
+}
+
+.test{
+    /*background-position*/
 }
