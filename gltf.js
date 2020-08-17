@@ -47,7 +47,8 @@ const ked = new THREE.Object3D();
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
-    'results/sneakers_lower_quality.gltf',
+    // 'results/sneakers_lower_quality.gltf',
+    'results/sneakers-with-nose-v2.glb',
     gltf => {
         const root = gltf.scene;
         scene.add(root);
@@ -87,7 +88,7 @@ function showItems(items) {
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = `
-            <img src=${item.url} alt=${item.name}>
+            <img src=${item.url} alt="">
             <p>${item.name}</p>        
         `;
         document.getElementById('mats').appendChild(div);
@@ -223,7 +224,7 @@ window.addEventListener('click',
 
 window.addEventListener('touchstart', (event) => {
     // предотвращаем прокрутку окна
-    event.preventDefault();
+    // event.preventDefault();
     setPickPosition(event.touches[0]);
 }, {passive: false});
 

@@ -246,13 +246,12 @@ select:-moz-focusring {
 .item {
     width: 8vh;
     height: 80%;
-
-    /*background-color: grey;*/
+    background-color: #F1F1F3;
     margin: 5px;
     display: inline-block;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 .arrow {
@@ -328,6 +327,11 @@ select:-moz-focusring {
     top:-.25rem;
 }
 
-.test{
-    /*background-position*/
+.item img{
+    width:100%;
+    height: 50%;
+}
+
+.item p{
+    font-size:.5em;
 }
