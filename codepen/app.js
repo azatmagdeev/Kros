@@ -18,8 +18,9 @@ const textureLoader = new THREE.TextureLoader();
 let isMen;
 let isLow;
 let textureUrls = [];
-let currentMesh;
+let currentMesh = true;
 let savedEmissiveColor;
+let isItemEventTarget = false;
 
 menBtn.addEventListener('click', () => {
     isMen = true;
@@ -68,9 +69,29 @@ function showModel(root) {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('lightgrey');
-    const light = new THREE.DirectionalLight(0xffffff, 2);
-    scene.add(light);
-    const ambientLight = new THREE.AmbientLight("#ffffff", 1.5);
+
+    {
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(0, 10, 0);
+        light.target.position.set(0, 0, 0);
+        scene.add(light);
+        scene.add(light.target);
+    }
+    {
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(10, 0, 0);
+        light.target.position.set(0, 0, 0);
+        scene.add(light);
+        scene.add(light.target);
+    }
+    {
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(-10, 0, 0);
+        light.target.position.set(0, 0, 0);
+        scene.add(light);
+        scene.add(light.target);
+    }
+    const ambientLight = new THREE.AmbientLight("#ffffff", 2);
     scene.add(ambientLight);
     const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -146,6 +167,7 @@ function showModel(root) {
         pickPosition.x = (pos.x / canvas.width) * 2 - 1;
         pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
         pickHelper.pick(pickPosition, scene, camera, 100);
+        isItemEventTarget = false;
     }
 
     function clearPickPosition() {
@@ -157,18 +179,18 @@ function showModel(root) {
         pickPosition.y = -100000;
     }
 
-    window.addEventListener('click',
+    canvas.addEventListener('click',
         setPickPosition);
 // window.addEventListener('click', clearPickPosition);
 // window.addEventListener('mouseleave', clearPickPosition);
 
-    window.addEventListener('touchstart', (event) => {
+    canvas.addEventListener('touchstart', (event) => {
         // предотвращаем прокрутку окна
         // event.preventDefault();
         setPickPosition(event.touches[0]);
     }, {passive: false});
 
-    window.addEventListener('touchmove', (event) => {
+    canvas.addEventListener('touchmove', (event) => {
         setPickPosition(event.touches[0]);
     });
 
@@ -188,7 +210,7 @@ class PickHelper {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-            currentMesh = this.pickedObject = undefined;
+            this.pickedObject = undefined;
             hideMats();
             this.scene.children.map(o => {
                 o.material.emissive.setHex(this.pickedObjectSavedColor);
@@ -201,41 +223,36 @@ class PickHelper {
         const intersectedObjects = this.raycaster.intersectObjects(this.scene.children);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
-            currentMesh = this.pickedObject = intersectedObjects[0].object;
+            this.pickedObject = intersectedObjects[0].object;
+            currentMesh = this.pickedObject;
             if (this.pickedObject.name === 'Cube.001_2') {
                 this.pickedObject = this.scene.children.find(o => o.name === 'Cube.001_0');
             }
             if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1') {
-                textureUrls = [
-                    '../results/textures/texture4.jpg',
-                    '../results/textures/white_rubber.png'
+                currentMesh = [
+                    this.scene.children.find(o => o.name === 'Cube.001_0'),
+                    this.scene.children.find(o => o.name === 'Cube.001_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(this.pickedObject.name);
-                // this.scene.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex(0x00FFFF);
-                // this.scene.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
-                // this.scene.children.find(o => o.name === 'Cube.001_2').material.emissive.setHex(0x00FFFF);
-
+                lightUpComponent(['Cube.001_0','Cube.001_1']);
+                console.log(mindMap.components.find(o => o.name === 'Подошва'));
+                showItems(mindMap.components.find(o => o.name === 'Подошва').textures)
             } else {
-                textureUrls = [
-                    '../results/textures/leather-texutre.jpg',
-                    '../results/textures/shoe_lace_texture.jpg',
-                    '../results/textures/texture1.jpg',
-                    '../results/textures/texture2.jpg',
-                    '../results/textures/texture3.jpg',
-                    '../results/textures/texture4.jpg',
-                ];
+
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
                 // this.pickedObject.material.emissive.setHex(0x00FFFF);
                 lightUpComponent(this.pickedObject.name);
+                showItems(mindMap.components.find(o => o.mesh_name = currentMesh.name).textures);
+
             }
 
             console.log(this.pickedObject);
             // установить его излучающий цвет на мигающий красный / желтый
             currentMesh = this.pickedObject;
             // showMats(textureUrls)
-            showItems(mindMap.components.find(o=>o.mesh_name = currentMesh.name).textures);
+        } else {
+            if (!isItemEventTarget) showItems(mindMap.components);
         }
     }
 }
@@ -323,9 +340,11 @@ function showItems(items) {
         `;
         document.getElementById('mats').appendChild(div);
         div.addEventListener('click', () => {
+            isItemEventTarget = true;
             item.textures ? showItems(item.textures) : console.warn('No Textures!');
             if (item.mesh_name) lightUpComponent(item.mesh_name);
             if (!item.textures && !item.mesh_name) {
+                console.log(currentMesh);
                 setTexture(item.urls ? item.urls : item.url)
             }
         })
@@ -345,6 +364,7 @@ function lightUpComponent(name) {
         })
     } else {
         currentMesh = ked.children.find(o => o.name === name);
+        console.log(currentMesh);
         savedEmissiveColor = currentMesh.material.emissive.getHex();
         currentMesh.material.emissive.setHex(0x00FF00);
 

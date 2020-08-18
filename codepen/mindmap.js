@@ -8,6 +8,26 @@ const mindMap = {
             textures:[
                 {
                     name:'Кожа',
+                    textures: [
+                        {
+                            name:'Желтый'
+                        },
+                        {
+                            name:'Красный'
+                        },
+                        {
+                            name:'Черный'
+                        },
+                        {
+                            name:'Белый'
+                        },
+                        {
+                            name:'Синий'
+                        },
+                        {
+                            name:'Серо-белый'
+                        },
+                    ]
                 },
                 {
                     name:'Нубук',
