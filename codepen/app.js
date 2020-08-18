@@ -19,6 +19,7 @@ let isMen;
 let isLow;
 let textureUrls = [];
 let currentMesh;
+let savedEmissiveColor;
 
 menBtn.addEventListener('click', () => {
     isMen = true;
@@ -56,7 +57,7 @@ function loadmodel(modelUrl) {
         if (xhr.lengthComputable) {
             const percentComplete = Math.round(xhr.loaded / xhr.total * 100);
             loadingPercentEl.style.display = 'block';
-            loadNumber.textContent =` ${percentComplete} %`
+            loadNumber.textContent = ` ${percentComplete} %`
         }
     })
 }
@@ -125,10 +126,9 @@ function showModel(root) {
     }
 
 
-
     hide(loadingPercentEl);
 
-    const pickHelper = new PickHelper(ked,currentMesh);
+    const pickHelper = new PickHelper(ked, currentMesh);
 
     const pickPosition = {x: 0, y: 0};
     clearPickPosition();
@@ -181,16 +181,16 @@ class PickHelper {
         this.scene = scene;
         this.raycaster = new THREE.Raycaster();
         this.pickedObject = null;
-        this.pickedObjectSavedColor = 0;
+        // this.pickedObjectSavedColor = 0;
     }
 
     pick(normalizedPosition, scene, camera) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
             this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-           currentMesh = this.pickedObject = undefined;
+            currentMesh = this.pickedObject = undefined;
             hideMats();
-            this.scene.children.map(o=>{
+            this.scene.children.map(o => {
                 o.material.emissive.setHex(this.pickedObjectSavedColor);
             })
         }
@@ -201,9 +201,9 @@ class PickHelper {
         const intersectedObjects = this.raycaster.intersectObjects(this.scene.children);
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
-            this.pickedObject = intersectedObjects[0].object;
+            currentMesh = this.pickedObject = intersectedObjects[0].object;
             if (this.pickedObject.name === 'Cube.001_2') {
-                this.pickedObject = ked.children.find(o => o.name === 'Cube.001_0');
+                this.pickedObject = this.scene.children.find(o => o.name === 'Cube.001_0');
             }
             if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1') {
                 textureUrls = [
@@ -211,11 +211,12 @@ class PickHelper {
                     '../results/textures/white_rubber.png'
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                ked.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex(0x00FFFF);
-                ked.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
-                ked.children.find(o => o.name === 'Cube.001_2').material.emissive.setHex(0x00FFFF);
+                lightUpComponent(this.pickedObject.name);
+                // this.scene.children.find(o => o.name === 'Cube.001_0').material.emissive.setHex(0x00FFFF);
+                // this.scene.children.find(o => o.name === 'Cube.001_1').material.emissive.setHex(0x00FFFF);
+                // this.scene.children.find(o => o.name === 'Cube.001_2').material.emissive.setHex(0x00FFFF);
 
-            }else{
+            } else {
                 textureUrls = [
                     '../results/textures/leather-texutre.jpg',
                     '../results/textures/shoe_lace_texture.jpg',
@@ -225,13 +226,16 @@ class PickHelper {
                     '../results/textures/texture4.jpg',
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                this.pickedObject.material.emissive.setHex(0x00FFFF);
+
+                // this.pickedObject.material.emissive.setHex(0x00FFFF);
+                lightUpComponent(this.pickedObject.name);
             }
 
             console.log(this.pickedObject);
             // установить его излучающий цвет на мигающий красный / желтый
             currentMesh = this.pickedObject;
-            showMats(textureUrls)
+            // showMats(textureUrls)
+            showItems(mindMap.components.find(o=>o.mesh_name = currentMesh.name).textures);
         }
     }
 }
@@ -268,24 +272,43 @@ function hideMats() {
     document.getElementById('mats-wrapper').style.visibility = 'hidden';
 }
 
-function setTexture(url) {
-    if (currentMesh.name === 'Cube.001_0' || currentMesh.name === 'Cube.001_1') {
-        if (url === 'results/textures/texture4.jpg') {
-            ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
-            ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/texture2.jpg');
+function setTexture(item) {
+    if (Array.isArray(currentMesh)) {
+        for (const prop in item) {
+            console.log(prop);
+            console.log(item[prop]);
+            const mesh = currentMesh.find(o => o.name === prop);
+            mesh.material.map = textureLoader.load(item[prop]);
+            mesh.material.emissive.setHex(savedEmissiveColor);
+            mesh.material.map.wrapS = 1000;
+            mesh.material.map.wrapT = 1000;
         }
-        if (url === 'results/textures/white_rubber.png') {
-            ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
-            ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/white_dotted_rubber.png');
-        }
-        ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapS = 1000;
-        ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapT = 1000;
-    } else {
-        currentMesh.material.map = textureLoader.load(url);
+    }
+    if (typeof item === 'string') {
+        currentMesh.material.map = textureLoader.load(item);
+        currentMesh.material.emissive.setHex(savedEmissiveColor);
+        currentMesh.material.map.wrapS = 1000;
+        currentMesh.material.map.wrapT = 1000;
     }
 
-    currentMesh.material.map.wrapS = 1000;
-    currentMesh.material.map.wrapT = 1000;
+
+// if (currentMesh.name === 'Cube.001_0' || currentMesh.name === 'Cube.001_1') {
+//     if (url === 'results/textures/texture4.jpg') {
+//         ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
+//         ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/texture2.jpg');
+//     }
+//     if (url === 'results/textures/white_rubber.png') {
+//         ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
+//         ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/white_dotted_rubber.png');
+//     }
+//     ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapS = 1000;
+//     ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapT = 1000;
+// } else {
+//     currentMesh.material.map = textureLoader.load(url);
+// }
+//
+// currentMesh.material.map.wrapS = 1000;
+// currentMesh.material.map.wrapT = 1000;
 }
 
 function showItems(items) {
@@ -299,15 +322,33 @@ function showItems(items) {
             <p>${item.name}</p>        
         `;
         document.getElementById('mats').appendChild(div);
-        div.addEventListener('click',()=>{
-            item.textures? showItems(item.textures): console.warn('No Textures!');
-            lightUpComponent(item.mesh_name);
+        div.addEventListener('click', () => {
+            item.textures ? showItems(item.textures) : console.warn('No Textures!');
+            if (item.mesh_name) lightUpComponent(item.mesh_name);
+            if (!item.textures && !item.mesh_name) {
+                setTexture(item.urls ? item.urls : item.url)
+            }
         })
     });
 
     document.getElementById('mats').style.visibility = 'visible';
 }
 
-function lightUpComponents(name){
+function lightUpComponent(name) {
+    if (Array.isArray(name)) {
+        currentMesh = [];
+        name.map(n => {
+            const meshForLightUp = ked.children.find(o => o.name === n);
+            savedEmissiveColor = meshForLightUp.material.emissive.getHex();
+            meshForLightUp.material.emissive.setHex(0x00FF00);
+            currentMesh.push(meshForLightUp);
+        })
+    } else {
+        currentMesh = ked.children.find(o => o.name === name);
+        savedEmissiveColor = currentMesh.material.emissive.getHex();
+        currentMesh.material.emissive.setHex(0x00FF00);
 
+        // pickHelper.pickedObject = ked.children.find(o => o.name === name);
+        // pickHelper.pick(pickPosition,scene,camera)
+    }
 }
