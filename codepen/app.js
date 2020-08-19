@@ -63,7 +63,6 @@ function loadmodel(modelUrl) {
     })
 }
 
-
 function showModel(root) {
     console.log(root);
 
@@ -91,7 +90,7 @@ function showModel(root) {
         scene.add(light);
         scene.add(light.target);
     }
-    const ambientLight = new THREE.AmbientLight("#ffffff", 2);
+    const ambientLight = new THREE.AmbientLight("#ffffff", 1);
     scene.add(ambientLight);
     const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -122,9 +121,7 @@ function showModel(root) {
         }
     });
 
-
     showItems(mindMap.components);
-
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
@@ -181,8 +178,6 @@ function showModel(root) {
 
     canvas.addEventListener('click',
         setPickPosition);
-// window.addEventListener('click', clearPickPosition);
-// window.addEventListener('mouseleave', clearPickPosition);
 
     canvas.addEventListener('touchstart', (event) => {
         // предотвращаем прокрутку окна
@@ -203,7 +198,6 @@ class PickHelper {
         this.scene = scene;
         this.raycaster = new THREE.Raycaster();
         this.pickedObject = null;
-        // this.pickedObjectSavedColor = 0;
     }
 
     pick(normalizedPosition, scene, camera) {
@@ -241,16 +235,16 @@ class PickHelper {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
-                // this.pickedObject.material.emissive.setHex(0x00FFFF);
+
                 lightUpComponent(this.pickedObject.name);
                 showItems(mindMap.components.find(o => o.mesh_name = currentMesh.name).textures);
 
             }
 
             console.log(this.pickedObject);
-            // установить его излучающий цвет на мигающий красный / желтый
+
             currentMesh = this.pickedObject;
-            // showMats(textureUrls)
+
         } else {
             if (!isItemEventTarget) showItems(mindMap.components);
         }
@@ -290,42 +284,40 @@ function hideMats() {
 }
 
 function setTexture(item) {
-    if (Array.isArray(currentMesh)) {
-        for (const prop in item) {
-            console.log(prop);
-            console.log(item[prop]);
-            const mesh = currentMesh.find(o => o.name === prop);
-            mesh.material.map = textureLoader.load(item[prop]);
-            mesh.material.emissive.setHex(savedEmissiveColor);
-            mesh.material.map.wrapS = 1000;
-            mesh.material.map.wrapT = 1000;
-        }
-    }
+    // console.log(item);
+    // console.log(currentMesh);
+    // if (Array.isArray(currentMesh)) {
+    //     for (const prop in item) {
+    //         console.log(prop);
+    //         console.log(item[prop]);
+    //         const mesh = currentMesh.find(o => o.name === prop);
+    //         mesh.material.map = textureLoader.load(item[prop],()=>{
+    //             console.log(mesh.material.map);
+    //             mesh.material.map.wrapS = 1000;
+    //             mesh.material.map.wrapT = 1000;
+    //             mesh.material.emissive.setHex(savedEmissiveColor);
+    //         });
+    //
+    //
+    //     }
+    // }
     if (typeof item === 'string') {
         currentMesh.material.map = textureLoader.load(item);
         currentMesh.material.emissive.setHex(savedEmissiveColor);
         currentMesh.material.map.wrapS = 1000;
         currentMesh.material.map.wrapT = 1000;
+    }else{
+        for(const key in item){
+            const mesh = ked.children.find(o => o.name === key);
+            mesh.material.map = textureLoader.load(item[key],()=>{
+                // console.log(mesh.material.map);
+                mesh.material.map.wrapS = 1000;
+                mesh.material.map.wrapT = 1000;
+                mesh.material.emissive.setHex(savedEmissiveColor);
+            });
+        }
     }
 
-
-// if (currentMesh.name === 'Cube.001_0' || currentMesh.name === 'Cube.001_1') {
-//     if (url === 'results/textures/texture4.jpg') {
-//         ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
-//         ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/texture2.jpg');
-//     }
-//     if (url === 'results/textures/white_rubber.png') {
-//         ked.children.find(o => o.name === 'Cube.001_0').material.map = textureLoader.load(url);
-//         ked.children.find(o => o.name === 'Cube.001_1').material.map = textureLoader.load('results/textures/white_dotted_rubber.png');
-//     }
-//     ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapS = 1000;
-//     ked.children.find(o => o.name === 'Cube.001_1').material.map.wrapT = 1000;
-// } else {
-//     currentMesh.material.map = textureLoader.load(url);
-// }
-//
-// currentMesh.material.map.wrapS = 1000;
-// currentMesh.material.map.wrapT = 1000;
 }
 
 function showItems(items) {
@@ -367,8 +359,5 @@ function lightUpComponent(name) {
         console.log(currentMesh);
         savedEmissiveColor = currentMesh.material.emissive.getHex();
         currentMesh.material.emissive.setHex(0x00FF00);
-
-        // pickHelper.pickedObject = ked.children.find(o => o.name === name);
-        // pickHelper.pick(pickPosition,scene,camera)
     }
 }

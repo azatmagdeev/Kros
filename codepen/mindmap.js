@@ -83,7 +83,7 @@ const mindMap = {
                     url:'../results/textures/texture4.jpg',
                     urls:{
                         'Cube.001_0':'../results/textures/texture4.jpg',
-                        'Cube.001_1':'../results/textures/texture2.png',
+                        'Cube.001_1':'../results/textures/texture2.jpg',
                         // 'Cube.001_2':'../results/textures/texture2.jpg',
                     }
                 },
