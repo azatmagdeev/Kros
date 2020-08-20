@@ -8,25 +8,30 @@ const mindMap = {
             textures:[
                 {
                     name:'Кожа',
+                    url:'../results/textures/red-leather-test2.jpg',
                     textures: [
                         {
-                            name:'Желтый'
+                            name:'Желтый',
+                            url:'../results/textures/yellow-leather-test.jpg'
                         },
                         {
-                            name:'Красный'
+                            name:'Красный',
+                            url: '../results/textures/red-leather-test2.jpg',
                         },
                         {
-                            name:'Черный'
+                            name:'Черный',
+                            url: '../results/textures/leather-texutre.jpg'
                         },
-                        {
-                            name:'Белый'
-                        },
-                        {
-                            name:'Синий'
-                        },
-                        {
-                            name:'Серо-белый'
-                        },
+                        // {
+                        //     name:'Белый',
+                        //     url:'../results/textures/white-leather-test.jpg'
+                        // },
+                        // {
+                        //     name:'Синий'
+                        // },
+                        // {
+                        //     name:'Серо-белый'
+                        // },
                     ]
                 },
                 {
@@ -61,6 +66,7 @@ const mindMap = {
                 },
                 {
                     name:'Джинс',
+                    url: '../results/textures/jeans-test2.jpg'
                 },
             ]
         },

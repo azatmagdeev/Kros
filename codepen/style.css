@@ -237,7 +237,7 @@ select:-moz-focusring {
 
 #mats {
     display: flex;
-    background-color: rgba(0%, 0%, 100%, .3);
+    background-color: #FE843F90;
     flex-grow: 1;
     justify-content: center;
     /*overflow:scroll;*/

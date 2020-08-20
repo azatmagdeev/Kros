@@ -90,7 +90,7 @@ function showModel(root) {
         scene.add(light);
         scene.add(light.target);
     }
-    const ambientLight = new THREE.AmbientLight("#ffffff", 1);
+    const ambientLight = new THREE.AmbientLight("#ffffff", .5);
     scene.add(ambientLight);
     const renderer = new THREE.WebGLRenderer({
         canvas,
