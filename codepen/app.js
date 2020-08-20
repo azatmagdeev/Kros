@@ -17,7 +17,7 @@ const textureLoader = new THREE.TextureLoader();
 
 let isMen;
 let isLow;
-let textureUrls = [];
+// let textureUrls = [];
 let currentMesh = true;
 let savedEmissiveColor;
 let isItemEventTarget = false;
@@ -71,7 +71,7 @@ function showModel(root) {
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0, 10, 0);
+        light.position.set(0,10,0);
         light.target.position.set(0, 0, 0);
         scene.add(light);
         scene.add(light.target);
@@ -228,7 +228,7 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(['Cube.001_0','Cube.001_1']);
+                lightUpComponent(['Cube.001_0', 'Cube.001_1']);
                 console.log(mindMap.components.find(o => o.name === 'Подошва'));
                 showItems(mindMap.components.find(o => o.name === 'Подошва').textures)
             } else {
@@ -251,66 +251,24 @@ class PickHelper {
     }
 }
 
-function showMats(urls, type) {
-    document.getElementById('mats').innerHTML = '';
-
-    urls.map(url => {
-
-        const item = document.createElement('div');
-        item.className += 'item';
-        item.style.backgroundImage = `url(${url})`;
-        const matsEl = document.getElementById('mats');
-        matsEl.appendChild(item);
-
-        item.addEventListener('click', () => {
-            if (type === 'components') {
-                if (url === 'results/components/Component-sole.png') {
-                    showMats()
-                }
-            }
-            setTexture(url);
-        });
-
-        item.addEventListener('touchstart', () => {
-            setTexture(url);
-        })
-    });
-
-    document.getElementById('mats-wrapper').style.visibility = 'visible';
-}
 
 function hideMats() {
     document.getElementById('mats-wrapper').style.visibility = 'hidden';
 }
 
 function setTexture(item) {
-    // console.log(item);
-    // console.log(currentMesh);
-    // if (Array.isArray(currentMesh)) {
-    //     for (const prop in item) {
-    //         console.log(prop);
-    //         console.log(item[prop]);
-    //         const mesh = currentMesh.find(o => o.name === prop);
-    //         mesh.material.map = textureLoader.load(item[prop],()=>{
-    //             console.log(mesh.material.map);
-    //             mesh.material.map.wrapS = 1000;
-    //             mesh.material.map.wrapT = 1000;
-    //             mesh.material.emissive.setHex(savedEmissiveColor);
-    //         });
-    //
-    //
-    //     }
-    // }
+
     if (typeof item === 'string') {
         currentMesh.material.map = textureLoader.load(item);
         currentMesh.material.emissive.setHex(savedEmissiveColor);
         currentMesh.material.map.wrapS = 1000;
         currentMesh.material.map.wrapT = 1000;
-    }else{
-        for(const key in item){
+    }
+    if (typeof item === 'object' && !Array.isArray(item)) {
+        for (const key in item) {
             const mesh = ked.children.find(o => o.name === key);
-            mesh.material.map = textureLoader.load(item[key],()=>{
-                // console.log(mesh.material.map);
+            mesh.material.map = textureLoader.load(item[key], () => {
+
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
                 mesh.material.emissive.setHex(savedEmissiveColor);
@@ -323,7 +281,7 @@ function setTexture(item) {
 function showItems(items) {
     document.getElementById('mats').innerHTML = '';
 
-    items.map((item, index) => {
+    items.map((item) => {
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = `
