@@ -23,6 +23,7 @@ let isLow;
 let currentMesh = true;
 let savedEmissiveColor;
 let isItemEventTarget = false;
+let currentModel;
 
 menBtn.addEventListener('click', () => {
     isMen = true;
@@ -52,14 +53,17 @@ function showSoleType(){
 }
 
 classicSoleBtn.addEventListener('click',()=>{
+    currentModel = '../results/sneakers_lower_quality.gltf';
     loadmodel('../results/sneakers_lower_quality.gltf');
     hide(document.getElementById('c-center'));
 });
 highSoleBtn.addEventListener('click',()=>{
+    currentModel = '../sneakers_constructor/results/sneakers_high_sole_with_tag.glb';
     loadmodel('../sneakers_constructor/results/sneakers_high_sole_with_tag.glb');
     hide(document.getElementById('c-center'));
 });
 noseSoleBtn.addEventListener('click',()=>{
+    currentModel = '../sneakers_constructor/results/sneakers-with-nose-and-tag.glb';
     loadmodel('../sneakers_constructor/results/sneakers-with-nose-and-tag.glb');
     hide(document.getElementById('c-center'));
 });
@@ -211,6 +215,14 @@ function showModel(root) {
     });
 
     render();
+
+    document.getElementById('again').addEventListener(
+        'click',()=>{
+            scene.remove(root);
+            renderer.render(scene,camera);
+            loadmodel(currentModel);
+        }
+    )
 }
 
 class PickHelper {
