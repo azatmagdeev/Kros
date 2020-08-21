@@ -8,6 +8,9 @@ const menBtn = document.getElementById('men');
 const womenBtn = document.getElementById('women');
 const lowKedBtn = document.getElementById('low-ked');
 const highKedBtn = document.getElementById('high-ked');
+const classicSoleBtn = document.getElementById('classicSole');
+const highSoleBtn = document.getElementById('highSole');
+const noseSoleBtn = document.getElementById('noseSole');
 const choiceEl = document.getElementById('choice');
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
@@ -17,7 +20,6 @@ const textureLoader = new THREE.TextureLoader();
 
 let isMen;
 let isLow;
-// let textureUrls = [];
 let currentMesh = true;
 let savedEmissiveColor;
 let isItemEventTarget = false;
@@ -40,9 +42,28 @@ function showType() {
 lowKedBtn.addEventListener('click', () => {
     isLow = true;
     defineChoice(isMen, isLow);
-    hide(document.getElementById('c-center'));
-    loadmodel('../results/sneakers_lower_quality.gltf');
+    showSoleType();
 });
+
+function showSoleType(){
+    hide(lowKedBtn, highKedBtn);
+    show(classicSoleBtn,highSoleBtn,noseSoleBtn);
+
+}
+
+classicSoleBtn.addEventListener('click',()=>{
+    loadmodel('../results/sneakers_lower_quality.gltf');
+    hide(document.getElementById('c-center'));
+});
+highSoleBtn.addEventListener('click',()=>{
+    loadmodel('../sneakers_constructor/results/sneakers_high_sole_with_tag.glb');
+    hide(document.getElementById('c-center'));
+});
+noseSoleBtn.addEventListener('click',()=>{
+    loadmodel('../sneakers_constructor/results/sneakers-with-nose-and-tag.glb');
+    hide(document.getElementById('c-center'));
+});
+
 
 function defineChoice(m, l) {
     choiceEl.textContent = l ? 'низкий кед' : 'высокий кед';
@@ -284,8 +305,8 @@ function showItems(items) {
     items.map((item) => {
         const div = document.createElement('div');
         div.className = 'item';
+        div.style.background = `top / contain no-repeat url('${item.url}')`;
         div.innerHTML = `
-            <img src=${item.url} alt="">
             <p>${item.name}</p>        
         `;
         document.getElementById('mats').appendChild(div);
@@ -319,3 +340,9 @@ function lightUpComponent(name) {
         currentMesh.material.emissive.setHex(0x00FF00);
     }
 }
+
+//todo: сделать обнуление изменений до первоначального
+//todo: для каждой модели свои массив текстур
+//todo: для каждого меша свои текстуры
+//todo: если нет иконки с мешем, то его нельзя выбрать
+//todo: сохранять обЪект и загружать его вновь
