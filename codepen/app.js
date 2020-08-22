@@ -47,23 +47,23 @@ lowKedBtn.addEventListener('click', () => {
     showSoleType();
 });
 
-function showSoleType(){
+function showSoleType() {
     hide(lowKedBtn, highKedBtn);
-    show(classicSoleBtn,highSoleBtn,noseSoleBtn);
+    show(classicSoleBtn, highSoleBtn, noseSoleBtn);
 
 }
 
-classicSoleBtn.addEventListener('click',()=>{
+classicSoleBtn.addEventListener('click', () => {
     currentModel = '../results/sneakers_lower_quality.gltf';
     loadmodel('../results/sneakers_lower_quality.gltf');
     hide(document.getElementById('c-center'));
 });
-highSoleBtn.addEventListener('click',()=>{
+highSoleBtn.addEventListener('click', () => {
     currentModel = '../sneakers_constructor/results/sneakers_high_sole_with_tag.glb';
     loadmodel('../sneakers_constructor/results/sneakers_high_sole_with_tag.glb');
     hide(document.getElementById('c-center'));
 });
-noseSoleBtn.addEventListener('click',()=>{
+noseSoleBtn.addEventListener('click', () => {
     currentModel = '../sneakers_constructor/results/sneakers-with-nose-and-tag.glb';
     loadmodel('../sneakers_constructor/results/sneakers-with-nose-and-tag.glb');
     hide(document.getElementById('c-center'));
@@ -147,9 +147,9 @@ function showModel(root) {
         }
     });
 
-    ked.children.map(mesh=>{
-        mesh.material = new THREE.MeshLambertMaterial({...mesh.material});
-        defaultMaterials[mesh.name] = new THREE.MeshLambertMaterial({...mesh.material});
+    ked.children.map(mesh => {
+        mesh.material = new THREE.MeshStandardMaterial({...mesh.material});
+        defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
         mesh.material.needsUpdate = true;
     });
 
@@ -230,10 +230,10 @@ function showModel(root) {
 }
 
 document.getElementById('again').addEventListener(
-    'click',()=>{
-        ked.children.map(mesh=>{
+    'click', () => {
+        ked.children.map(mesh => {
             console.log(defaultMaterials[mesh.name]);
-            mesh.material = new THREE.MeshLambertMaterial({...defaultMaterials[mesh.name]});
+            mesh.material = new THREE.MeshStandardMaterial({...defaultMaterials[mesh.name]});
             mesh.material.needsUpdate = true;
         })
     }
@@ -265,6 +265,7 @@ class PickHelper {
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
+            if (!checkAvailability(this.pickedObject)) return false;
             currentMesh = this.pickedObject;
             if (this.pickedObject.name === 'Cube.001_2') {
                 this.pickedObject = this.scene.children.find(o => o.name === 'Cube.001_0');
@@ -284,7 +285,7 @@ class PickHelper {
 
 
                 lightUpComponent(this.pickedObject.name);
-                showItems(mindMap.components.find(o => o.mesh_name = currentMesh.name).textures);
+                showItems(mindMap.components.find(o => o.mesh_name === currentMesh.name).textures);
 
             }
 
@@ -328,24 +329,26 @@ function setTexture(item) {
 function showItems(items) {
     document.getElementById('mats').innerHTML = '';
 
-    items.map((item) => {
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.style.background = `top / contain no-repeat url('${item.url}')`;
-        div.innerHTML = `
+    if (items) {
+        items.map((item) => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.style.background = `top / contain no-repeat url('${item.url}')`;
+            div.innerHTML = `
             <p>${item.name}</p>        
         `;
-        document.getElementById('mats').appendChild(div);
-        div.addEventListener('click', () => {
-            isItemEventTarget = true;
-            item.textures ? showItems(item.textures) : console.warn('No Textures!');
-            if (item.mesh_name) lightUpComponent(item.mesh_name);
-            if (!item.textures && !item.mesh_name) {
-                console.log(currentMesh);
-                setTexture(item.urls ? item.urls : item.url)
-            }
-        })
-    });
+            document.getElementById('mats').appendChild(div);
+            div.addEventListener('click', () => {
+                isItemEventTarget = true;
+                item.textures ? showItems(item.textures) : console.warn('No Textures!');
+                if (item.mesh_name) lightUpComponent(item.mesh_name);
+                if (!item.textures && !item.mesh_name) {
+                    console.log(currentMesh);
+                    setTexture(item.urls ? item.urls : item.url)
+                }
+            })
+        });
+    }
 
     document.getElementById('mats').style.visibility = 'visible';
 }
@@ -367,8 +370,15 @@ function lightUpComponent(name) {
     }
 }
 
-//todo: сделать обнуление изменений до первоначального
-//todo: для каждой модели свои массив текстур
-//todo: для каждого меша свои текстуры
-//todo: если нет иконки с мешем, то его нельзя выбрать
+function checkAvailability(mesh) {
+    return mindMap.components.find(
+        o => o.mesh_name === mesh.name || (Array.isArray(o.mesh_name) ?
+            o.mesh_name.find(item => item === mesh.name) : false)
+    )
+        ;
+
+}
+
+
 //todo: сохранять обЪект и загружать его вновь
+//todo:
