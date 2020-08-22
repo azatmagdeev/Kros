@@ -344,3 +344,7 @@ select:-moz-focusring {
     background-color: white;
     font-size:.5em;
 }
+
+#right-buttons svg:hover{
+    fill: #FE843F;
+}

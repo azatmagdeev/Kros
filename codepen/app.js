@@ -24,6 +24,7 @@ let currentMesh = true;
 let savedEmissiveColor;
 let isItemEventTarget = false;
 let currentModel;
+const defaultMaterials = {};
 
 menBtn.addEventListener('click', () => {
     isMen = true;
@@ -96,21 +97,21 @@ function showModel(root) {
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0,10,0);
+        light.position.y = 10;
         light.target.position.set(0, 0, 0);
         scene.add(light);
         scene.add(light.target);
     }
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(10, 0, 0);
+        light.position.x = 10;
         light.target.position.set(0, 0, 0);
         scene.add(light);
         scene.add(light.target);
     }
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(-10, 0, 0);
+        light.position.x = -10;
         light.target.position.set(0, 0, 0);
         scene.add(light);
         scene.add(light.target);
@@ -145,6 +146,15 @@ function showModel(root) {
             })
         }
     });
+
+    ked.children.map(mesh=>{
+        mesh.material = new THREE.MeshLambertMaterial({...mesh.material});
+        defaultMaterials[mesh.name] = new THREE.MeshLambertMaterial({...mesh.material});
+        mesh.material.needsUpdate = true;
+    });
+
+    console.log(defaultMaterials);
+
 
     showItems(mindMap.components);
 
@@ -216,14 +226,18 @@ function showModel(root) {
 
     render();
 
-    document.getElementById('again').addEventListener(
-        'click',()=>{
-            scene.remove(root);
-            renderer.render(scene,camera);
-            loadmodel(currentModel);
-        }
-    )
+
 }
+
+document.getElementById('again').addEventListener(
+    'click',()=>{
+        ked.children.map(mesh=>{
+            console.log(defaultMaterials[mesh.name]);
+            mesh.material = new THREE.MeshLambertMaterial({...defaultMaterials[mesh.name]});
+            mesh.material.needsUpdate = true;
+        })
+    }
+);
 
 class PickHelper {
     constructor(scene) {
