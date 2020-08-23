@@ -20,7 +20,7 @@ const textureLoader = new THREE.TextureLoader();
 
 let isMen;
 let isLow;
-let currentMesh = true;
+let currentMesh = false;
 let savedEmissiveColor;
 let isItemEventTarget = false;
 let currentModel;
@@ -308,7 +308,7 @@ function setTexture(item) {
 
     if (typeof item === 'string') {
         currentMesh.material.map = textureLoader.load(item);
-        currentMesh.material.emissive.setHex(savedEmissiveColor);
+        unlightComponent(currentMesh);
         currentMesh.material.map.wrapS = 1000;
         currentMesh.material.map.wrapT = 1000;
     }
@@ -316,14 +316,17 @@ function setTexture(item) {
         for (const key in item) {
             const mesh = ked.children.find(o => o.name === key);
             mesh.material.map = textureLoader.load(item[key], () => {
-
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
-                mesh.material.emissive.setHex(savedEmissiveColor);
+                unlightComponent(mesh);
             });
         }
     }
+}
 
+function unlightComponent(mesh) {
+    console.log(mesh);
+    mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
 function showItems(items) {
@@ -354,6 +357,11 @@ function showItems(items) {
 }
 
 function lightUpComponent(name) {
+    if (currentMesh) {
+        if (Array.isArray(currentMesh)) {
+            currentMesh.map(mesh => unlightComponent(mesh))
+        } else unlightComponent(currentMesh);
+    }
     if (Array.isArray(name)) {
         currentMesh = [];
         name.map(n => {
@@ -381,4 +389,4 @@ function checkAvailability(mesh) {
 
 
 //todo: сохранять обЪект и загружать его вновь
-//todo:
+//todo: переделать на iframe
