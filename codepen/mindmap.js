@@ -54,9 +54,6 @@ const mindMap =[
                                     name: 'Хаки',
                                     url: '../sneakers_constructor/textures/approved/nubuck/khaki_nubuck.jpg'
                                 },
-                                {
-
-                                },
                             ]
                         },
                         {
@@ -280,16 +277,6 @@ const mindMap =[
                                     name: 'Черный',
                                     url: '../results/textures/leather-texutre.jpg'
                                 },
-                                // {
-                                //     name:'Белый',
-                                //     url:'../results/textures/white-leather-test.jpg'
-                                // },
-                                // {
-                                //     name:'Синий'
-                                // },
-                                // {
-                                //     name:'Серо-белый'
-                                // },
                             ]
                         },
                         {
@@ -352,25 +339,28 @@ const mindMap =[
                     mesh_name: [
                         'Cube.001_0',
                         'Cube.001_1',
-                        // 'Cube.001_2',
+                        'Cube.001_2',
+                        'Cube.001_3',
                     ],
                     textures: [
                         {
                             name: 'Черная',
-                            url: '../results/textures/texture4.jpg',
+                            url: '../results/black-with-nose/sole-2-side-texture.jpg',
                             urls: {
-                                'Cube.001_0': '../results/textures/texture4.jpg',
-                                'Cube.001_1': '../results/textures/texture2.jpg',
-                                // 'Cube.001_2':'../results/textures/texture2.jpg',
+                                'Cube.001_0':'../results/black-with-nose/texture4.jpg',
+                                'Cube.001_1':'../results/black-with-nose/sole-2-side-texture.jpg',
+                                'Cube.001_2':'../results/black-with-nose/sole-3.png',
+                                'Cube.001_3':'../results/black-with-nose/sole-2-up-texture.jpg'
                             }
                         },
                         {
                             name: 'Белая',
-                            url: '../results/textures/white_rubber.png',
+                            url: '../results/white-with-nose/rubber-side-texture.jpg',
                             urls: {
-                                'Cube.001_0': '../results/textures/white_rubber.png',
-                                'Cube.001_1': '../results/textures/white_dotted_rubber.png',
-                                // 'Cube.001_2':'../results/textures/texture5.png',
+                                'Cube.001_0':'../results/white-with-nose/main-rubber.jpg',
+                                'Cube.001_1':'../results/white-with-nose/rubber-side-texture.jpg',
+                                'Cube.001_2':'../results/white-with-nose/sole-bottom-texture.png',
+                                'Cube.001_3':'../results/white-with-nose/rubber-up-texture.jpg'
                             }
                         },
                     ],
@@ -388,6 +378,6 @@ const mindMap =[
                 },
             ]
         },
-]
+];
 
 export default mindMap;

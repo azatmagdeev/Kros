@@ -117,6 +117,13 @@ function showModel(root) {
         scene.add(light);
         scene.add(light.target);
     }
+    {
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.y = -15;
+        light.target.position.set(0, 0, 0);
+        scene.add(light);
+        scene.add(light.target);
+    }
     const ambientLight = new THREE.AmbientLight("#ffffff", .5);
     scene.add(ambientLight);
     const renderer = new THREE.WebGLRenderer({
@@ -266,6 +273,7 @@ class PickHelper {
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
+            console.log(this.pickedObject);
             if (!checkAvailability(this.pickedObject)) return false;
             currentMesh = this.pickedObject;
             if (this.pickedObject.name === 'Cube.001_2') {
@@ -277,7 +285,7 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(['Cube.001_0', 'Cube.001_1']);
+                lightUpComponent(currentModel.components.find(o => o.name === 'Подошва').mesh_name);
                 console.log(currentModel.components.find(o => o.name === 'Подошва'));
                 showItems(currentModel.components.find(o => o.name === 'Подошва').textures)
             } else {
@@ -290,7 +298,6 @@ class PickHelper {
 
             }
 
-            console.log(this.pickedObject);
 
             currentMesh = this.pickedObject;
 
@@ -319,6 +326,9 @@ function setTexture(item) {
             mesh.material.map = textureLoader.load(item[key], () => {
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
+                if (mesh.name === 'Cube.001_2') {
+                    mesh.material.map.repeat.y = -1;
+                }
                 unlightComponent(mesh);
             });
         }
@@ -383,9 +393,7 @@ function checkAvailability(mesh) {
     return currentModel.components.find(
         o => o.mesh_name === mesh.name || (Array.isArray(o.mesh_name) ?
             o.mesh_name.find(item => item === mesh.name) : false)
-    )
-        ;
-
+    );
 }
 
 
