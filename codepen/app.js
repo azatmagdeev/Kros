@@ -26,6 +26,7 @@ let isItemEventTarget = false;
 let currentModel;
 const defaultMaterials = {};
 
+
 menBtn.addEventListener('click', () => {
     isMen = true;
     showType();
@@ -54,18 +55,18 @@ function showSoleType() {
 }
 
 classicSoleBtn.addEventListener('click', () => {
-    currentModel = '../results/sneakers_lower_quality.gltf';
-    loadmodel('../results/sneakers_lower_quality.gltf');
+    currentModel = mindMap[0];
+    loadmodel(currentModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 highSoleBtn.addEventListener('click', () => {
-    currentModel = '../sneakers_constructor/results/sneakers_high_sole_with_tag.glb';
-    loadmodel('../sneakers_constructor/results/sneakers_high_sole_with_tag.glb');
+    currentModel = mindMap[1];
+    loadmodel(currentModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 noseSoleBtn.addEventListener('click', () => {
-    currentModel = '../sneakers_constructor/results/sneakers-with-nose-and-tag.glb';
-    loadmodel('../sneakers_constructor/results/sneakers-with-nose-and-tag.glb');
+    currentModel = mindMap[2];
+    loadmodel(currentModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 
@@ -156,7 +157,7 @@ function showModel(root) {
     console.log(defaultMaterials);
 
 
-    showItems(mindMap.components);
+    showItems(currentModel.components);
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
@@ -277,15 +278,15 @@ class PickHelper {
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 lightUpComponent(['Cube.001_0', 'Cube.001_1']);
-                console.log(mindMap.components.find(o => o.name === 'Подошва'));
-                showItems(mindMap.components.find(o => o.name === 'Подошва').textures)
+                console.log(currentModel.components.find(o => o.name === 'Подошва'));
+                showItems(currentModel.components.find(o => o.name === 'Подошва').textures)
             } else {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
 
                 lightUpComponent(this.pickedObject.name);
-                showItems(mindMap.components.find(o => o.mesh_name === currentMesh.name).textures);
+                showItems(currentModel.components.find(o => o.mesh_name === currentMesh.name).textures);
 
             }
 
@@ -294,7 +295,7 @@ class PickHelper {
             currentMesh = this.pickedObject;
 
         } else {
-            if (!isItemEventTarget) showItems(mindMap.components);
+            if (!isItemEventTarget) showItems(currentModel.components);
         }
     }
 }
@@ -379,7 +380,7 @@ function lightUpComponent(name) {
 }
 
 function checkAvailability(mesh) {
-    return mindMap.components.find(
+    return currentModel.components.find(
         o => o.mesh_name === mesh.name || (Array.isArray(o.mesh_name) ?
             o.mesh_name.find(item => item === mesh.name) : false)
     )
