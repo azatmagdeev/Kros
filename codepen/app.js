@@ -288,17 +288,36 @@ class PickHelper {
                 lightUpComponent(mindMapModel.components.find(o => o.name === 'Подошва').mesh_name);
                 console.log(mindMapModel.components.find(o => o.name === 'Подошва'));
                 showItems(mindMapModel.components.find(o => o.name === 'Подошва').textures)
+            } else if (
+                (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
+                && mindMapModel.name !== 'Монтана'
+            ) {
+                currentMesh = [
+                    this.scene.children.find(o => o.name === '7'),
+                    this.scene.children.find(o => o.name === '6,5'),
+                ];
+
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                lightUpComponent(mindMapModel.components.find(o => o.name === 'Основа').mesh_name);
+                console.log(mindMapModel.components.find(o => o.name === 'Основа'));
+                showItems(mindMapModel.components.find(o => o.name === 'Основа').textures)
+
             } else {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
 
                 lightUpComponent(this.pickedObject.name);
-                showItems(mindMapModel.components.find(o => o.mesh_name === currentMesh.name).textures);
+                // showItems(mindMapModel.components.find(o => o.mesh_name === currentMesh.name).textures);
+                showItems(mindMapModel.components.find(
+                    o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
+                        o.mesh_name.find(item => item === currentMesh.name) : false)
+                ).textures);
 
+                currentMesh = this.pickedObject;
             }
 
-            currentMesh = this.pickedObject;
+
 
         } else {
             if (!isItemEventTarget) showItems(mindMapModel.components);
@@ -312,12 +331,21 @@ function hideMats() {
 }
 
 function setTexture(item) {
-
+    console.log(item);
     if (typeof item === 'string') {
-        currentMesh.material.map = textureLoader.load(item);
-        unlightComponent(currentMesh);
-        currentMesh.material.map.wrapS = 1000;
-        currentMesh.material.map.wrapT = 1000;
+        if (Array.isArray(currentMesh)) {
+            currentMesh.map(mesh => {
+                mesh.material.map = textureLoader.load(item);
+                unlightComponent(mesh);
+                mesh.material.map.wrapS = 1000;
+                mesh.material.map.wrapT = 1000;
+            })
+        }else{
+            currentMesh.material.map = textureLoader.load(item);
+            unlightComponent(currentMesh);
+            currentMesh.material.map.wrapS = 1000;
+            currentMesh.material.map.wrapT = 1000;
+        }
     }
     if (typeof item === 'object' && !Array.isArray(item)) {
         for (const key in item) {
