@@ -23,7 +23,7 @@ let isLow;
 let currentMesh = false;
 let savedEmissiveColor;
 let isItemEventTarget = false;
-let currentModel;
+let mindMapModel;
 const defaultMaterials = {};
 
 
@@ -55,18 +55,18 @@ function showSoleType() {
 }
 
 classicSoleBtn.addEventListener('click', () => {
-    currentModel = mindMap[0];
-    loadmodel(currentModel.obj_url);
+    mindMapModel = mindMap[0];
+    loadmodel(mindMapModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 highSoleBtn.addEventListener('click', () => {
-    currentModel = mindMap[1];
-    loadmodel(currentModel.obj_url);
+    mindMapModel = mindMap[1];
+    loadmodel(mindMapModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 noseSoleBtn.addEventListener('click', () => {
-    currentModel = mindMap[2];
-    loadmodel(currentModel.obj_url);
+    mindMapModel = mindMap[2];
+    loadmodel(mindMapModel.obj_url);
     hide(document.getElementById('c-center'));
 });
 
@@ -164,7 +164,7 @@ function showModel(root) {
     console.log(defaultMaterials);
 
 
-    showItems(currentModel.components);
+    showItems(mindMapModel.components);
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
@@ -285,24 +285,23 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(currentModel.components.find(o => o.name === 'Подошва').mesh_name);
-                console.log(currentModel.components.find(o => o.name === 'Подошва'));
-                showItems(currentModel.components.find(o => o.name === 'Подошва').textures)
+                lightUpComponent(mindMapModel.components.find(o => o.name === 'Подошва').mesh_name);
+                console.log(mindMapModel.components.find(o => o.name === 'Подошва'));
+                showItems(mindMapModel.components.find(o => o.name === 'Подошва').textures)
             } else {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
 
                 lightUpComponent(this.pickedObject.name);
-                showItems(currentModel.components.find(o => o.mesh_name === currentMesh.name).textures);
+                showItems(mindMapModel.components.find(o => o.mesh_name === currentMesh.name).textures);
 
             }
-
 
             currentMesh = this.pickedObject;
 
         } else {
-            if (!isItemEventTarget) showItems(currentModel.components);
+            if (!isItemEventTarget) showItems(mindMapModel.components);
         }
     }
 }
@@ -390,7 +389,7 @@ function lightUpComponent(name) {
 }
 
 function checkAvailability(mesh) {
-    return currentModel.components.find(
+    return mindMapModel.components.find(
         o => o.mesh_name === mesh.name || (Array.isArray(o.mesh_name) ?
             o.mesh_name.find(item => item === mesh.name) : false)
     );

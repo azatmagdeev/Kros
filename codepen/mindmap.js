@@ -6,7 +6,7 @@ const mindMap =[
                 {
                     name: 'Основа',
                     url: '../results/components/Component-body.png',
-                    mesh_name: '7',
+                    mesh_name: ['7','6,5'],
                     textures: [
                         {
                             name: 'Кожа',
@@ -53,7 +53,7 @@ const mindMap =[
                                 {
                                     name: 'Хаки',
                                     url: '../sneakers_constructor/textures/approved/nubuck/khaki_nubuck.jpg'
-                                },
+                                }
                             ]
                         },
                         {
@@ -144,16 +144,7 @@ const mindMap =[
                                     name: 'Черный',
                                     url: '../results/textures/leather-texutre.jpg'
                                 },
-                                // {
-                                //     name:'Белый',
-                                //     url:'../results/textures/white-leather-test.jpg'
-                                // },
-                                // {
-                                //     name:'Синий'
-                                // },
-                                // {
-                                //     name:'Серо-белый'
-                                // },
+
                             ]
                         },
                         {
@@ -210,36 +201,7 @@ const mindMap =[
                     url: '../results/components/Component-inside.png',
                     mesh_name: '2',
                 },
-                // {
-                //     name: 'Подошва',
-                //     url: '../results/components/Component-sole.png',
-                //     mesh_name: [
-                //         'Cube.001_0',
-                //         'Cube.001_1',
-                //         // 'Cube.001_2',
-                //     ],
-                //     textures: [
-                //         {
-                //             name: 'Черная',
-                //             url: '../results/textures/texture4.jpg',
-                //             urls: {
-                //                 'Cube.001_0': '../results/textures/texture4.jpg',
-                //                 'Cube.001_1': '../results/textures/texture2.jpg',
-                //                 // 'Cube.001_2':'../results/textures/texture2.jpg',
-                //             }
-                //         },
-                //         {
-                //             name: 'Белая',
-                //             url: '../results/textures/white_rubber.png',
-                //             urls: {
-                //                 'Cube.001_0': '../results/textures/white_rubber.png',
-                //                 'Cube.001_1': '../results/textures/white_dotted_rubber.png',
-                //                 // 'Cube.001_2':'../results/textures/texture5.png',
-                //             }
-                //         },
-                //     ],
-                //
-                // },
+
                 {
                     name: 'Подблочник',
                     url: '../results/components/Component-podblock.png',
@@ -306,9 +268,6 @@ const mindMap =[
                                 {
                                     name: 'Хаки',
                                     url: '../sneakers_constructor/textures/approved/nubuck/khaki_nubuck.jpg'
-                                },
-                                {
-
                                 },
                             ]
                         },
