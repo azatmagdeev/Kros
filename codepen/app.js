@@ -234,6 +234,11 @@ function showModel(root) {
 
     render();
 
+    if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+        __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', { detail: scene }));
+        __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', { detail: renderer }));
+    }
+
 
 }
 
@@ -422,6 +427,7 @@ function checkAvailability(mesh) {
             o.mesh_name.find(item => item === mesh.name) : false)
     );
 }
+
 
 
 //todo: сохранять обЪект и загружать его вновь

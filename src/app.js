@@ -73,6 +73,8 @@ const defaultMaterials = {};
 if(window.location.search === ''){
     mindMapModel = mindMap[0];
     loadmodel(mindMapModel.obj_url);
+}else{
+
 }
 
 
@@ -381,9 +383,7 @@ function showItems(items) {
             const div = document.createElement('div');
             div.className = 'item';
             div.style.background = `top / contain no-repeat url('${item.url}')`;
-            div.innerHTML = `
-            <p>${item.name}</p>        
-        `;
+            div.title = item.name;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
                 isItemEventTarget = true;
