@@ -4,85 +4,29 @@ import * as THREE from "../lib/three.module.js";
 import {OrbitControls} from "../lib/OrbitControls.js";
 import mindMap from "./mindmap.js";
 
-// const menBtn = document.getElementById('men');
-// const womenBtn = document.getElementById('women');
-// const lowKedBtn = document.getElementById('low-ked');
-// const highKedBtn = document.getElementById('high-ked');
-// const classicSoleBtn = document.getElementById('classicSole');
-// const highSoleBtn = document.getElementById('highSole');
-// const noseSoleBtn = document.getElementById('noseSole');
-// const choiceEl = document.getElementById('choice');
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
 const canvas = document.getElementById('c');
 const ked = new THREE.Object3D();
 const textureLoader = new THREE.TextureLoader();
 
-// let isMen;
-// let isLow;
+
 let currentMesh = false;
 let savedEmissiveColor;
 let isItemEventTarget = false;
 let mindMapModel;
 const defaultMaterials = {};
 
+console.log(window.location.search);
 
-// menBtn.addEventListener('click', () => {
-//     isMen = true;
-//     showType();
-// });
-
-// womenBtn.addEventListener('click', () => {
-//     isMen = false;
-//     showType();
-// });
-
-// function showType() {
-//     hide(menBtn, womenBtn);
-//     show(lowKedBtn, highKedBtn);
-// }
-
-// lowKedBtn.addEventListener('click', () => {
-//     isLow = true;
-//     defineChoice(isMen, isLow);
-//     showSoleType();
-// });
-
-// function showSoleType() {
-//     hide(lowKedBtn, highKedBtn);
-//     show(classicSoleBtn, highSoleBtn, noseSoleBtn);
-//
-// }
-
-// classicSoleBtn.addEventListener('click', () => {
-//     mindMapModel = mindMap[0];
-//     loadmodel(mindMapModel.obj_url);
-//     hide(document.getElementById('c-center'));
-// });
-// highSoleBtn.addEventListener('click', () => {
-//     mindMapModel = mindMap[1];
-//     loadmodel(mindMapModel.obj_url);
-//     hide(document.getElementById('c-center'));
-// });
-// noseSoleBtn.addEventListener('click', () => {
-//     mindMapModel = mindMap[2];
-//     loadmodel(mindMapModel.obj_url);
-//     hide(document.getElementById('c-center'));
-// });
-
-if(window.location.search === ''){
+if (window.location.search === '') {
     mindMapModel = mindMap[0];
     loadmodel(mindMapModel.obj_url);
-}else{
-
+} else {
+    mindMapModel = mindMap[window.location.search[1]];
+    console.log(mindMapModel);
+    loadmodel(mindMapModel.obj_url);
 }
-
-
-
-// function defineChoice(m, l) {
-//     choiceEl.textContent = l ? 'низкий кед' : 'высокий кед';
-//     choiceEl.textContent += m ? ' для мужчин' : ' для женщин';
-// }
 
 function loadmodel(modelUrl) {
     const gltfLoader = new GLTFLoader();
@@ -326,7 +270,6 @@ class PickHelper {
             }
 
 
-
         } else {
             if (!isItemEventTarget) showItems(mindMapModel.components);
         }
@@ -348,7 +291,7 @@ function setTexture(item) {
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
             })
-        }else{
+        } else {
             currentMesh.material.map = textureLoader.load(item);
             unlightComponent(currentMesh);
             currentMesh.material.map.wrapS = 1000;
@@ -383,7 +326,7 @@ function showItems(items) {
             const div = document.createElement('div');
             div.className = 'item';
             div.style.background = `top / contain no-repeat url('${item.url}')`;
-            div.title = item.name;
+            div.innerHTML = `<p>${item.name}</p>`;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
                 isItemEventTarget = true;
@@ -429,6 +372,19 @@ function checkAvailability(mesh) {
     );
 }
 
+document.getElementById('agree').addEventListener(
+    'click', () => {
+
+        const textures = {};
+        ked.children.map((mesh) => {
+                textures[`${mesh.name}`] = mesh.material.map;
+            },
+        );
+
+        console.log(JSON.stringify(textures));
+    }
+);
+
 
 //todo: сохранять обЪект и загружать его вновь
-//todo: переделать на iframe
+//todoed: переделать на iframe
