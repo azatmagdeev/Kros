@@ -8,6 +8,8 @@ const highKedBtn = document.getElementById('high-ked');
 const classicSoleBtn = document.getElementById('classicSole');
 const highSoleBtn = document.getElementById('highSole');
 const noseSoleBtn = document.getElementById('noseSole');
+const highHighSoleBtn = document.getElementById('highHighSole');
+const highNoseSoleBtn = document.getElementById('highNoseSole');
 const choiceEl = document.getElementById('choice');
 const cWrapper = document.getElementById('c-wrapper');
 let isMen;
@@ -36,27 +38,43 @@ lowKedBtn.addEventListener('click', () => {
     showSoleType();
 });
 
+highKedBtn.addEventListener('click', () => {
+    isLow = false;
+    defineChoice(isMen, isLow);
+    showSoleType();
+});
+
 function showSoleType() {
     hide(lowKedBtn, highKedBtn);
-    show(classicSoleBtn, highSoleBtn, noseSoleBtn);
-
+    if(isLow){
+        show(classicSoleBtn, highSoleBtn, noseSoleBtn);
+    }else{
+        show(highHighSoleBtn,highNoseSoleBtn)
+    }
 }
 
 classicSoleBtn.addEventListener('click', () => {
     first = 0;
-    // mindMapModel = mindMap[0];
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
 highSoleBtn.addEventListener('click', () => {
-    // mindMapModel = mindMap[1];
     first = 1;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
 noseSoleBtn.addEventListener('click', () => {
-    // mindMapModel = mindMap[2];
     first = 2;
+    showIframe(first);
+    hide(document.getElementById('c-center'));
+});
+highHighSoleBtn.addEventListener('click', () => {
+    first = 3;
+    showIframe(first);
+    hide(document.getElementById('c-center'));
+});
+highNoseSoleBtn.addEventListener('click', () => {
+    first = 4;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });

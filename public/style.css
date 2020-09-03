@@ -315,7 +315,8 @@ select:-moz-focusring {
 }
 
 #low-ked, #high-ked,
-#highSole, #classicSole, #noseSole{
+#highSole, #classicSole, #noseSole,
+#highHighSole,#highNoseSole{
     display: none;
 }
 
