@@ -288,22 +288,22 @@ function setTexture(item) {
             currentMesh.map(mesh => {
                 mesh.material.map = textureLoader.load(item);
                 unlightComponent(mesh);
-                mesh.material.map.wrapS = 1000;
-                mesh.material.map.wrapT = 1000;
+                // mesh.material.map.wrapS = 1000;
+                // mesh.material.map.wrapT = 1000;
             })
         } else {
             currentMesh.material.map = textureLoader.load(item);
             unlightComponent(currentMesh);
-            currentMesh.material.map.wrapS = 1000;
-            currentMesh.material.map.wrapT = 1000;
+            // currentMesh.material.map.wrapS = 1000;
+            // currentMesh.material.map.wrapT = 1000;
         }
     }
     if (typeof item === 'object' && !Array.isArray(item)) {
         for (const key in item) {
             const mesh = ked.children.find(o => o.name === key);
             mesh.material.map = textureLoader.load(item[key], () => {
-                mesh.material.map.wrapS = 1000;
-                mesh.material.map.wrapT = 1000;
+                // mesh.material.map.wrapS = 1000;
+                // mesh.material.map.wrapT = 1000;
                 if (mesh.name === 'Cube.001_2') {
                     mesh.material.map.repeat.y = -1;
                 }
