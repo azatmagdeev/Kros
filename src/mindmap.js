@@ -1,3 +1,62 @@
+const leather = {
+    name: 'Кожа',
+    url: '../results/textures/red-leather-test2.jpg',
+    textures: [
+        {
+            name: 'Желтый',
+            url: '../results/textures/yellow-leather-test.jpg'
+        },
+        {
+            name: 'Красный',
+            url: '../results/textures/red-leather-test2.jpg',
+        },
+        {
+            name: 'Черный',
+            url: '../results/textures/leather-texutre.jpg'
+        },
+    ]
+};
+const nubuck = {
+    name: 'Нубук',
+    url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
+    textures: [
+        {
+            name: 'Бежевый',
+            url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
+        },
+        {
+            name: 'Черный',
+            url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
+        },
+        {
+            name: 'Синий',
+            url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
+        },
+        {
+            name: 'Коричневый',
+            url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
+        },
+        {
+            name: 'Кирпич',
+            url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
+        },
+    ]
+};
+const jeans = {
+    name: 'Джинс',
+    url: '../results/textures/jeans-test2.jpg',
+    textures: [
+        {
+            name: 'Синий',
+            url: '../results/textures/jeans-test2.jpg',
+        },
+        {
+            name: 'Коттон',
+            url: '../results/textures/kotton-test3.jpg'
+        }
+    ]
+};
+
 const mindMap = [
     {
         name: 'Канзас',
@@ -9,64 +68,9 @@ const mindMap = [
                 url: '../results/components/Component-body.png',
                 mesh_name: ['7', '6,5'],
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {
@@ -108,8 +112,8 @@ const mindMap = [
                 name: 'Подошва',
                 url: '../results/components/Component-sole.png',
                 mesh_name: [
-                    'Cube.001_0',
-                    'Cube.001_1',
+                    'Cube.003_0',
+                    'Cube.003_1',
                     // 'Cube.001_2',
                 ],
                 textures: [
@@ -117,8 +121,8 @@ const mindMap = [
                         name: 'Черная',
                         url: '../results/textures/texture4.jpg',
                         urls: {
-                            'Cube.001_0': '../results/textures/texture4.jpg',
-                            'Cube.001_1': '../results/textures/texture2.jpg',
+                            'Cube.003_0': '../results/textures/texture4.jpg',
+                            'Cube.003_1': '../results/textures/texture2.jpg',
                             // 'Cube.001_2':'../results/textures/texture2.jpg',
                         }
                     },
@@ -126,8 +130,8 @@ const mindMap = [
                         name: 'Белая',
                         url: '../results/textures/white_rubber.png',
                         urls: {
-                            'Cube.001_0': '../results/textures/white_rubber.png',
-                            'Cube.001_1': '../results/textures/white_dotted_rubber.png',
+                            'Cube.003_0': '../results/textures/white_rubber.png',
+                            'Cube.003_1': '../results/textures/white_dotted_rubber.png',
                             // 'Cube.001_2':'../results/textures/texture5.png',
                         }
                     },
@@ -139,64 +143,9 @@ const mindMap = [
                 url: '../results/components/Component-podblock.png',
                 mesh_name: '6',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {
@@ -216,64 +165,9 @@ const mindMap = [
                 url: '../results/components/Component-body.png',
                 mesh_name: ['7', '6,5'],
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {
@@ -316,64 +210,9 @@ const mindMap = [
                 url: '../results/components/Component-podblock.png',
                 mesh_name: '6',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {
@@ -393,64 +232,9 @@ const mindMap = [
                 url: '../results/components/Component-body.png',
                 mesh_name: '7',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {
@@ -526,64 +310,9 @@ const mindMap = [
                 url: '../results/components/Component-podblock.png',
                 mesh_name: '6,5',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans,
                 ]
             },
             {

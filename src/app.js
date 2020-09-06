@@ -288,22 +288,22 @@ function setTexture(item) {
             currentMesh.map(mesh => {
                 mesh.material.map = textureLoader.load(item);
                 unlightComponent(mesh);
-                // mesh.material.map.wrapS = 1000;
-                // mesh.material.map.wrapT = 1000;
+                mesh.material.map.wrapS = 1000;
+                mesh.material.map.wrapT = 1000;
             })
         } else {
             currentMesh.material.map = textureLoader.load(item);
             unlightComponent(currentMesh);
-            // currentMesh.material.map.wrapS = 1000;
-            // currentMesh.material.map.wrapT = 1000;
+            currentMesh.material.map.wrapS = 1000;
+            currentMesh.material.map.wrapT = 1000;
         }
     }
     if (typeof item === 'object' && !Array.isArray(item)) {
         for (const key in item) {
             const mesh = ked.children.find(o => o.name === key);
             mesh.material.map = textureLoader.load(item[key], () => {
-                // mesh.material.map.wrapS = 1000;
-                // mesh.material.map.wrapT = 1000;
+                mesh.material.map.wrapS = 1000;
+                mesh.material.map.wrapT = 1000;
                 if (mesh.name === 'Cube.001_2') {
                     mesh.material.map.repeat.y = -1;
                 }
@@ -353,6 +353,7 @@ function lightUpComponent(name) {
         currentMesh = [];
         name.map(n => {
             const meshForLightUp = ked.children.find(o => o.name === n);
+            console.log(n,meshForLightUp);
             savedEmissiveColor = meshForLightUp.material.emissive.getHex();
             meshForLightUp.material.emissive.setHex(0x00FF00);
             currentMesh.push(meshForLightUp);
@@ -375,13 +376,13 @@ function checkAvailability(mesh) {
 document.getElementById('agree').addEventListener(
     'click', () => {
 
-        const textures = {};
-        ked.children.map((mesh) => {
-                textures[`${mesh.name}`] = mesh.material.map;
-            },
-        );
+        // const textures = {};
+        // ked.children.map((mesh) => {
+        //         textures[`${mesh.name}`] = mesh.material.map;
+        //     },
+        // );
 
-        console.log(JSON.stringify(textures));
+        console.log(ked);
     }
 );
 
