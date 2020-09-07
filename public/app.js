@@ -81,7 +81,7 @@ highNoseSoleBtn.addEventListener('click', () => {
 
 function showIframe(param) {
     cWrapper.innerHTML += `
-    <iframe src="/src/?${param}" 
+    <iframe src="../src/?${param}" 
     height="${cWrapper.clientHeight}" 
     width="${cWrapper.clientWidth}"
     style="position:absolute" frameborder="0">
