@@ -1,16 +1,29 @@
+// принцип сохранения такой:
+// search[0] = id model;
+// сортировка компонентов по id
+//search[1] = component with id=1
+//search[2] = component with id=2
+
+/** */
+
+
+
 const leather = {
     name: 'Кожа',
     url: '../results/textures/red-leather-test2.jpg',
     textures: [
         {
+            id: '1',
             name: 'Желтый',
             url: '../results/textures/yellow-leather-test.jpg'
         },
         {
+            id:'2',
             name: 'Красный',
             url: '../results/textures/red-leather-test2.jpg',
         },
         {
+            id:'3',
             name: 'Черный',
             url: '../results/textures/leather-texutre.jpg'
         },
@@ -21,22 +34,27 @@ const nubuck = {
     url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
     textures: [
         {
+            id:'4',
             name: 'Бежевый',
             url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
         },
         {
+            id:'5',
             name: 'Черный',
             url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
         },
         {
+            id:'6',
             name: 'Синий',
             url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
         },
         {
+            id:'7',
             name: 'Коричневый',
             url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
         },
         {
+            id:'8',
             name: 'Кирпич',
             url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
         },
@@ -47,23 +65,30 @@ const jeans = {
     url: '../results/textures/jeans-test2.jpg',
     textures: [
         {
+            id:'9',
             name: 'Синий',
             url: '../results/textures/jeans-test2.jpg',
         },
         {
+            id:'a',
             name: 'Коттон',
             url: '../results/textures/kotton-test3.jpg'
         }
     ]
 };
 
+
+
+
 const mindMap = [
     {
         name: 'Канзас',
+        id: '1',
         // obj_url:'../sneakers_constructor/results/sneakers_lower_quality_with_tag.glb',
         obj_url: '../models/unwrapped version/sneakers-unwrapped-usual.gltf',
         components: [
             {
+                id: 1,
                 name: 'Основа',
                 url: '../results/components/Component-body.png',
                 mesh_name: ['7', '6,5'],
@@ -74,6 +99,7 @@ const mindMap = [
                 ]
             },
             {
+                id: 2,
                 name: 'Подкладка',
                 url: '../results/components/Component-inside.png',
                 mesh_name: '2',
@@ -109,6 +135,7 @@ const mindMap = [
                 ]
             },
             {
+                id: 3,
                 name: 'Подошва',
                 url: '../results/components/Component-sole.png',
                 mesh_name: [
@@ -139,6 +166,7 @@ const mindMap = [
 
             },
             {
+                id: 4,
                 name: 'Подблочник',
                 url: '../results/components/Component-podblock.png',
                 mesh_name: '6',
@@ -149,6 +177,7 @@ const mindMap = [
                 ]
             },
             {
+                id: 5,
                 name: 'Лэйбл',
                 url: '../results/components/Component-label.png',
                 mesh_name: '4'
@@ -157,8 +186,9 @@ const mindMap = [
     },
     {
         name: 'Техас',
+        id: '2',
         // obj_url:'../sneakers_constructor/results/sneakers_high_sole_with_tag.glb',
-        obj_url: '../models/unwrapped version/sneakers-unwrapped-usual.gltf',
+        obj_url: '../models/unwrapped version/sneakers-unwrapped-high-sole.gltf',
         components: [
             {
                 name: 'Основа',
@@ -224,8 +254,9 @@ const mindMap = [
     },
     {
         name: 'Монтана',
+        id: '3',
         // obj_url:'../sneakers_constructor/results/sneakers-with-nose-and-tag.glb',
-        obj_url: '../models/unwrapped version/sneakers-unwrapped-usual.gltf',
+        obj_url: '../models/unwrapped version/sneakers-unwrapped-with-nose.gltf',
         components: [
             {
                 name: 'Основа',
@@ -324,6 +355,7 @@ const mindMap = [
     },
     {
         name: 'Орегон',
+        id: '4',
         obj_url: '../results/sneakers-high-with-high-sole.gltf',
         components: [
             {
@@ -500,6 +532,7 @@ const mindMap = [
     },
     {
         name: 'Мичиган',
+        id: '5',
         obj_url: '../results/sneakers-high-with-nose.gltf',
         components: [
             {

@@ -54,27 +54,27 @@ function showSoleType() {
 }
 
 classicSoleBtn.addEventListener('click', () => {
-    first = 0;
-    showIframe(first);
-    hide(document.getElementById('c-center'));
-});
-highSoleBtn.addEventListener('click', () => {
     first = 1;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
-noseSoleBtn.addEventListener('click', () => {
+highSoleBtn.addEventListener('click', () => {
     first = 2;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
-highHighSoleBtn.addEventListener('click', () => {
+noseSoleBtn.addEventListener('click', () => {
     first = 3;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
-highNoseSoleBtn.addEventListener('click', () => {
+highHighSoleBtn.addEventListener('click', () => {
     first = 4;
+    showIframe(first);
+    hide(document.getElementById('c-center'));
+});
+highNoseSoleBtn.addEventListener('click', () => {
+    first = 5;
     showIframe(first);
     hide(document.getElementById('c-center'));
 });
@@ -102,4 +102,4 @@ function defineChoice(m, l) {
 
 
 //todo: сохранять обЪект и загружать его вновь
-//todo: переделать на iframe
+// done: переделать на iframe

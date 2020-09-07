@@ -10,25 +10,30 @@ const canvas = document.getElementById('c');
 const ked = new THREE.Object3D();
 const textureLoader = new THREE.TextureLoader();
 
-
 let currentMesh = false;
+let currentComponent;
+let currentTexture;
 let savedEmissiveColor;
 let isItemEventTarget = false;
 let mindMapModel;
 const defaultMaterials = {};
+let savingKey = [];//сюда будем собирать код для сохранения-загрузки
 
-console.log(window.location.search);
+//отсюда будем читать код для кастомизации модели
+const search = window.location.search.replace('?', '');
 
 if (window.location.search === '') {
     mindMapModel = mindMap[0];
-    loadmodel(mindMapModel.obj_url);
+    loadModel(mindMapModel.obj_url);
 } else {
-    mindMapModel = mindMap[window.location.search[1]];
+    mindMapModel = mindMap.find(o => o.id === search[0]);
     console.log(mindMapModel);
-    loadmodel(mindMapModel.obj_url);
+    savingKey[0] = mindMapModel.id;
+    console.log({savingKey});
+    loadModel(mindMapModel.obj_url);
 }
 
-function loadmodel(modelUrl) {
+function loadModel(modelUrl) {
     const gltfLoader = new GLTFLoader();
     gltfLoader.load(modelUrl, gltf => {
         const root = gltf.scene;
@@ -43,7 +48,6 @@ function loadmodel(modelUrl) {
 }
 
 function showModel(root) {
-    console.log(root);
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color('lightgrey');
@@ -78,6 +82,7 @@ function showModel(root) {
     }
     const ambientLight = new THREE.AmbientLight("#ffffff", .5);
     scene.add(ambientLight);
+
     const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: true,
@@ -96,7 +101,7 @@ function showModel(root) {
     controls.minDistance = 3;
     controls.update();
 
-    scene.add(root);
+
     root.children.map(obj => {
         if (obj.isMesh) {
             ked.children.push(obj)
@@ -107,14 +112,15 @@ function showModel(root) {
         }
     });
 
+    if(search.length>1) loadSavedTextures();
+
+    scene.add(root);
+
     ked.children.map(mesh => {
         mesh.material = new THREE.MeshStandardMaterial({...mesh.material});
         defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
         mesh.material.needsUpdate = true;
     });
-
-    console.log(defaultMaterials);
-
 
     showItems(mindMapModel.components);
 
@@ -131,13 +137,11 @@ function showModel(root) {
         return needResize;
     }
 
-
     function render() {
         resizeRendererToDisplaySize(renderer);
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
-
 
     hide(loadingPercentEl);
 
@@ -175,8 +179,6 @@ function showModel(root) {
         setPickPosition);
 
     canvas.addEventListener('touchstart', (event) => {
-        // предотвращаем прокрутку окна
-        // event.preventDefault();
         setPickPosition(event.touches[0]);
     }, {passive: false});
 
@@ -185,8 +187,23 @@ function showModel(root) {
     });
 
     render();
+}
 
+function loadSavedTextures(){
+    const searchArray = [];
+    for (let i = 0; i < search.length; i++) {
+        searchArray[i] = search[i];
+    }
+    searchArray.map((el,index)=>{
+        try{
+            const component = mindMapModel.components.find(comp => comp.id == index);
+            // console.log(...component.textures);
 
+        }catch (e) {
+            console.warn(e.message);
+        }
+
+    })
 }
 
 document.getElementById('again').addEventListener(
@@ -225,7 +242,7 @@ class PickHelper {
         if (intersectedObjects.length) {
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
-            console.log(this.pickedObject);
+            // console.log(this.pickedObject);
             if (!checkAvailability(this.pickedObject)) return false;
             currentMesh = this.pickedObject;
             if (this.pickedObject.name === 'Cube.001_2') {
@@ -237,9 +254,10 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(mindMapModel.components.find(o => o.name === 'Подошва').mesh_name);
-                console.log(mindMapModel.components.find(o => o.name === 'Подошва'));
-                showItems(mindMapModel.components.find(o => o.name === 'Подошва').textures)
+                currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
+                lightUpComponent(currentComponent.mesh_name);
+                console.log(currentComponent);
+                showItems(currentComponent.textures)
             } else if (
                 (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
                 && mindMapModel.name !== 'Монтана'
@@ -250,25 +268,25 @@ class PickHelper {
                 ];
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-                lightUpComponent(mindMapModel.components.find(o => o.name === 'Основа').mesh_name);
-                console.log(mindMapModel.components.find(o => o.name === 'Основа'));
-                showItems(mindMapModel.components.find(o => o.name === 'Основа').textures)
+                currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
+                lightUpComponent(currentComponent.mesh_name);
+                console.log(currentComponent);
+                showItems(currentComponent.textures)
 
             } else {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
-
                 lightUpComponent(this.pickedObject.name);
-                // showItems(mindMapModel.components.find(o => o.mesh_name === currentMesh.name).textures);
-                showItems(mindMapModel.components.find(
+                currentComponent = mindMapModel.components.find(
                     o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
                         o.mesh_name.find(item => item === currentMesh.name) : false)
-                ).textures);
+                )
+                console.log(currentComponent);
+                showItems(currentComponent.textures);
 
                 currentMesh = this.pickedObject;
             }
-
 
         } else {
             if (!isItemEventTarget) showItems(mindMapModel.components);
@@ -276,45 +294,52 @@ class PickHelper {
     }
 }
 
-
 function hideMats() {
     document.getElementById('mats-wrapper').style.visibility = 'hidden';
 }
 
+/**
+ * функция устанавливает текстуру на текущий меш(меши)
+ * @param item string - url of new texture picture
+ *          or object - mesh names : urls
+ */
 function setTexture(item) {
-    console.log(item);
+    console.log(currentComponent);
+    //если урл строка - текущему мешу загружаем текстуру
     if (typeof item === 'string') {
+        //если текущий меш-массив мешей, каждому загружаем текстуру
         if (Array.isArray(currentMesh)) {
             currentMesh.map(mesh => {
                 mesh.material.map = textureLoader.load(item);
-                unlightComponent(mesh);
+                unlight(mesh);
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
             })
         } else {
             currentMesh.material.map = textureLoader.load(item);
-            unlightComponent(currentMesh);
+            unlight(currentMesh);
             currentMesh.material.map.wrapS = 1000;
             currentMesh.material.map.wrapT = 1000;
         }
     }
+    //если урлы в виде объекта вида "имя меша":"урл картинки"
     if (typeof item === 'object' && !Array.isArray(item)) {
         for (const key in item) {
             const mesh = ked.children.find(o => o.name === key);
             mesh.material.map = textureLoader.load(item[key], () => {
                 mesh.material.map.wrapS = 1000;
                 mesh.material.map.wrapT = 1000;
+                //для низа подошвы своё специальное положение
                 if (mesh.name === 'Cube.001_2') {
                     mesh.material.map.repeat.y = -1;
                 }
-                unlightComponent(mesh);
+                unlight(mesh);
             });
         }
     }
 }
 
-function unlightComponent(mesh) {
-    console.log(mesh);
+function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
@@ -333,7 +358,8 @@ function showItems(items) {
                 item.textures ? showItems(item.textures) : console.warn('No Textures!');
                 if (item.mesh_name) lightUpComponent(item.mesh_name);
                 if (!item.textures && !item.mesh_name) {
-                    console.log(currentMesh);
+                    // console.log(currentMesh);
+                    savingKey[currentComponent.id] = item.id;
                     setTexture(item.urls ? item.urls : item.url)
                 }
             })
@@ -344,16 +370,17 @@ function showItems(items) {
 }
 
 function lightUpComponent(name) {
+    console.log({name});
     if (currentMesh) {
         if (Array.isArray(currentMesh)) {
-            currentMesh.map(mesh => unlightComponent(mesh))
-        } else unlightComponent(currentMesh);
+            currentMesh.map(mesh => unlight(mesh))
+        } else unlight(currentMesh);
     }
     if (Array.isArray(name)) {
         currentMesh = [];
         name.map(n => {
             const meshForLightUp = ked.children.find(o => o.name === n);
-            console.log(n,meshForLightUp);
+            // console.log(n, meshForLightUp);
             savedEmissiveColor = meshForLightUp.material.emissive.getHex();
             meshForLightUp.material.emissive.setHex(0x00FF00);
             currentMesh.push(meshForLightUp);
@@ -376,16 +403,21 @@ function checkAvailability(mesh) {
 document.getElementById('agree').addEventListener(
     'click', () => {
 
-        // const textures = {};
-        // ked.children.map((mesh) => {
-        //         textures[`${mesh.name}`] = mesh.material.map;
-        //     },
-        // );
+        console.log(savingKey);
+        let savingString = '';
+        savingKey.map(s => {
+            savingString += s ? s : '0';
+        })
 
-        console.log(ked);
+        const link = window.location.host +
+            window.location.pathname + '?'+
+            savingString;
+        console.log();
+
+        loadingPercentEl.innerHTML =
+            `<a href="http://${link}" target="_blank">${link}</a>`;
+        show(loadingPercentEl);
     }
 );
 
-
 //todo: сохранять обЪект и загружать его вновь
-//todoed: переделать на iframe
