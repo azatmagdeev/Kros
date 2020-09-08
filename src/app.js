@@ -197,7 +197,26 @@ function loadSavedTextures(){
     searchArray.map((el,index)=>{
         try{
             const component = mindMapModel.components.find(comp => comp.id == index);
-            // console.log(...component.textures);
+            component.textures.map(texture=>{
+                if(texture.id){
+                    console.log(texture.id);
+                    if (texture.id === el) console.log('bingo!');
+                }else{
+                    texture.textures.map(texture=>{
+                        console.log(texture.id);
+                        if (texture.id === el){
+                            console.log(texture.url);
+                            // currentMesh = [];
+                            component.mesh_name.map(name => {
+                                console.log(texture.url);
+                                currentMesh= ked.children.find(o => o.name === name);
+                                setTexture(texture.url)
+                            })
+                        }
+
+                    })
+                }
+            })
 
         }catch (e) {
             console.warn(e.message);
@@ -304,7 +323,7 @@ function hideMats() {
  *          or object - mesh names : urls
  */
 function setTexture(item) {
-    console.log(currentComponent);
+    // console.log(currentComponent);
     //если урл строка - текущему мешу загружаем текстуру
     if (typeof item === 'string') {
         //если текущий меш-массив мешей, каждому загружаем текстуру
@@ -421,3 +440,6 @@ document.getElementById('agree').addEventListener(
 );
 
 //todo: сохранять обЪект и загружать его вновь
+
+
+

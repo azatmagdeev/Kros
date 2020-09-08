@@ -27,6 +27,8 @@ womenBtn.addEventListener('click', () => {
     showType();
 });
 
+menBtn.click();
+
 function showType() {
     hide(menBtn, womenBtn);
     show(lowKedBtn, highKedBtn);
@@ -103,3 +105,5 @@ function defineChoice(m, l) {
 
 //todo: сохранять обЪект и загружать его вновь
 // done: переделать на iframe
+
+// todo убрать женскую коллекцию
