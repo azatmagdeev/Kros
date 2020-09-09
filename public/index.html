@@ -33,10 +33,12 @@
                             <p>Женщинам</p>
                         </div>
                         <div class="selects-item" id="low-ked" hidden>
+                            <img src="../results/components/Component-low.png" alt="low-ked">
                             <p>Низкий</p>
                             <p>кед</p>
                         </div>
                         <div class="selects-item" id="high-ked" hidden>
+                            <img src="../results/components/Component-high.png" alt="high-ked">
                             <p>Высокий</p>
                             <p>кед</p>
                         </div>
@@ -106,6 +108,48 @@
         </div>
     </div>
 </div>
+<style>
+    .autoink{
+        position: relative;
+        overflow: hidden;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+    .ink{
+        display: block;
+        position: absolute;
+        background: rgba(255, 255, 255, 1.0);
+        border-radius: 100%;
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+        z-index: 20;
+    }
+
+    .animate {
+        webkit-animation: ripple 4s linear infinite;
+        -moz-animation: ripple 4s linear infinite;
+        -ms-animation: ripple 4s linear infinite;
+        -o-animation: ripple 4s linear infinite;
+        animation: ripple 4s linear infinite;
+    }
+    @keyframes ripple {
+        20% {
+            opacity: 0;
+            transform: scale(2.5);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(2.5);
+        }
+    }
+</style>
+<script>
+    document.querySelector('.price button').className+='autoink';
+    document.querySelector('.price button').innerHTML += '<div class="ink animate" style="height: 200px;width: 250px;top: -20px;left: -140px;"></div>'
+</script>
+
 <!--<script src="gltf.js" type="module"></script>-->
 <script src="app.js" type="module"></script>
 </body>
