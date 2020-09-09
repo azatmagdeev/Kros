@@ -15,12 +15,12 @@ const leather = {
         {
             id: '1',
             name: 'Желтый',
-            url: '../results/textures/yellow-leather-test.jpg'
+            url: '../textures/test/test-yellow-leather.jpg'
         },
         {
             id: '2',
             name: 'Красный',
-            url: '../results/textures/red-leather-test2.jpg',
+            url: '../textures/test/test-red-leather.jpg',
         },
         {
             id: '3',
@@ -67,12 +67,12 @@ const jeans = {
         {
             id: '9',
             name: 'Синий',
-            url: '../results/textures/jeans-test2.jpg',
+            url: '../textures/test/test-blue-jeans.jpg',
         },
         {
             id: 'a',
             name: 'Коттон',
-            url: '../results/textures/kotton-test3.jpg'
+            url: '../textures/test/test-cotton.jpg'
         }
     ]
 };
@@ -113,9 +113,17 @@ const backComponent = {
     url: '../results/components/Component-back.png',
     mesh_name: '1',
     textures: [
-        leather,
-        nubuck,
-        jeans,
+        leather
+    ]
+}
+
+const lacesComponent = {
+    name: 'Шнурки',
+    id: 7,
+    url: '../results/components/Component-laces.png',
+    mesh_name: '5',
+    textures: [
+        leather
     ]
 }
 
@@ -193,6 +201,7 @@ const mindMap = [
                 mesh_name: '4'
             },
             backComponent,
+            lacesComponent,
         ]
     },
     {

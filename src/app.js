@@ -388,9 +388,11 @@ function showItems(items) {
             div.addEventListener('click', () => {
                 isItemEventTarget = true;
                 item.textures ? showItems(item.textures) : console.warn('No Textures!');
+                currentComponent = item;
                 if (item.mesh_name) lightUpComponent(item.mesh_name);
                 if (!item.textures && !item.mesh_name) {
                     // console.log(currentMesh);
+                    // console.log(item);
                     savingKey[currentComponent.id] = item.id;
                     setTexture(item.urls ? item.urls : item.url)
                 }
