@@ -50,7 +50,7 @@ function loadModel(modelUrl) {
 function showModel(root) {
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('lightgrey');
+    scene.background = new THREE.Color('transparent');
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -267,10 +267,23 @@ class PickHelper {
             if (this.pickedObject.name === 'Cube.001_2') {
                 this.pickedObject = this.scene.children.find(o => o.name === 'Cube.001_0');
             }
+            if (this.pickedObject.name === 'Cube.003_2') {
+                this.pickedObject = this.scene.children.find(o => o.name === 'Cube.003_0');
+            }
             if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.001_0'),
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
+                ];
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
+                lightUpComponent(currentComponent.mesh_name);
+                console.log(currentComponent);
+                showItems(currentComponent.textures)
+            }else if(this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1'){
+                currentMesh = [
+                    this.scene.children.find(o => o.name === 'Cube.003_0'),
+                    this.scene.children.find(o => o.name === 'Cube.003_1'),
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');

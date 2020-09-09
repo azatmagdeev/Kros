@@ -18,12 +18,12 @@ const leather = {
             url: '../results/textures/yellow-leather-test.jpg'
         },
         {
-            id:'2',
+            id: '2',
             name: 'Красный',
             url: '../results/textures/red-leather-test2.jpg',
         },
         {
-            id:'3',
+            id: '3',
             name: 'Черный',
             url: '../results/textures/leather-texutre.jpg'
         },
@@ -34,27 +34,27 @@ const nubuck = {
     url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
     textures: [
         {
-            id:'4',
+            id: '4',
             name: 'Бежевый',
             url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
         },
         {
-            id:'5',
+            id: '5',
             name: 'Черный',
             url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
         },
         {
-            id:'6',
+            id: '6',
             name: 'Синий',
             url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
         },
         {
-            id:'7',
+            id: '7',
             name: 'Коричневый',
             url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
         },
         {
-            id:'8',
+            id: '8',
             name: 'Кирпич',
             url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
         },
@@ -65,19 +65,59 @@ const jeans = {
     url: '../results/textures/jeans-test2.jpg',
     textures: [
         {
-            id:'9',
+            id: '9',
             name: 'Синий',
             url: '../results/textures/jeans-test2.jpg',
         },
         {
-            id:'a',
+            id: 'a',
             name: 'Коттон',
             url: '../results/textures/kotton-test3.jpg'
         }
     ]
 };
+const innerTextures = [
+    {
+        name: 'Джинс',
+        url: '../results/textures/jeans-test2.jpg'
+    },
+    {
+        name: 'Красная',
+        url: '../results/textures/red-leather-test2.jpg'
+    },
+    {
+        name: 'Орех',
+        url: ''
+    },
+    {
+        name: 'Песок',
+        url: ''
+    },
+    {
+        name: 'Графит',
+        url: ''
+    },
+    {
+        name: 'Белая',
+        url: ''
+    },
+    {
+        name: 'Черная',
+        url: '../results/textures/leather-texutre.jpg'
+    },
+];
 
-
+const backComponent = {
+    name: 'Задник',
+    id: 6,
+    url: '../results/components/Component-back.png',
+    mesh_name: '1',
+    textures: [
+        leather,
+        nubuck,
+        jeans,
+    ]
+}
 
 
 const mindMap = [
@@ -103,36 +143,7 @@ const mindMap = [
                 name: 'Подкладка',
                 url: '../results/components/Component-inside.png',
                 mesh_name: '2',
-                textures: [
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg'
-                    },
-                    {
-                        name: 'Красная',
-                        url: '../results/textures/red-leather-test2.jpg'
-                    },
-                    {
-                        name: 'Орех',
-                        url: ''
-                    },
-                    {
-                        name: 'Песок',
-                        url: ''
-                    },
-                    {
-                        name: 'Графит',
-                        url: ''
-                    },
-                    {
-                        name: 'Белая',
-                        url: ''
-                    },
-                    {
-                        name: 'Черная',
-                        url: '../results/textures/leather-texutre.jpg'
-                    },
-                ]
+                textures: innerTextures
             },
             {
                 id: 3,
@@ -163,7 +174,6 @@ const mindMap = [
                         }
                     },
                 ],
-
             },
             {
                 id: 4,
@@ -182,6 +192,7 @@ const mindMap = [
                 url: '../results/components/Component-label.png',
                 mesh_name: '4'
             },
+            backComponent,
         ]
     },
     {

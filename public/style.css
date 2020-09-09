@@ -1,4 +1,4 @@
-@media (max-width: 910px) {
+@media (max-width: 700px) {
     .main-content {
         flex-direction: column;
     }
@@ -6,7 +6,12 @@
     #c-wrapper {
         padding-bottom: 0;
         padding-top: 0;
-        height: 80vh
+        height: 80vh;
+        width: 100vh;
+    }
+
+    .body{
+        width:100%;
     }
 }
 
@@ -38,7 +43,7 @@ p {
 }
 
 .body {
-    width: 90%;
+    width: 100%;
     max-width: 1440px;
     min-height: 100vh;
     background: #FFFFFF;
