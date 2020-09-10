@@ -270,10 +270,12 @@ class PickHelper {
             if (this.pickedObject.name === 'Cube.003_2') {
                 this.pickedObject = this.scene.children.find(o => o.name === 'Cube.003_0');
             }
-            if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1') {
+            if (this.pickedObject.name === 'Cube.001_0' || this.pickedObject.name === 'Cube.001_1' || this.pickedObject.name === 'Cube.001_3') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.001_0'),
                     this.scene.children.find(o => o.name === 'Cube.001_1'),
+                    this.scene.children.find(o => o.name === 'Cube.001_3'),
+
                 ];
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
@@ -292,15 +294,18 @@ class PickHelper {
                 showItems(currentComponent.textures)
             } else if (
                 (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
-                && mindMapModel.name !== 'Монтана'
             ) {
-                currentMesh = [
-                    this.scene.children.find(o => o.name === '7'),
-                    this.scene.children.find(o => o.name === '6,5'),
-                ];
+                if(this.scene.children.find(o => o.name === '6,5')){
+                    currentMesh = [
+                        this.scene.children.find(o => o.name === '7'),
+                        this.scene.children.find(o => o.name === '6,5'),
+                    ];
+                }
+
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
+                console.log(currentComponent);
                 lightUpComponent(currentComponent.mesh_name);
                 console.log(currentComponent);
                 showItems(currentComponent.textures)
@@ -407,6 +412,7 @@ function lightUpComponent(name) {
     console.log({name});
     if (currentMesh) {
         if (Array.isArray(currentMesh)) {
+            console.log(currentMesh);
             currentMesh.map(mesh => unlight(mesh))
         } else unlight(currentMesh);
     }

@@ -83,24 +83,24 @@ const innerTextures = [
     },
     {
         name: 'Красная',
-        url: '../results/textures/red-leather-test2.jpg'
+        url: '../textures/test/test-red.jpg'
     },
     {
         name: 'Орех',
-        url: ''
+        url: '../textures/test/test-nut.jpg'
     },
-    {
-        name: 'Песок',
-        url: ''
-    },
-    {
-        name: 'Графит',
-        url: ''
-    },
-    {
-        name: 'Белая',
-        url: ''
-    },
+    // {
+    //     name: 'Песок',
+    //     url: ''
+    // },
+    // {
+    //     name: 'Графит',
+    //     url: ''
+    // },
+    // {
+    //     name: 'Белая',
+    //     url: ''
+    // },
     {
         name: 'Черная',
         url: '../results/textures/leather-texutre.jpg'
@@ -115,7 +115,7 @@ const backComponent = {
     textures: [
         leather
     ]
-}
+};
 
 const lacesComponent = {
     name: 'Шнурки',
@@ -123,9 +123,18 @@ const lacesComponent = {
     url: '../results/components/Component-laces.png',
     mesh_name: '5',
     textures: [
-        leather
+        {
+            id: '0',
+            name: 'Чёрные',
+            url: '../textures/laces/black_laces.jpg',
+        },
+        {
+            id: '0',
+            name: 'Белые',
+            url: '../textures/laces/white_laces.jpg',
+        },
     ]
-}
+};
 
 
 const mindMap = [
@@ -224,36 +233,7 @@ const mindMap = [
                 name: 'Подкладка',
                 url: '../results/components/Component-inside.png',
                 mesh_name: '2',
-                textures: [
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg'
-                    },
-                    {
-                        name: 'Красная',
-                        url: '../results/textures/red-leather-test2.jpg'
-                    },
-                    {
-                        name: 'Орех',
-                        url: ''
-                    },
-                    {
-                        name: 'Песок',
-                        url: ''
-                    },
-                    {
-                        name: 'Графит',
-                        url: ''
-                    },
-                    {
-                        name: 'Белая',
-                        url: ''
-                    },
-                    {
-                        name: 'Черная',
-                        url: '../results/textures/leather-texutre.jpg'
-                    },
-                ]
+                textures: innerTextures
             },
             {
                 name: 'Подблочник',
@@ -270,6 +250,8 @@ const mindMap = [
                 url: '../results/components/Component-label.png',
                 mesh_name: '4'
             },
+            backComponent,
+            lacesComponent,
         ]
     },
     {
@@ -281,7 +263,7 @@ const mindMap = [
             {
                 name: 'Основа',
                 url: '../results/components/Component-body.png',
-                mesh_name: '7',
+                mesh_name: ['7','6,5'],
                 textures: [
                     leather,
                     nubuck,
@@ -292,36 +274,7 @@ const mindMap = [
                 name: 'Подкладка',
                 url: '../results/components/Component-inside.png',
                 mesh_name: '2',
-                textures: [
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg'
-                    },
-                    {
-                        name: 'Красная',
-                        url: '../results/textures/red-leather-test2.jpg'
-                    },
-                    {
-                        name: 'Орех',
-                        url: ''
-                    },
-                    {
-                        name: 'Песок',
-                        url: ''
-                    },
-                    {
-                        name: 'Графит',
-                        url: ''
-                    },
-                    {
-                        name: 'Белая',
-                        url: ''
-                    },
-                    {
-                        name: 'Черная',
-                        url: '../results/textures/leather-texutre.jpg'
-                    },
-                ]
+                textures: innerTextures
             },
             {
                 name: 'Подошва',
@@ -359,7 +312,7 @@ const mindMap = [
             {
                 name: 'Подблочник',
                 url: '../results/components/Component-podblock.png',
-                mesh_name: '6,5',
+                mesh_name: '6',
                 textures: [
                     leather,
                     nubuck,
@@ -371,6 +324,8 @@ const mindMap = [
                 url: '../results/components/Component-label.png',
                 mesh_name: '4'
             },
+            backComponent,
+            lacesComponent,
         ]
     },
     {
@@ -381,166 +336,27 @@ const mindMap = [
             {
                 name: 'Основа',
                 url: '../results/components/Component-body.png',
-                mesh_name: ['7', '6,5'],
+                mesh_name: '7',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans
                 ]
             },
             {
                 name: 'Подкладка',
                 url: '../results/components/Component-inside.png',
                 mesh_name: '2',
-                textures: [
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg'
-                    },
-                    {
-                        name: 'Красная',
-                        url: '../results/textures/red-leather-test2.jpg'
-                    },
-                    {
-                        name: 'Орех',
-                        url: ''
-                    },
-                    {
-                        name: 'Песок',
-                        url: ''
-                    },
-                    {
-                        name: 'Графит',
-                        url: ''
-                    },
-                    {
-                        name: 'Белая',
-                        url: ''
-                    },
-                    {
-                        name: 'Черная',
-                        url: '../results/textures/leather-texutre.jpg'
-                    },
-                ]
+                textures: innerTextures
             },
             {
                 name: 'Подблочник',
                 url: '../results/components/Component-podblock.png',
                 mesh_name: '6',
                 textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
+                    leather,
+                    nubuck,
+                    jeans
                 ]
             },
             {
@@ -548,6 +364,8 @@ const mindMap = [
                 url: '../results/components/Component-label.png',
                 mesh_name: '4'
             },
+            backComponent,
+            lacesComponent
         ]
     },
     {
