@@ -123,12 +123,12 @@ function showModel(root) {
         mesh.material.needsUpdate = true;
     });
 
-    showItems(mindMapModel.components);
+    // showItems(mindMapModel.components);
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
-        const needResize = canvas.width !== width || canvas.height !== height;
+        const needResize = (canvas.width !== width || canvas.height !== height);
         if (needResize) {
             renderer.setSize(width, height, false);
             renderer.setPixelRatio(window.devicePixelRatio);
@@ -381,33 +381,33 @@ function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
-function showItems(items) {
-    document.getElementById('mats').innerHTML = '';
-
-    if (items) {
-        items.map((item) => {
-            const div = document.createElement('div');
-            div.className = 'item';
-            div.style.background = `top / contain no-repeat url('${item.url}')`;
-            div.innerHTML = `<p>${item.name}</p>`;
-            document.getElementById('mats').appendChild(div);
-            div.addEventListener('click', () => {
-                isItemEventTarget = true;
-                item.textures ? showItems(item.textures) : console.warn('No Textures!');
-                currentComponent = item;
-                if (item.mesh_name) lightUpComponent(item.mesh_name);
-                if (!item.textures && !item.mesh_name) {
-                    // console.log(currentMesh);
-                    // console.log(item);
-                    savingKey[currentComponent.id] = item.id;
-                    setTexture(item.urls ? item.urls : item.url)
-                }
-            })
-        });
-    }
-
-    document.getElementById('mats').style.visibility = 'visible';
-}
+// function showItems(items) {
+//     document.getElementById('mats').innerHTML = '';
+//
+//     if (items) {
+//         items.map((item) => {
+//             const div = document.createElement('div');
+//             div.className = 'item';
+//             div.style.background = `top / contain no-repeat url('${item.url}')`;
+//             div.innerHTML = `<p>${item.name}</p>`;
+//             document.getElementById('mats').appendChild(div);
+//             div.addEventListener('click', () => {
+//                 isItemEventTarget = true;
+//                 item.textures ? showItems(item.textures) : console.warn('No Textures!');
+//                 currentComponent = item;
+//                 if (item.mesh_name) lightUpComponent(item.mesh_name);
+//                 if (!item.textures && !item.mesh_name) {
+//                     // console.log(currentMesh);
+//                     // console.log(item);
+//                     savingKey[currentComponent.id] = item.id;
+//                     setTexture(item.urls ? item.urls : item.url)
+//                 }
+//             })
+//         });
+//     }
+//
+//     document.getElementById('mats').style.visibility = 'visible';
+// }
 
 function lightUpComponent(name) {
     console.log({name});
