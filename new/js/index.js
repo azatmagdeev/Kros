@@ -1,5 +1,6 @@
-import {canvas} from "./canvas.js";
+
 import {cWrapper} from "./c-wrapper.js";
+import {canvas} from "./canvas.js";
 
 
 
@@ -12,8 +13,9 @@ class App {
     }
 
     init() {
-        this.root.appendChild(canvas.el);
+
         this.root.appendChild(cWrapper);
+        this.root.appendChild(canvas.el);
 
     }
 }

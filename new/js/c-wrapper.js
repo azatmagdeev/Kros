@@ -1,4 +1,5 @@
 import {lamp} from "./lamp.js";
+import {loadingPercent} from "./loadingPercent.js";
 
 export const cWrapper = document.createElement('div');
 cWrapper.id = 'c-wrapper';
@@ -35,14 +36,16 @@ cWrapper.innerHTML = `
         </div>
 
     </div>
-    <div id="loadingPercent">
-        <img src="loading.gif" alt="" id="spinner">
-        Загрузка
-        <span id="loadNumber">...</span>
-    </div>
+    
+    ${loadingPercent.outerHTML}
+    
+    
     <div id="mats-wrapper">
         <!--        <div class="left arrow item"><</div>-->
         <div id="mats"></div>
         <!--        <div class="right arrow item">></div>-->
     </div>
-`
+`;
+
+// export const loadingPercentEl = document.getElementById('loadingPercent');
+

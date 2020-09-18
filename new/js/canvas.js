@@ -3,21 +3,18 @@ import {OrbitControls} from "../../lib/OrbitControls.js";
 import {Model} from "./model.js";
 
 
-
-
- class Canvas{
+class Canvas {
     constructor() {
         this.el = document.createElement('canvas');
         this.el.id = `c`;
-
         this.scene = new THREE.Scene();
         this.prepareScene();
-
+        this.render();
     }
 
-    prepareScene(){
+    prepareScene() {
         this.renderer = new THREE.WebGLRenderer({
-            canvas:this.el,
+            canvas: this.el,
             antialias: true,
             logarithmicDepthBuffer: true,
         });
@@ -29,25 +26,16 @@ import {Model} from "./model.js";
             100000
         );
 
-
-
-        // const geometry = new THREE.CubeGeometry(20,20,20,2,2,2);
-        // const material = new THREE.MeshLambertMaterial({side:THREE.DoubleSide, color:new THREE.Color('red')});
-        // const mesh = new THREE.Mesh(geometry,material)
-        // mesh.position.set(0,0,0);
-        // this.scene.add(mesh);
-
-        this.scene.background = new THREE.Color('white')
+        this.scene.background = new THREE.Color('white');
         this.addLights();
         this.camera.position.set(-7, 0, 3.5);
-        // this.scene.add(this.camera);
 
         const controls = new OrbitControls(this.camera, this.el);
-        // controls.maxDistance = 20;
-        // controls.minDistance = 2
+        controls.maxDistance = 20;
+        controls.minDistance = 2;
         controls.update();
 
-        this.render();
+        this.model = new Model(this.scene);
     }
 
     addLights() {
@@ -81,16 +69,14 @@ import {Model} from "./model.js";
         }
         const ambientLight = new THREE.AmbientLight("#ffffff", .5);
         this.scene.add(ambientLight);
-        this.model = new Model((root)=>{
-            this.showModel(root);
-        });
-
     }
 
     render() {
         this.resizeRendererToDisplaySize();
         this.renderer.render(this.scene, this.camera);
-        requestAnimationFrame(()=>{this.render()});
+        requestAnimationFrame(() => {
+            this.render()
+        });
     }
 
 
@@ -108,7 +94,8 @@ import {Model} from "./model.js";
     }
 
     showModel(root) {
-        this.scene.add(root)
+        this.scene.add(root);
+
     }
 }
 

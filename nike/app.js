@@ -1,18 +1,10 @@
-import {hide, show} from "../../lib/functions.js";
-import {GLTFLoader} from "../../lib/GLTFLoader.js";
-import * as THREE from "../../lib/three.module.js";
-import {OrbitControls} from "../../lib/OrbitControls.js";
-import mindMap from "../mindmap.js";
+import {hide, show} from "../lib/functions.js";
+import {GLTFLoader} from "../lib/GLTFLoader.js";
+import * as THREE from "../lib/three.module.js";
+import {OrbitControls} from "../lib/OrbitControls.js";
+import mindMap from "./mindmap.js";
 
-
-
-
-
-
-
-
-
-
+const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
 const canvas = document.getElementById('c');
 const ked = new THREE.Object3D();
@@ -58,7 +50,7 @@ function loadModel(modelUrl) {
 function showModel(root) {
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('transparent');
+    scene.background = new THREE.Color('lightgrey');
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -109,7 +101,7 @@ function showModel(root) {
     controls.minDistance = 3;
     controls.update();
 
-
+   root.rotation.x = -100;
 
     root.children.map(obj => {
         if (obj.isMesh) {
@@ -131,12 +123,12 @@ function showModel(root) {
         mesh.material.needsUpdate = true;
     });
 
-    // showItems(mindMapModel.components);
+    showItems(mindMapModel.components);
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
-        const needResize = (canvas.width !== width || canvas.height !== height);
+        const needResize = canvas.width !== width || canvas.height !== height;
         if (needResize) {
             renderer.setSize(width, height, false);
             renderer.setPixelRatio(window.devicePixelRatio);
@@ -191,9 +183,9 @@ function showModel(root) {
         setPickPosition(event.touches[0]);
     }, {passive: false});
 
-    canvas.addEventListener('touchmove', (event) => {
-        setPickPosition(event.touches[0]);
-    });
+    // canvas.addEventListener('touchmove', (event) => {
+    //     setPickPosition(event.touches[0]);
+    // });
 
     render();
 }
@@ -389,33 +381,33 @@ function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
-// function showItems(items) {
-//     document.getElementById('mats').innerHTML = '';
-//
-//     if (items) {
-//         items.map((item) => {
-//             const div = document.createElement('div');
-//             div.className = 'item';
-//             div.style.background = `top / contain no-repeat url('${item.url}')`;
-//             div.innerHTML = `<p>${item.name}</p>`;
-//             document.getElementById('mats').appendChild(div);
-//             div.addEventListener('click', () => {
-//                 isItemEventTarget = true;
-//                 item.textures ? showItems(item.textures) : console.warn('No Textures!');
-//                 currentComponent = item;
-//                 if (item.mesh_name) lightUpComponent(item.mesh_name);
-//                 if (!item.textures && !item.mesh_name) {
-//                     // console.log(currentMesh);
-//                     // console.log(item);
-//                     savingKey[currentComponent.id] = item.id;
-//                     setTexture(item.urls ? item.urls : item.url)
-//                 }
-//             })
-//         });
-//     }
-//
-//     document.getElementById('mats').style.visibility = 'visible';
-// }
+function showItems(items) {
+    document.getElementById('mats').innerHTML = '';
+
+    if (items) {
+        items.map((item) => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.style.background = `top / contain no-repeat url('${item.url}')`;
+            div.innerHTML = `<p>${item.name}</p>`;
+            document.getElementById('mats').appendChild(div);
+            div.addEventListener('click', () => {
+                isItemEventTarget = true;
+                item.textures ? showItems(item.textures) : console.warn('No Textures!');
+                currentComponent = item;
+                if (item.mesh_name) lightUpComponent(item.mesh_name);
+                if (!item.textures && !item.mesh_name) {
+                    // console.log(currentMesh);
+                    // console.log(item);
+                    savingKey[currentComponent.id] = item.id;
+                    setTexture(item.urls ? item.urls : item.url)
+                }
+            })
+        });
+    }
+
+    document.getElementById('mats').style.visibility = 'visible';
+}
 
 function lightUpComponent(name) {
     console.log({name});
@@ -468,6 +460,11 @@ document.getElementById('agree').addEventListener(
         show(loadingPercentEl);
     }
 );
+
+const arrow = document.querySelector('.arrow');
+// arrow.addEventListener('')
+
+
 
 //todo: сохранять обЪект и загружать его вновь
 
