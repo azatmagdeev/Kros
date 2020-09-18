@@ -1,0 +1,22 @@
+canvas#c{
+    position: absolute;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    /*max-width: 690px;*/
+    /*max-height: 540px;*/
+    background-color: grey;
+}
+
+#c-wrapper {
+    width: 100vw;
+    height: 100vh;
+    /*padding-top: 50%;*/
+    /*padding-bottom: 50%;*/
+    /*max-height: 80vh;/*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: transparent;
+}

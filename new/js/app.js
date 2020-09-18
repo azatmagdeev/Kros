@@ -1,8 +1,17 @@
-import {hide, show} from "../lib/functions.js";
-import {GLTFLoader} from "../lib/GLTFLoader.js";
-import * as THREE from "../lib/three.module.js";
-import {OrbitControls} from "../lib/OrbitControls.js";
-import mindMap from "./mindmap.js";
+import {hide, show} from "../../lib/functions.js";
+import {GLTFLoader} from "../../lib/GLTFLoader.js";
+import * as THREE from "../../lib/three.module.js";
+import {OrbitControls} from "../../lib/OrbitControls.js";
+import mindMap from "../mindmap.js";
+
+
+
+
+
+
+
+
+
 
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
@@ -101,7 +110,7 @@ function showModel(root) {
     controls.minDistance = 3;
     controls.update();
 
-   root.rotation.x = -100;
+   root.rotation.x = -100;a
 
     root.children.map(obj => {
         if (obj.isMesh) {
