@@ -4,6 +4,13 @@ import * as THREE from "../lib/three.module.js";
 import {OrbitControls} from "../lib/OrbitControls.js";
 import mindMap from "./mindmap.js";
 
+console.log(window);
+let isMobile = innerWidth < 500;
+
+window.addEventListener('resize',()=>{
+    isMobile = innerWidth < 500
+})
+
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
 const canvas = document.getElementById('c');
@@ -503,15 +510,28 @@ document.getElementById('agree').addEventListener(
  */
 const arrow = document.querySelector('.arrow');
 arrow.addEventListener('click', () => {
-    // console.log(matsWrapper.getAttribute('data-id'));
-    if(matsWrapper.getAttribute('data-id') === 'close'){
-        arrow.style.transform = 'rotate(180deg)';
-        matsWrapper.style.bottom = '0';
-        matsWrapper.setAttribute('data-id','open')
+    console.log('click!!!!');
+    console.log(isMobile);
+    if(isMobile){
+        if(matsWrapper.getAttribute('data-id') === 'close'){
+            arrow.style.transform = 'rotate(180deg)';
+            matsWrapper.style.bottom = '0';
+            matsWrapper.setAttribute('data-id','open')
+        }else{
+            arrow.style.transform = 'rotate(0)';
+            matsWrapper.style.bottom = '-100px';
+            matsWrapper.setAttribute('data-id','close')
+        }
     }else{
-        arrow.style.transform = 'rotate(0)';
-        matsWrapper.style.bottom = '-100px';
-        matsWrapper.setAttribute('data-id','close')
+        if(matsWrapper.getAttribute('data-id') === 'close'){
+            arrow.style.transform = 'rotate(270deg)';
+            matsWrapper.style.left = '0';
+            matsWrapper.setAttribute('data-id','open')
+        }else{
+            arrow.style.transform = 'rotate(90)';
+            matsWrapper.style.left = '-100px';
+            matsWrapper.setAttribute('data-id','close')
+        }
     }
 })
 
