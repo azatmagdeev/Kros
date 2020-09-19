@@ -15,7 +15,9 @@
 
         body {
             margin: 0;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
         p {
@@ -51,43 +53,65 @@
         }
 
         #mats-wrapper {
-            /*visibility: hidden;*/
             position: absolute;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 150px;
+            width: 100vw;
+            height: 140px;
             bottom: -100px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: nowrap;
             z-index: 5;
             background-color: white;
-            border-radius: 15px 15px 0 0 ;
+            border-radius: 15px 15px 0 0;
+            transition: bottom;
+            transition-duration: .3s;
         }
 
         #mats {
-            display: flex;
-            background-color: #FE843F90;
-            flex-grow: 1;
+            display:flex;
             justify-content: center;
+            width: 100vw;
+            position: absolute;
+            /*background-color: #FE843F90;*/
+            overflow: auto;
+            white-space: nowrap;
         }
 
+        #mats::-webkit-scrollbar { width: 0; }
+
+        /*item*/
+
         .item {
-            padding-top: 3em;
-            height: 80%;
-            width: 15%;
-            max-width: 20%;
-            background-color: #F1F1F3;
-            margin: 5px;
+            text-align: center;
             display: inline-block;
-            align-items: center;
-            justify-content: center;
+            width: 90px;
+            /*background-color: #F1F1F3;*/
+            margin: 5px;
             border-radius: 3px;
         }
 
+        .item img {
+            margin-top: 15px;
+            width: 90px;
+            /*height: 50px;*/
+        }
+
+        .item p {
+            background-color: white;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .item img.circle{
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+        }
+
+        /*item end*/
+
+
         .arrow {
-           padding: 10px;
+
+            padding: 10px;
+            text-align: center;
         }
 
         #lamp {
@@ -117,11 +141,6 @@
             top: -.25rem;
         }
 
-        .item p {
-            top: 0;
-            background-color: white;
-            font-size: .5em;
-        }
 
         #right-buttons svg:hover {
             fill: #FE843F;
@@ -186,22 +205,27 @@
         Загрузка
         <span id="loadNumber">...</span>
     </div>
-    <div id="mats-wrapper">
+    <div id="mats-wrapper" data-id="close">
         <div class="arrow">
-            <svg width="10px" height="7px" viewBox="0 0 10 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+            <svg width="10px" height="7px" viewBox="0 0 10 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
                 <title>icon-arrow-up</title>
-                <desc>Created with Sketch.</desc>
-                <g id="PRODUCTION" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Artboard" transform="translate(-403.000000, -465.000000)" stroke="#000000" stroke-width="1.275">
-                        <polyline id="icon-arrow-up" transform="translate(408.142857, 471.142857) rotate(-135.000000) translate(-408.142857, -471.142857) " points="411.285714 468 411.201681 474.201681 405 474.285714"></polyline>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-403.000000, -465.000000)" stroke="#000000" stroke-width="1.275">
+                        <polyline id="icon-arrow-up"
+                                  transform="translate(408.142857, 471.142857) rotate(-135.000000) translate(-408.142857, -471.142857) "
+                                  points="411.285714 468 411.201681 474.201681 405 474.285714"></polyline>
                     </g>
                 </g>
             </svg>
         </div>
         <!--        <div class="left arrow item"><</div>-->
+
         <div id="mats"></div>
+
+
         <!--        <div class="right arrow item">></div>-->
+
     </div>
 </div>
 

@@ -27,9 +27,9 @@ if (window.location.search === '') {
     loadModel(mindMapModel.obj_url);
 } else {
     mindMapModel = mindMap.find(o => o.id === search[0]);
-    console.log(mindMapModel);
+    // console.log(mindMapModel);
     savingKey[0] = mindMapModel.id;
-    console.log({savingKey});
+    // console.log({savingKey});
     loadModel(mindMapModel.obj_url);
 }
 
@@ -101,7 +101,7 @@ function showModel(root) {
     controls.minDistance = 3;
     controls.update();
 
-   root.rotation.x = -100;
+    root.rotation.x = -100;
 
     root.children.map(obj => {
         if (obj.isMesh) {
@@ -113,7 +113,7 @@ function showModel(root) {
         }
     });
 
-    if(search.length>1) loadSavedTextures();
+    if (search.length > 1) loadSavedTextures();
 
     scene.add(root);
 
@@ -123,7 +123,7 @@ function showModel(root) {
         mesh.material.needsUpdate = true;
     });
 
-    showItems(mindMapModel.components);
+    showComponents(mindMapModel.components);
 
     function resizeRendererToDisplaySize(renderer) {
         const width = canvas.clientWidth;
@@ -190,27 +190,27 @@ function showModel(root) {
     render();
 }
 
-function loadSavedTextures(){
+function loadSavedTextures() {
     const searchArray = [];
     for (let i = 0; i < search.length; i++) {
         searchArray[i] = search[i];
     }
-    searchArray.map((el,index)=>{
-        try{
+    searchArray.map((el, index) => {
+        try {
             const component = mindMapModel.components.find(comp => comp.id == index);
-            component.textures.map(texture=>{
-                if(texture.id){
-                    console.log(texture.id);
-                    if (texture.id === el) console.log('bingo!');
-                }else{
-                    texture.textures.map(texture=>{
-                        console.log(texture.id);
-                        if (texture.id === el){
-                            console.log(texture.url);
+            component.textures.map(texture => {
+                if (texture.id) {
+                    // console.log(texture.id);
+                    // if (texture.id === el) console.log('bingo!');
+                } else {
+                    texture.textures.map(texture => {
+                        // console.log(texture.id);
+                        if (texture.id === el) {
+                            // console.log(texture.url);
                             // currentMesh = [];
                             component.mesh_name.map(name => {
-                                console.log(texture.url);
-                                currentMesh= ked.children.find(o => o.name === name);
+                                // console.log(texture.url);
+                                currentMesh = ked.children.find(o => o.name === name);
                                 setTexture(texture.url)
                             })
                         }
@@ -219,7 +219,7 @@ function loadSavedTextures(){
                 }
             })
 
-        }catch (e) {
+        } catch (e) {
             console.warn(e.message);
         }
 
@@ -229,7 +229,7 @@ function loadSavedTextures(){
 document.getElementById('again').addEventListener(
     'click', () => {
         ked.children.map(mesh => {
-            console.log(defaultMaterials[mesh.name]);
+            // console.log(defaultMaterials[mesh.name]);
             mesh.material = new THREE.MeshStandardMaterial({...defaultMaterials[mesh.name]});
             mesh.material.needsUpdate = true;
         })
@@ -260,6 +260,7 @@ class PickHelper {
         // получаем список объектов, которые пересек луч
         const intersectedObjects = this.raycaster.intersectObjects(this.scene.children);
         if (intersectedObjects.length) {
+            if(matsWrapper.getAttribute('data-id')==='close')arrow.click();
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             // console.log(this.pickedObject);
@@ -281,9 +282,9 @@ class PickHelper {
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                console.log(currentComponent);
+                // console.log(currentComponent);
                 showItems(currentComponent.textures)
-            }else if(this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1'){
+            } else if (this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.003_0'),
                     this.scene.children.find(o => o.name === 'Cube.003_1'),
@@ -291,12 +292,12 @@ class PickHelper {
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                console.log(currentComponent);
+                // console.log(currentComponent);
                 showItems(currentComponent.textures)
             } else if (
                 (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
             ) {
-                if(this.scene.children.find(o => o.name === '6,5')){
+                if (this.scene.children.find(o => o.name === '6,5')) {
                     currentMesh = [
                         this.scene.children.find(o => o.name === '7'),
                         this.scene.children.find(o => o.name === '6,5'),
@@ -306,9 +307,9 @@ class PickHelper {
 
                 this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
-                console.log(currentComponent);
+                // console.log(currentComponent);
                 lightUpComponent(currentComponent.mesh_name);
-                console.log(currentComponent);
+                // console.log(currentComponent);
                 showItems(currentComponent.textures)
 
             } else {
@@ -320,20 +321,24 @@ class PickHelper {
                     o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
                         o.mesh_name.find(item => item === currentMesh.name) : false)
                 )
-                console.log(currentComponent);
+                // console.log(currentComponent);
                 showItems(currentComponent.textures);
 
                 currentMesh = this.pickedObject;
             }
 
         } else {
-            if (!isItemEventTarget) showItems(mindMapModel.components);
+            // matsWrapper.setAttribute('data-id','open');
+            // arrow.click();
+            if (!isItemEventTarget) showComponents(mindMapModel.components);
         }
     }
 }
 
+const matsWrapper = document.getElementById('mats-wrapper');
+
 function hideMats() {
-    document.getElementById('mats-wrapper').style.visibility = 'hidden';
+    arrow.click();
 }
 
 /**
@@ -381,15 +386,45 @@ function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
-function showItems(items) {
+function showComponents(items){
     document.getElementById('mats').innerHTML = '';
 
     if (items) {
         items.map((item) => {
             const div = document.createElement('div');
             div.className = 'item';
-            div.style.background = `top / contain no-repeat url('${item.url}')`;
-            div.innerHTML = `<p>${item.name}</p>`;
+            div.innerHTML =`
+                <p>${item.name}</p>
+                <img src="${item.url}">
+                 `;
+            div.innerHTML += ``;
+            document.getElementById('mats').appendChild(div);
+            div.addEventListener('click', () => {
+                isItemEventTarget = true;
+                item.textures ? showItems(item.textures) : console.warn('No Textures!');
+                currentComponent = item;
+                if (item.mesh_name) lightUpComponent(item.mesh_name);
+                if (!item.textures && !item.mesh_name) {
+                    savingKey[currentComponent.id] = item.id;
+                    setTexture(item.urls ? item.urls : item.url)
+                }
+            })
+        });
+    }
+}
+
+function showItems(items) {
+    document.getElementById('mats').innerHTML = '';
+    // console.log(items);
+    if (items) {
+        items.map((item) => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML =`
+                <p>${item.name}</p>
+                <img class="circle" src="${item.url}">
+                 `;
+
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
                 isItemEventTarget = true;
@@ -410,10 +445,10 @@ function showItems(items) {
 }
 
 function lightUpComponent(name) {
-    console.log({name});
+    // console.log({name});
     if (currentMesh) {
         if (Array.isArray(currentMesh)) {
-            console.log(currentMesh);
+            // console.log(currentMesh);
             currentMesh.map(mesh => unlight(mesh))
         } else unlight(currentMesh);
     }
@@ -421,14 +456,13 @@ function lightUpComponent(name) {
         currentMesh = [];
         name.map(n => {
             const meshForLightUp = ked.children.find(o => o.name === n);
-            // console.log(n, meshForLightUp);
             savedEmissiveColor = meshForLightUp.material.emissive.getHex();
             meshForLightUp.material.emissive.setHex(0x00FF00);
             currentMesh.push(meshForLightUp);
         })
     } else {
         currentMesh = ked.children.find(o => o.name === name);
-        console.log(currentMesh);
+        // console.log(currentMesh);
         savedEmissiveColor = currentMesh.material.emissive.getHex();
         currentMesh.material.emissive.setHex(0x00FF00);
     }
@@ -441,19 +475,21 @@ function checkAvailability(mesh) {
     );
 }
 
+/**
+ * сохраняем конфигурацию текстур-компонентов для дальнейшего воспроизводства
+ */
 document.getElementById('agree').addEventListener(
     'click', () => {
 
-        console.log(savingKey);
+        // console.log(savingKey);
         let savingString = '';
         savingKey.map(s => {
             savingString += s ? s : '0';
         })
 
         const link = window.location.host +
-            window.location.pathname + '?'+
+            window.location.pathname + '?' +
             savingString;
-        console.log();
 
         loadingPercentEl.innerHTML =
             `<a href="http://${link}" target="_blank">${link}</a>`;
@@ -461,9 +497,23 @@ document.getElementById('agree').addEventListener(
     }
 );
 
-const arrow = document.querySelector('.arrow');
-// arrow.addEventListener('')
 
+/**
+ * открываем - закрываем меню текстур
+ */
+const arrow = document.querySelector('.arrow');
+arrow.addEventListener('click', () => {
+    // console.log(matsWrapper.getAttribute('data-id'));
+    if(matsWrapper.getAttribute('data-id') === 'close'){
+        arrow.style.transform = 'rotate(180deg)';
+        matsWrapper.style.bottom = '0';
+        matsWrapper.setAttribute('data-id','open')
+    }else{
+        arrow.style.transform = 'rotate(0)';
+        matsWrapper.style.bottom = '-100px';
+        matsWrapper.setAttribute('data-id','close')
+    }
+})
 
 
 //todo: сохранять обЪект и загружать его вновь
