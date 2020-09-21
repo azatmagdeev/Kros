@@ -53,7 +53,7 @@
         }
 
         /*узкий экран - меню снизу*/
-        @media (max-width: 499px){
+        @media (max-width: 499px) {
             #mats-wrapper {
                 position: absolute;
                 width: 100vw;
@@ -67,7 +67,7 @@
             }
 
             #mats {
-                display:flex;
+                display: flex;
                 justify-content: center;
                 width: 100vw;
                 position: absolute;
@@ -76,7 +76,9 @@
                 white-space: nowrap;
             }
 
-            #mats::-webkit-scrollbar { width: 0; }
+            #mats::-webkit-scrollbar {
+                width: 0;
+            }
         }
 
         /*широкий экран - меню слева*/
@@ -88,36 +90,32 @@
                 left: -100px;
                 z-index: 5;
                 background-color: white;
-                border-radius:0 15px 15px 0 ;
+                border-radius: 0 15px 15px 0;
                 transition: left;
                 transition-duration: .3s;
-                display:flex;
+                display: flex;
                 flex-direction: row-reverse;
                 align-items: center;
-                /*justify-content: center;*/
             }
 
             #mats {
-                display:flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                /*width: 100vw;*/
-                height: 100vh;
+                margin-top: auto;
+                margin-bottom: auto;
+                max-height: 100vh;
                 position: absolute;
-                top:0;left:0;
-                /*background-color: #FE843F90;*/
+                left: 0;
                 overflow: auto;
                 white-space: nowrap;
             }
 
-            #mats::-webkit-scrollbar { width: 0; }
+            #mats::-webkit-scrollbar {
+                width: 0;
+            }
 
-            .arrow{
+            .arrow {
                 transform: rotate(90deg);
             }
         }
-
 
 
         /*item*/
@@ -143,7 +141,7 @@
             text-align: center;
         }
 
-        .item img.circle{
+        .item img.circle {
             width: 50px;
             height: 50px;
             border-radius: 25px;
@@ -189,7 +187,25 @@
             fill: #FE843F;
         }
 
+        #desktopMats {
+            position: absolute;
+            z-index: 3;
+            top: 30%;
+            left: 60%;
+            width: 30%;
+            text-align: center;
+        }
 
+        #desktopMats span {
+            margin: 1em;
+        }
+
+        .desktopTextureImg {
+            width: 20px;
+            height: 20px;
+            margin: 1em;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -272,6 +288,7 @@
         <!--        <div class="right arrow item">></div>-->
 
     </div>
+    <div id="desktopMats"></div>
 </div>
 
 <script src="app.js" type="module"></script>

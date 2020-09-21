@@ -7,7 +7,7 @@ import mindMap from "./mindmap.js";
 console.log(window);
 let isMobile = innerWidth < 500;
 
-window.addEventListener('resize',()=>{
+window.addEventListener('resize', () => {
     isMobile = innerWidth < 500
 })
 
@@ -267,7 +267,7 @@ class PickHelper {
         // получаем список объектов, которые пересек луч
         const intersectedObjects = this.raycaster.intersectObjects(this.scene.children);
         if (intersectedObjects.length) {
-            if(matsWrapper.getAttribute('data-id')==='close')arrow.click();
+            if (matsWrapper.getAttribute('data-id') === 'close') arrow.click();
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
             // console.log(this.pickedObject);
@@ -393,32 +393,63 @@ function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
-function showComponents(items){
+function showComponents(items) {
     document.getElementById('mats').innerHTML = '';
 
     if (items) {
         items.map((item) => {
             const div = document.createElement('div');
             div.className = 'item';
-            div.innerHTML =`
+            div.innerHTML = `
                 <p>${item.name}</p>
                 <img src="${item.url}">
                  `;
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
-                isItemEventTarget = true;
-                item.textures ? showItems(item.textures) : console.warn('No Textures!');
-                currentComponent = item;
-                if (item.mesh_name) lightUpComponent(item.mesh_name);
-                if (!item.textures && !item.mesh_name) {
-                    savingKey[currentComponent.id] = item.id;
-                    setTexture(item.urls ? item.urls : item.url)
+                if (isMobile) {
+                    isItemEventTarget = true;
+                    item.textures ? showItems(item.textures) : console.warn('No Textures!');
+                    currentComponent = item;
+                    if (item.mesh_name) lightUpComponent(item.mesh_name);
+                    if (!item.textures && !item.mesh_name) {
+                        savingKey[currentComponent.id] = item.id;
+                        setTexture(item.urls ? item.urls : item.url)
+                    }
+                } else {
+                    showDesktopItems(item);
                 }
             })
         });
     }
 }
+
+const desktopMats = document.getElementById('desktopMats');
+
+function showDesktopItems(item) {
+    // console.log(item);
+    desktopMats.innerHTML = `<h3>${item.name}</h3>`;
+    item.textures.map((item, i) => {
+        // console.log(item);
+        const desktopSpan = document.createElement('span');
+        desktopSpan.textContent = `${item.name}`;
+        desktopMats.appendChild(desktopSpan);
+        desktopSpan.addEventListener('click', () => {
+            const imagesContainer = document.createElement('div');
+            desktopMats.appendChild(imagesContainer);
+            // imagesContainer.innerHTML = '';
+            console.log(item.textures);
+            item.textures.map(texture => {
+                const img = document.createElement('img');
+                img.src = texture.url;
+                img.className = 'desktopTextureImg'
+                imagesContainer.appendChild(img);
+            })
+
+        });
+    })
+}
+
 
 function showItems(items) {
     document.getElementById('mats').innerHTML = '';
@@ -427,7 +458,7 @@ function showItems(items) {
         items.map((item) => {
             const div = document.createElement('div');
             div.className = 'item';
-            div.innerHTML =`
+            div.innerHTML = `
                 <p>${item.name}</p>
                 <img class="circle" src="${item.url}">
                  `;
@@ -512,25 +543,25 @@ const arrow = document.querySelector('.arrow');
 arrow.addEventListener('click', () => {
     console.log('click!!!!');
     console.log(isMobile);
-    if(isMobile){
-        if(matsWrapper.getAttribute('data-id') === 'close'){
+    if (isMobile) {
+        if (matsWrapper.getAttribute('data-id') === 'close') {
             arrow.style.transform = 'rotate(180deg)';
             matsWrapper.style.bottom = '0';
-            matsWrapper.setAttribute('data-id','open')
-        }else{
+            matsWrapper.setAttribute('data-id', 'open')
+        } else {
             arrow.style.transform = 'rotate(0)';
             matsWrapper.style.bottom = '-100px';
-            matsWrapper.setAttribute('data-id','close')
+            matsWrapper.setAttribute('data-id', 'close')
         }
-    }else{
-        if(matsWrapper.getAttribute('data-id') === 'close'){
+    } else {
+        if (matsWrapper.getAttribute('data-id') === 'close') {
             arrow.style.transform = 'rotate(270deg)';
             matsWrapper.style.left = '0';
-            matsWrapper.setAttribute('data-id','open')
-        }else{
-            arrow.style.transform = 'rotate(90)';
+            matsWrapper.setAttribute('data-id', 'open')
+        } else {
+            arrow.style.transform = 'rotate(90deg)';
             matsWrapper.style.left = '-100px';
-            matsWrapper.setAttribute('data-id','close')
+            matsWrapper.setAttribute('data-id', 'close')
         }
     }
 })
