@@ -206,6 +206,11 @@
             margin: 1em;
             border-radius: 10px;
         }
+
+        .underline {
+            text-decoration: underline;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -280,15 +285,13 @@
                 </g>
             </svg>
         </div>
-        <!--        <div class="left arrow item"><</div>-->
-
         <div id="mats"></div>
-
-
-        <!--        <div class="right arrow item">></div>-->
-
     </div>
-    <div id="desktopMats"></div>
+    <div id="desktopMats">
+        <h3 class="title"></h3>
+        <div class="mats"></div>
+        <div class="textures"></div>
+    </div>
 </div>
 
 <script src="app.js" type="module"></script>

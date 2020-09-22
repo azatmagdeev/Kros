@@ -393,6 +393,14 @@ function unlight(mesh) {
     mesh.material.emissive.setHex(savedEmissiveColor);
 }
 
+function defineCurrentMesh(mesh_name){
+
+    //todo create Function!!
+    console.log(mesh_name);
+
+    return true;
+}
+
 function showComponents(items) {
     document.getElementById('mats').innerHTML = '';
 
@@ -407,6 +415,9 @@ function showComponents(items) {
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
+                // currentMesh = ked.children.find(o => o.name === item.mesh_name);
+                currentMesh = defineCurrentMesh(item.mesh_name);
+                // console.log(item);
                 if (isMobile) {
                     isItemEventTarget = true;
                     item.textures ? showItems(item.textures) : console.warn('No Textures!');
@@ -425,28 +436,45 @@ function showComponents(items) {
 }
 
 const desktopMats = document.getElementById('desktopMats');
+const desktopMatsTitle = desktopMats.querySelector('.title');
+const desktopMatsMats = desktopMats.querySelector('.mats');
+const desktopMatsTextures = desktopMats.querySelector('.textures');
 
 function showDesktopItems(item) {
-    // console.log(item);
-    desktopMats.innerHTML = `<h3>${item.name}</h3>`;
+    desktopMatsTitle.textContent = `${item.name}`;
+    desktopMatsMats.innerHTML = '';
     item.textures.map((item, i) => {
-        // console.log(item);
+
         const desktopSpan = document.createElement('span');
         desktopSpan.textContent = `${item.name}`;
-        desktopMats.appendChild(desktopSpan);
+        i === 0 ? desktopSpan.className += ' underline' : null;
+        desktopMatsMats.appendChild(desktopSpan);
+
         desktopSpan.addEventListener('click', () => {
-            const imagesContainer = document.createElement('div');
-            desktopMats.appendChild(imagesContainer);
-            // imagesContainer.innerHTML = '';
+            desktopMatsMats.querySelectorAll('.underline').forEach(el => {
+                el.classList.remove('underline')
+            });
+            desktopSpan.className += ' underline';
+            desktopMatsTextures.innerHTML = '';
             console.log(item.textures);
+
             item.textures.map(texture => {
+
                 const img = document.createElement('img');
                 img.src = texture.url;
-                img.className = 'desktopTextureImg'
-                imagesContainer.appendChild(img);
+                img.className = 'desktopTextureImg';
+                desktopMatsTextures.appendChild(img);
+
+                img.addEventListener('click', () => {
+                    setTexture(texture.url)
+                })
+
+
             })
 
         });
+
+        i === 0 ? desktopSpan.click() : null;
     })
 }
 
