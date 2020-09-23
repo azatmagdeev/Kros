@@ -57,7 +57,7 @@ function loadModel(modelUrl) {
 function showModel(root) {
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('lightgrey');
+    scene.background = new THREE.Color('ghostwhite');
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -395,10 +395,15 @@ function unlight(mesh) {
 
 function defineCurrentMesh(mesh_name){
 
-    //todo create Function!!
-    console.log(mesh_name);
-
-    return true;
+    if(typeof(mesh_name)==="string"){
+        return ked.children.find(o=>o.name === mesh_name);
+    }else{
+        const result = [];
+        mesh_name.map(n=>{
+            result.push(ked.children.find(o=>o.name === n))
+        })
+        return result;
+    }
 }
 
 function showComponents(items) {
@@ -443,38 +448,49 @@ const desktopMatsTextures = desktopMats.querySelector('.textures');
 function showDesktopItems(item) {
     desktopMatsTitle.textContent = `${item.name}`;
     desktopMatsMats.innerHTML = '';
+    desktopMatsTextures.innerHTML = '';
     item.textures.map((item, i) => {
+        if(item.textures){
+            const desktopSpan = document.createElement('span');
+            desktopSpan.textContent = `${item.name}`;
+            i === 0 ? desktopSpan.className += ' underline' : null;
+            desktopMatsMats.appendChild(desktopSpan);
 
-        const desktopSpan = document.createElement('span');
-        desktopSpan.textContent = `${item.name}`;
-        i === 0 ? desktopSpan.className += ' underline' : null;
-        desktopMatsMats.appendChild(desktopSpan);
+            desktopSpan.addEventListener('click', () => {
+                desktopMatsMats.querySelectorAll('.underline').forEach(el => {
+                    el.classList.remove('underline')
+                });
+                desktopSpan.className += ' underline';
+                desktopMatsTextures.innerHTML = '';
 
-        desktopSpan.addEventListener('click', () => {
-            desktopMatsMats.querySelectorAll('.underline').forEach(el => {
-                el.classList.remove('underline')
-            });
-            desktopSpan.className += ' underline';
-            desktopMatsTextures.innerHTML = '';
-            console.log(item.textures);
+                item.textures.map(texture => {
 
-            item.textures.map(texture => {
+                    const img = document.createElement('img');
+                    img.src = texture.url;
+                    img.className = 'desktopTextureImg';
+                    desktopMatsTextures.appendChild(img);
 
-                const img = document.createElement('img');
-                img.src = texture.url;
-                img.className = 'desktopTextureImg';
-                desktopMatsTextures.appendChild(img);
+                    img.addEventListener('click', () => {
+                        setTexture(texture.url)
+                    })
 
-                img.addEventListener('click', () => {
-                    setTexture(texture.url)
+
                 })
 
+            });
 
+            i === 0 ? desktopSpan.click() : null;
+        }else{
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.className = 'desktopTextureImg';
+            desktopMatsTextures.appendChild(img);
+
+            img.addEventListener('click', () => {
+                setTexture(item.url)
             })
+        }
 
-        });
-
-        i === 0 ? desktopSpan.click() : null;
     })
 }
 
