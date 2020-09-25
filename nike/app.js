@@ -20,7 +20,7 @@ const textureLoader = new THREE.TextureLoader();
 let currentMesh = false;
 let currentComponent;
 let currentTexture;
-let savedEmissiveColor;
+let savedEmissiveColor = '0x000000';
 let isItemEventTarget = false;
 let mindMapModel;
 const defaultMaterials = {};
@@ -57,7 +57,7 @@ function loadModel(modelUrl) {
 function showModel(root) {
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('ghostwhite');
+    scene.background = new THREE.Color('#e2e2e5');
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -124,11 +124,19 @@ function showModel(root) {
 
     scene.add(root);
 
-    ked.children.map(mesh => {
-        mesh.material = new THREE.MeshStandardMaterial({...mesh.material});
-        defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
-        mesh.material.needsUpdate = true;
-    });
+    setTimeout(()=>{
+        ked.children.map(mesh => {
+            defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
+            // if(mesh.name === '7'){
+            //
+            //
+            //     console.log(mesh.material);
+            // }
+            currentMesh = mesh;
+            setTexture('../textures/default-grey.jpg')
+        });
+    },1000)
+
 
     showComponents(mindMapModel.components);
 
@@ -254,11 +262,11 @@ class PickHelper {
     pick(normalizedPosition, scene, camera) {
         // восстановить цвет, если есть выбранный объект
         if (this.pickedObject) {
-            this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+            this.pickedObject.material.emissive.setHex(0x000000);
             this.pickedObject = undefined;
             hideMats();
             this.scene.children.map(o => {
-                o.material.emissive.setHex(this.pickedObjectSavedColor);
+                o.material.emissive.setHex(0x000000);
             })
         }
 
@@ -286,7 +294,7 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_3'),
 
                 ];
-                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
                 // console.log(currentComponent);
@@ -296,7 +304,7 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.003_0'),
                     this.scene.children.find(o => o.name === 'Cube.003_1'),
                 ];
-                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
                 // console.log(currentComponent);
@@ -312,7 +320,7 @@ class PickHelper {
                 }
 
 
-                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
                 // console.log(currentComponent);
                 lightUpComponent(currentComponent.mesh_name);
@@ -321,7 +329,7 @@ class PickHelper {
 
             } else {
 
-                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
 
                 lightUpComponent(this.pickedObject.name);
                 currentComponent = mindMapModel.components.find(
@@ -354,7 +362,7 @@ function hideMats() {
  *          or object - mesh names : urls
  */
 function setTexture(item) {
-    // console.log(currentComponent);
+
     //если урл строка - текущему мешу загружаем текстуру
     if (typeof item === 'string') {
         //если текущий меш-массив мешей, каждому загружаем текстуру
@@ -390,7 +398,10 @@ function setTexture(item) {
 }
 
 function unlight(mesh) {
-    mesh.material.emissive.setHex(savedEmissiveColor);
+    mesh.material.emissive.setHex('0x000000');
+    // mesh.material.emissive.setHex({r:0,g:0,b:0});
+    console.log(mesh.material.emissive);
+
 }
 
 function defineCurrentMesh(mesh_name){
@@ -538,16 +549,19 @@ function lightUpComponent(name) {
         currentMesh = [];
         name.map(n => {
             const meshForLightUp = ked.children.find(o => o.name === n);
-            savedEmissiveColor = meshForLightUp.material.emissive.getHex();
+            // savedEmissiveColor = meshForLightUp.material.emissive.getHex();
+            console.log(savedEmissiveColor);
             meshForLightUp.material.emissive.setHex(0x00FF00);
             currentMesh.push(meshForLightUp);
         })
     } else {
         currentMesh = ked.children.find(o => o.name === name);
         // console.log(currentMesh);
-        savedEmissiveColor = currentMesh.material.emissive.getHex();
+        // savedEmissiveColor = currentMesh.material.emissive.getHex();
+        // console.log(savedEmissiveColor);
         currentMesh.material.emissive.setHex(0x00FF00);
     }
+
 }
 
 function checkAvailability(mesh) {
