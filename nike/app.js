@@ -4,12 +4,11 @@ import * as THREE from "../lib/three.module.js";
 import {OrbitControls} from "../lib/OrbitControls.js";
 import mindMap from "./mindmap.js";
 
-console.log(window);
 let isMobile = innerWidth < 500;
 
 window.addEventListener('resize', () => {
     isMobile = innerWidth < 500
-})
+});
 
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
@@ -124,19 +123,41 @@ function showModel(root) {
 
     scene.add(root);
 
-    setTimeout(()=>{
-        ked.children.map(mesh => {
-            defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
-            // if(mesh.name === '7'){
-            //
-            //
-            //     console.log(mesh.material);
-            // }
-            currentMesh = mesh;
-            setTexture('../textures/default-grey.jpg')
-        });
-    },1000)
 
+    setTimeout(() => {
+
+        console.log(mindMapModel.components);
+
+        // for (const component of mindMapModel.components) {
+        //     if (
+        //         component.name === 'Подошва'
+        //         || component.name === 'Лэйбл'
+        //         || component.name === 'Шнурки'
+        //     ) continue;
+        //     currentMesh = defineCurrentMesh(component.mesh_name);
+        //     setTexture('../textures/default-grey.jpg');
+        // }
+
+
+
+        rememberMaterials();
+
+    }, 100);
+
+    function rememberMaterials() {
+        setTimeout(() => {
+            ked.children.map(mesh => {
+
+                currentMesh = mesh;
+                setTexture('../textures/default-grey.jpg');
+
+                defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
+
+
+            });
+            console.log(defaultMaterials);
+        }, 1000);
+    }
 
     showComponents(mindMapModel.components);
 
@@ -246,7 +267,7 @@ document.getElementById('again').addEventListener(
         ked.children.map(mesh => {
             // console.log(defaultMaterials[mesh.name]);
             mesh.material = new THREE.MeshStandardMaterial({...defaultMaterials[mesh.name]});
-            mesh.material.needsUpdate = true;
+            // mesh.material.needsUpdate = true;
         })
     }
 );
@@ -399,20 +420,17 @@ function setTexture(item) {
 
 function unlight(mesh) {
     mesh.material.emissive.setHex('0x000000');
-    // mesh.material.emissive.setHex({r:0,g:0,b:0});
-    console.log(mesh.material.emissive);
-
 }
 
-function defineCurrentMesh(mesh_name){
+function defineCurrentMesh(mesh_name) {
 
-    if(typeof(mesh_name)==="string"){
-        return ked.children.find(o=>o.name === mesh_name);
-    }else{
+    if (typeof (mesh_name) === "string") {
+        return ked.children.find(o => o.name === mesh_name);
+    } else {
         const result = [];
-        mesh_name.map(n=>{
-            result.push(ked.children.find(o=>o.name === n))
-        })
+        mesh_name.map(n => {
+            result.push(ked.children.find(o => o.name === n))
+        });
         return result;
     }
 }
@@ -426,7 +444,7 @@ function showComponents(items) {
             div.className = 'item';
             div.innerHTML = `
                 <p>${item.name}</p>
-                <img src="${item.url}">
+                <img alt="" src="${item.url}">
                  `;
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
@@ -461,7 +479,7 @@ function showDesktopItems(item) {
     desktopMatsMats.innerHTML = '';
     desktopMatsTextures.innerHTML = '';
     item.textures.map((item, i) => {
-        if(item.textures){
+        if (item.textures) {
             const desktopSpan = document.createElement('span');
             desktopSpan.textContent = `${item.name}`;
             i === 0 ? desktopSpan.className += ' underline' : null;
@@ -491,7 +509,7 @@ function showDesktopItems(item) {
             });
 
             i === 0 ? desktopSpan.click() : null;
-        }else{
+        } else {
             const img = document.createElement('img');
             img.src = item.url;
             img.className = 'desktopTextureImg';
@@ -515,7 +533,7 @@ function showItems(items) {
             div.className = 'item';
             div.innerHTML = `
                 <p>${item.name}</p>
-                <img class="circle" src="${item.url}">
+                <img alt="" class="circle" src="${item.url}">
                  `;
 
             document.getElementById('mats').appendChild(div);
