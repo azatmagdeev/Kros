@@ -22,7 +22,7 @@ let currentTexture;
 let savedEmissiveColor = '0x000000';
 let isItemEventTarget = false;
 let mindMapModel;
-const defaultMaterials = {};
+const defaultTextures = {};
 let savingKey = [];//сюда будем собирать код для сохранения-загрузки
 
 //отсюда будем читать код для кастомизации модели
@@ -123,41 +123,49 @@ function showModel(root) {
 
     scene.add(root);
 
+   (()=> {
+
+    })()
+
 
     setTimeout(() => {
 
         console.log(mindMapModel.components);
-
-        // for (const component of mindMapModel.components) {
-        //     if (
-        //         component.name === 'Подошва'
-        //         || component.name === 'Лэйбл'
-        //         || component.name === 'Шнурки'
-        //     ) continue;
-        //     currentMesh = defineCurrentMesh(component.mesh_name);
-        //     setTexture('../textures/default-grey.jpg');
-        // }
-
+        for (const component of mindMapModel.components) {
+            if (
+                component.name === 'Подошва'
+                || component.name === 'Лэйбл'
+                || component.name === 'Шнурки'
+            ) continue;
+            currentMesh = defineCurrentMesh(component.mesh_name);
+            setTexture('../textures/light-texture.jpg');
+        }
 
 
-        rememberMaterials();
+        ked.children.map(mesh => {
+            defaultTextures[mesh.name] = mesh.material.map.image;
+            console.log(mesh.name);
+            console.log(defaultTextures[mesh.name]);
+        })
 
-    }, 100);
+        // rememberMaterials();
 
-    function rememberMaterials() {
-        setTimeout(() => {
-            ked.children.map(mesh => {
+    }, 0);
 
-                currentMesh = mesh;
-                setTexture('../textures/default-grey.jpg');
-
-                defaultMaterials[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
-
-
-            });
-            console.log(defaultMaterials);
-        }, 1000);
-    }
+    // function rememberMaterials() {
+    //     setTimeout(() => {
+    //         ked.children.map(mesh => {
+    //
+    //             currentMesh = mesh;
+    //             setTexture('../textures/default-grey.jpg');
+    //
+    //             defaultTextures[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
+    //
+    //
+    //         });
+    //         console.log(defaultTextures);
+    //     }, 1000);
+    // }
 
     showComponents(mindMapModel.components);
 
@@ -262,15 +270,22 @@ function loadSavedTextures() {
     })
 }
 
-document.getElementById('again').addEventListener(
-    'click', () => {
-        ked.children.map(mesh => {
-            // console.log(defaultMaterials[mesh.name]);
-            mesh.material = new THREE.MeshStandardMaterial({...defaultMaterials[mesh.name]});
-            // mesh.material.needsUpdate = true;
-        })
-    }
-);
+try{
+    document.getElementById('again').addEventListener(
+        'click', () => {
+            setTimeout(() => {
+                ked.children.map(mesh => {
+                    currentMesh = mesh;
+                    setTexture(defaultTextures[mesh.name].src)
+                    // mesh.material.needsUpdate = true;
+                })
+            }, 100)
+
+        }
+    );
+}catch (e) {
+    console.warn(e)
+}
 
 class PickHelper {
     constructor(scene) {
@@ -592,24 +607,28 @@ function checkAvailability(mesh) {
 /**
  * сохраняем конфигурацию текстур-компонентов для дальнейшего воспроизводства
  */
-document.getElementById('agree').addEventListener(
-    'click', () => {
+try{
+    document.getElementById('agree').addEventListener(
+        'click', () => {
 
-        // console.log(savingKey);
-        let savingString = '';
-        savingKey.map(s => {
-            savingString += s ? s : '0';
-        })
+            // console.log(savingKey);
+            let savingString = '';
+            savingKey.map(s => {
+                savingString += s ? s : '0';
+            })
 
-        const link = window.location.host +
-            window.location.pathname + '?' +
-            savingString;
+            const link = window.location.host +
+                window.location.pathname + '?' +
+                savingString;
 
-        loadingPercentEl.innerHTML =
-            `<a href="http://${link}" target="_blank">${link}</a>`;
-        show(loadingPercentEl);
-    }
-);
+            loadingPercentEl.innerHTML =
+                `<a href="http://${link}" target="_blank">${link}</a>`;
+            show(loadingPercentEl);
+        }
+    );
+}catch (e) {
+    console.warn(e)
+}
 
 
 /**

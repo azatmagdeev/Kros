@@ -4,8 +4,6 @@
 //search[1] = component with id=1
 //search[2] = component with id=2
 
-/** */
-
 
 
 const leather = {
@@ -107,10 +105,30 @@ const innerTextures = [
     },
 ];
 
+const innerComponent = {
+    id: 2,
+    name: 'Подкладка',
+    url: '../img/components/low-ked-inner.png',
+    mesh_name: '2',
+    textures: innerTextures
+}
+
+const podblockComponent = {
+    id: 4,
+    name: 'Подблочник',
+    url: '../img/components/low-ked-podblock.png',
+    mesh_name: '6',
+    textures: [
+        leather,
+        nubuck,
+        jeans,
+    ]
+}
+
 const backComponent = {
     name: 'Задник',
     id: 6,
-    url: '../results/components/Component-back.png',
+    url: '../img/components/low-ked-back.png',
     mesh_name: '1',
     textures: [
         leather
@@ -120,7 +138,7 @@ const backComponent = {
 const lacesComponent = {
     name: 'Шнурки',
     id: 7,
-    url: '../results/components/Component-laces.png',
+    url: '../img/components/low-ked-laces.png',
     mesh_name: '5',
     textures: [
         {
@@ -136,6 +154,13 @@ const lacesComponent = {
     ]
 };
 
+const labelComponent = {
+    id: 5,
+    name: 'Лэйбл',
+    url: '../img/components/low-ked-label.png',
+    mesh_name: '4'
+}
+
 
 const mindMap = [
     {
@@ -147,7 +172,7 @@ const mindMap = [
             {
                 id: 1,
                 name: 'Основа',
-                url: '../results/components/Component-body.png',
+                url: '../img/components/low-ked-base.png',
                 mesh_name: ['7', '6,5'],
                 textures: [
                     leather,
@@ -155,17 +180,11 @@ const mindMap = [
                     jeans,
                 ]
             },
-            {
-                id: 2,
-                name: 'Подкладка',
-                url: '../results/components/Component-inside.png',
-                mesh_name: '2',
-                textures: innerTextures
-            },
+            innerComponent,
             {
                 id: 3,
                 name: 'Подошва',
-                url: '../results/components/Component-sole.png',
+                url: '../img/components/low-ked-sole.png',
                 mesh_name: [
                     'Cube.003_0',
                     'Cube.003_1',
@@ -192,23 +211,8 @@ const mindMap = [
                     },
                 ],
             },
-            {
-                id: 4,
-                name: 'Подблочник',
-                url: '../results/components/Component-podblock.png',
-                mesh_name: '6',
-                textures: [
-                    leather,
-                    nubuck,
-                    jeans,
-                ]
-            },
-            {
-                id: 5,
-                name: 'Лэйбл',
-                url: '../results/components/Component-label.png',
-                mesh_name: '4'
-            },
+            podblockComponent,
+            labelComponent,
             backComponent,
             lacesComponent,
         ]
@@ -221,7 +225,7 @@ const mindMap = [
         components: [
             {
                 name: 'Основа',
-                url: '../results/components/Component-body.png',
+                url: '../img/components/low-ked-base.png',
                 mesh_name: ['7', '6,5'],
                 textures: [
                     leather,
@@ -229,27 +233,9 @@ const mindMap = [
                     jeans,
                 ]
             },
-            {
-                name: 'Подкладка',
-                url: '../results/components/Component-inside.png',
-                mesh_name: '2',
-                textures: innerTextures
-            },
-            {
-                name: 'Подблочник',
-                url: '../results/components/Component-podblock.png',
-                mesh_name: '6',
-                textures: [
-                    leather,
-                    nubuck,
-                    jeans,
-                ]
-            },
-            {
-                name: 'Лэйбл',
-                url: '../results/components/Component-label.png',
-                mesh_name: '4'
-            },
+            innerComponent,
+            podblockComponent,
+            labelComponent,
             backComponent,
             lacesComponent,
         ]
@@ -262,7 +248,7 @@ const mindMap = [
         components: [
             {
                 name: 'Основа',
-                url: '../results/components/Component-body.png',
+                url: '../img/components/low-ked-base.png',
                 mesh_name: ['7','6,5'],
                 textures: [
                     leather,
@@ -270,15 +256,10 @@ const mindMap = [
                     jeans,
                 ]
             },
-            {
-                name: 'Подкладка',
-                url: '../results/components/Component-inside.png',
-                mesh_name: '2',
-                textures: innerTextures
-            },
+            innerComponent,
             {
                 name: 'Подошва',
-                url: '../results/components/Component-sole.png',
+                url: '../img/components/low-ked-sole.png',
                 mesh_name: [
                     'Cube.001_0',
                     'Cube.001_1',
@@ -309,21 +290,8 @@ const mindMap = [
                 ],
 
             },
-            {
-                name: 'Подблочник',
-                url: '../results/components/Component-podblock.png',
-                mesh_name: '6',
-                textures: [
-                    leather,
-                    nubuck,
-                    jeans,
-                ]
-            },
-            {
-                name: 'Лэйбл',
-                url: '../results/components/Component-label.png',
-                mesh_name: '4'
-            },
+            podblockComponent,
+            labelComponent,
             backComponent,
             lacesComponent,
         ]
@@ -335,7 +303,7 @@ const mindMap = [
         components: [
             {
                 name: 'Основа',
-                url: '../results/components/Component-body.png',
+                url: '../img/components/low-ked-base.png',
                 mesh_name: '7',
                 textures: [
                     leather,
@@ -343,27 +311,9 @@ const mindMap = [
                     jeans
                 ]
             },
-            {
-                name: 'Подкладка',
-                url: '../results/components/Component-inside.png',
-                mesh_name: '2',
-                textures: innerTextures
-            },
-            {
-                name: 'Подблочник',
-                url: '../results/components/Component-podblock.png',
-                mesh_name: '6',
-                textures: [
-                    leather,
-                    nubuck,
-                    jeans
-                ]
-            },
-            {
-                name: 'Лэйбл',
-                url: '../results/components/Component-label.png',
-                mesh_name: '4'
-            },
+            innerComponent,
+            podblockComponent,
+            labelComponent,
             backComponent,
             lacesComponent
         ]
@@ -375,7 +325,7 @@ const mindMap = [
         components: [
             {
                 name: 'Основа',
-                url: '../results/components/Component-body.png',
+                url: '../img/components/low-ked-base.png',
                 mesh_name: '7',
                 textures: [
                     {
@@ -438,44 +388,10 @@ const mindMap = [
                     },
                 ]
             },
-            {
-                name: 'Подкладка',
-                url: '../results/components/Component-inside.png',
-                mesh_name: '2',
-                textures: [
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg'
-                    },
-                    {
-                        name: 'Красная',
-                        url: '../results/textures/red-leather-test2.jpg'
-                    },
-                    {
-                        name: 'Орех',
-                        url: ''
-                    },
-                    {
-                        name: 'Песок',
-                        url: ''
-                    },
-                    {
-                        name: 'Графит',
-                        url: ''
-                    },
-                    {
-                        name: 'Белая',
-                        url: ''
-                    },
-                    {
-                        name: 'Черная',
-                        url: '../results/textures/leather-texutre.jpg'
-                    },
-                ]
-            },
+            innerComponent,
             {
                 name: 'Подошва',
-                url: '../results/components/Component-sole.png',
+                url: '../img/components/low-ked-sole.png',
                 mesh_name: [
                     'Cube.001_0',
                     'Cube.001_1',
@@ -506,76 +422,10 @@ const mindMap = [
                 ],
 
             },
-            {
-                name: 'Подблочник',
-                url: '../results/components/Component-podblock.png',
-                mesh_name: '6,5',
-                textures: [
-                    {
-                        name: 'Кожа',
-                        url: '../results/textures/red-leather-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Желтый',
-                                url: '../results/textures/yellow-leather-test.jpg'
-                            },
-                            {
-                                name: 'Красный',
-                                url: '../results/textures/red-leather-test2.jpg',
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../results/textures/leather-texutre.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Нубук',
-                        url: '../sneakers_constructor/textures/approved/nubuck/beige_nubuck.jpg',
-                        textures: [
-                            {
-                                name: 'Бежевый',
-                                url: '../textures/unwrapped/nubuck/biege-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Черный',
-                                url: '../textures/unwrapped/nubuck/black-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Синий',
-                                url: '../textures/unwrapped/nubuck/blue-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Коричневый',
-                                url: '../textures/unwrapped/nubuck/brown-nubuck-unwrapped-min.jpg'
-                            },
-                            {
-                                name: 'Кирпич',
-                                url: '../textures/unwrapped/nubuck/brick-nubuck-unwrapped-min.jpg'
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Джинс',
-                        url: '../results/textures/jeans-test2.jpg',
-                        textures: [
-                            {
-                                name: 'Синий',
-                                url: '../results/textures/jeans-test2.jpg',
-                            },
-                            {
-                                name: 'Коттон',
-                                url: '../results/textures/kotton-test3.jpg'
-                            }
-                        ]
-                    },
-                ]
-            },
-            {
-                name: 'Лэйбл',
-                url: '../results/components/Component-label.png',
-                mesh_name: '4'
-            },
+            podblockComponent,
+            labelComponent,
+            backComponent,
+            lacesComponent
         ]
     },
 ];
