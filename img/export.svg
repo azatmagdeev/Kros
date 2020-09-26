@@ -1,0 +1,9 @@
+<svg width="13px" height="15px" viewBox="0 0 13 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="button-white/share-1" transform="translate(-18.000000, -13.000000)" stroke="#000000">
+            <polyline id="Rectangle" stroke-width="1.275" transform="translate(24.505385, 18.325830) rotate(-135.000000) translate(-24.505385, -18.325830) " points="27.6482426 15.1829726 27.564209 21.3846532 21.3625283 21.4686869"></polyline>
+            <path d="M24.5,14 L24.5,23.1764706" id="Path-3" stroke-width="1.275" fill-rule="nonzero"></path>
+            <path d="M19,26.6176471 L30,26.6176471" id="Line" stroke-width="1.2" stroke-linecap="square" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>
