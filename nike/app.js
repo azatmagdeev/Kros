@@ -207,7 +207,7 @@ function showModel(root) {
         const pos = getCanvasRelativePosition(event);
         pickPosition.x = (pos.x / canvas.width) * 2 - 1;
         pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
-        pickHelper.pick(pickPosition, scene, camera, 100);
+        // pickHelper.pick(pickPosition, scene, camera, 100);
         isItemEventTarget = false;
     }
 

@@ -117,32 +117,44 @@
                 transform: rotate(90deg);
             }
 
-            .top-buttons{
-                position:absolute;
+            .top-buttons {
+                position: absolute;
                 z-index: 5;
-                top:.5em;
-                /*background-color: rgba(100,0,0,.5);*/
-                /*height:2em;*/
+                top: .5em;
                 width: 100%;
-                padding-right:1em ;
-                display:flex;
+                padding-right: 1em;
+                display: flex;
                 justify-content: flex-end;
             }
 
-            .top-button{
-                border-radius:1.5em;
-                padding:.5em;
-                margin:0.5em;
+            .top-button {
+                border-radius: 1.5em;
+                padding: .5em;
+                margin: 0.5em;
                 min-width: 2em;
                 text-align: center;
                 font-weight: bold;
                 background-color: white;
-                border: none;
+                /*border: none;*/
             }
 
-            .top-button.dark{
+            .top-button.dark {
                 background-color: black;
                 color: white;
+            }
+
+            .bottom-button{
+                position: absolute;
+                z-index: 5;
+                bottom: .5em;
+                right: 1em;
+                border-radius: 1.5em;
+                padding: .5em;
+                margin: 0.5em;
+                min-width: 2em;
+                text-align: center;
+                font-weight: bold;
+                background-color: white;
             }
         }
 
@@ -159,7 +171,7 @@
         }
 
         .item img {
-            margin-top: 15px;
+            margin-top: 5px;
             width: 90px;
             /*height: 50px;*/
         }
@@ -249,10 +261,11 @@
 <div id="c-wrapper">
 
     <div class="top-buttons">
-        <div class="top-button "> <img src="../img/export.svg" alt="export"> </div>
+        <div class="top-button "><img src="../img/export.svg" alt="export"></div>
         <div class="top-button ">Сохранить</div>
         <div class="top-button dark">Купить</div>
     </div>
+    <div class="bottom-button">Подробнее</div>
 
 
     <canvas id="c"></canvas>
@@ -263,9 +276,7 @@
     </div>
     <div id="mats-wrapper" data-id="close">
         <div class="arrow">
-            <svg width="10px" height="7px" viewBox="0 0 10 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
-
-                <title>icon-arrow-up</title>
+            <svg width="10px" height="7px" viewBox="0 0 10 7">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g transform="translate(-403.000000, -465.000000)" stroke="#000000" stroke-width="1.275">
                         <polyline id="icon-arrow-up"
