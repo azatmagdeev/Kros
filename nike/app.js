@@ -6,9 +6,9 @@ import mindMap from "./mindmap.js";
 
 let isMobile = innerWidth < 500;
 
-window.addEventListener('resize', () => {
-    isMobile = innerWidth < 500
-});
+// window.addEventListener('resize', () => {
+//     isMobile = innerWidth < 500
+// });
 
 const loadingPercentEl = document.getElementById('loadingPercent');
 const loadNumber = document.getElementById('loadNumber');
@@ -18,7 +18,6 @@ const textureLoader = new THREE.TextureLoader();
 
 let currentMesh = false;
 let currentComponent;
-let currentTexture;
 let savedEmissiveColor = '0x000000';
 let isItemEventTarget = false;
 let mindMapModel;
@@ -33,9 +32,7 @@ if (window.location.search === '') {
     loadModel(mindMapModel.obj_url);
 } else {
     mindMapModel = mindMap.find(o => o.id === search[0]);
-    // console.log(mindMapModel);
     savingKey[0] = mindMapModel.id;
-    // console.log({savingKey});
     loadModel(mindMapModel.obj_url);
 }
 
@@ -123,14 +120,7 @@ function showModel(root) {
 
     scene.add(root);
 
-   (()=> {
-
-    })()
-
-
     setTimeout(() => {
-
-        console.log(mindMapModel.components);
         for (const component of mindMapModel.components) {
             if (
                 component.name === 'Подошва'
@@ -141,31 +131,10 @@ function showModel(root) {
             setTexture('../textures/light-texture.jpg');
         }
 
-
         ked.children.map(mesh => {
             defaultTextures[mesh.name] = mesh.material.map.image;
-            console.log(mesh.name);
-            console.log(defaultTextures[mesh.name]);
         })
-
-        // rememberMaterials();
-
     }, 0);
-
-    // function rememberMaterials() {
-    //     setTimeout(() => {
-    //         ked.children.map(mesh => {
-    //
-    //             currentMesh = mesh;
-    //             setTexture('../textures/default-grey.jpg');
-    //
-    //             defaultTextures[mesh.name] = new THREE.MeshStandardMaterial({...mesh.material});
-    //
-    //
-    //         });
-    //         console.log(defaultTextures);
-    //     }, 1000);
-    // }
 
     showComponents(mindMapModel.components);
 
@@ -207,7 +176,7 @@ function showModel(root) {
         const pos = getCanvasRelativePosition(event);
         pickPosition.x = (pos.x / canvas.width) * 2 - 1;
         pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
-        // pickHelper.pick(pickPosition, scene, camera, 100);
+        if (isMobile) pickHelper.pick(pickPosition, scene, camera, 100);
         isItemEventTarget = false;
     }
 
@@ -227,10 +196,6 @@ function showModel(root) {
         setPickPosition(event.touches[0]);
     }, {passive: false});
 
-    // canvas.addEventListener('touchmove', (event) => {
-    //     setPickPosition(event.touches[0]);
-    // });
-
     render();
 }
 
@@ -244,16 +209,10 @@ function loadSavedTextures() {
             const component = mindMapModel.components.find(comp => comp.id == index);
             component.textures.map(texture => {
                 if (texture.id) {
-                    // console.log(texture.id);
-                    // if (texture.id === el) console.log('bingo!');
                 } else {
                     texture.textures.map(texture => {
-                        // console.log(texture.id);
                         if (texture.id === el) {
-                            // console.log(texture.url);
-                            // currentMesh = [];
                             component.mesh_name.map(name => {
-                                // console.log(texture.url);
                                 currentMesh = ked.children.find(o => o.name === name);
                                 setTexture(texture.url)
                             })
@@ -266,11 +225,10 @@ function loadSavedTextures() {
         } catch (e) {
             console.warn(e.message);
         }
-
     })
 }
 
-try{
+try {
     document.getElementById('again').addEventListener(
         'click', () => {
             setTimeout(() => {
@@ -283,13 +241,12 @@ try{
 
         }
     );
-}catch (e) {
+} catch (e) {
     console.warn(e)
 }
 
 class PickHelper {
     constructor(scene) {
-
         this.scene = scene;
         this.raycaster = new THREE.Raycaster();
         this.pickedObject = null;
@@ -314,7 +271,6 @@ class PickHelper {
             if (matsWrapper.getAttribute('data-id') === 'close') arrow.click();
             // выбираем первый объект. Это самый близкий
             this.pickedObject = intersectedObjects[0].object;
-            // console.log(this.pickedObject);
             if (!checkAvailability(this.pickedObject)) return false;
             currentMesh = this.pickedObject;
             if (this.pickedObject.name === 'Cube.001_2') {
@@ -330,20 +286,16 @@ class PickHelper {
                     this.scene.children.find(o => o.name === 'Cube.001_3'),
 
                 ];
-                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                // console.log(currentComponent);
                 showItems(currentComponent.textures)
             } else if (this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.003_0'),
                     this.scene.children.find(o => o.name === 'Cube.003_1'),
                 ];
-                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                // console.log(currentComponent);
                 showItems(currentComponent.textures)
             } else if (
                 (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
@@ -355,32 +307,21 @@ class PickHelper {
                     ];
                 }
 
-
-                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
-                // console.log(currentComponent);
                 lightUpComponent(currentComponent.mesh_name);
-                // console.log(currentComponent);
                 showItems(currentComponent.textures)
 
             } else {
-
-                // this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-
                 lightUpComponent(this.pickedObject.name);
                 currentComponent = mindMapModel.components.find(
                     o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
                         o.mesh_name.find(item => item === currentMesh.name) : false)
                 )
-                // console.log(currentComponent);
                 showItems(currentComponent.textures);
-
                 currentMesh = this.pickedObject;
             }
 
         } else {
-            // matsWrapper.setAttribute('data-id','open');
-            // arrow.click();
             if (!isItemEventTarget) showComponents(mindMapModel.components);
         }
     }
@@ -437,8 +378,12 @@ function unlight(mesh) {
     mesh.material.emissive.setHex('0x000000');
 }
 
+/**
+ * Определяет currentMesh
+ * @param mesh_name
+ * @returns {[]|*}
+ */
 function defineCurrentMesh(mesh_name) {
-
     if (typeof (mesh_name) === "string") {
         return ked.children.find(o => o.name === mesh_name);
     } else {
@@ -464,9 +409,9 @@ function showComponents(items) {
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
-                // currentMesh = ked.children.find(o => o.name === item.mesh_name);
+                currentMesh = ked.children.find(o => o.name === item.mesh_name);
                 currentMesh = defineCurrentMesh(item.mesh_name);
-                // console.log(item);
+                console.log(item);
                 if (isMobile) {
                     isItemEventTarget = true;
                     item.textures ? showItems(item.textures) : console.warn('No Textures!');
@@ -499,49 +444,37 @@ function showDesktopItems(item) {
             desktopSpan.textContent = `${item.name}`;
             i === 0 ? desktopSpan.className += ' underline' : null;
             desktopMatsMats.appendChild(desktopSpan);
-
             desktopSpan.addEventListener('click', () => {
                 desktopMatsMats.querySelectorAll('.underline').forEach(el => {
                     el.classList.remove('underline')
                 });
                 desktopSpan.className += ' underline';
                 desktopMatsTextures.innerHTML = '';
-
                 item.textures.map(texture => {
-
                     const img = document.createElement('img');
                     img.src = texture.url;
                     img.className = 'desktopTextureImg';
                     desktopMatsTextures.appendChild(img);
-
                     img.addEventListener('click', () => {
                         setTexture(texture.url)
                     })
-
-
                 })
-
             });
-
             i === 0 ? desktopSpan.click() : null;
         } else {
             const img = document.createElement('img');
             img.src = item.url;
             img.className = 'desktopTextureImg';
             desktopMatsTextures.appendChild(img);
-
             img.addEventListener('click', () => {
                 setTexture(item.url)
             })
         }
-
     })
 }
 
-
 function showItems(items) {
     document.getElementById('mats').innerHTML = '';
-    // console.log(items);
     if (items) {
         items.map((item) => {
             const div = document.createElement('div');
@@ -550,7 +483,6 @@ function showItems(items) {
                 <p>${item.name}</p>
                 <img alt="" class="circle" src="${item.url}">
                  `;
-
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
                 isItemEventTarget = true;
@@ -558,23 +490,18 @@ function showItems(items) {
                 currentComponent = item;
                 if (item.mesh_name) lightUpComponent(item.mesh_name);
                 if (!item.textures && !item.mesh_name) {
-                    // console.log(currentMesh);
-                    // console.log(item);
                     savingKey[currentComponent.id] = item.id;
                     setTexture(item.urls ? item.urls : item.url)
                 }
             })
         });
     }
-
-    document.getElementById('mats').style.visibility = 'visible';
+    // document.getElementById('mats').style.visibility = 'visible';
 }
 
 function lightUpComponent(name) {
-    // console.log({name});
     if (currentMesh) {
         if (Array.isArray(currentMesh)) {
-            // console.log(currentMesh);
             currentMesh.map(mesh => unlight(mesh))
         } else unlight(currentMesh);
     }
@@ -582,19 +509,14 @@ function lightUpComponent(name) {
         currentMesh = [];
         name.map(n => {
             const meshForLightUp = ked.children.find(o => o.name === n);
-            // savedEmissiveColor = meshForLightUp.material.emissive.getHex();
             console.log(savedEmissiveColor);
             meshForLightUp.material.emissive.setHex(0x00FF00);
             currentMesh.push(meshForLightUp);
         })
     } else {
         currentMesh = ked.children.find(o => o.name === name);
-        // console.log(currentMesh);
-        // savedEmissiveColor = currentMesh.material.emissive.getHex();
-        // console.log(savedEmissiveColor);
         currentMesh.material.emissive.setHex(0x00FF00);
     }
-
 }
 
 function checkAvailability(mesh) {
@@ -607,11 +529,9 @@ function checkAvailability(mesh) {
 /**
  * сохраняем конфигурацию текстур-компонентов для дальнейшего воспроизводства
  */
-try{
+try {
     document.getElementById('agree').addEventListener(
         'click', () => {
-
-            // console.log(savingKey);
             let savingString = '';
             savingKey.map(s => {
                 savingString += s ? s : '0';
@@ -626,10 +546,9 @@ try{
             show(loadingPercentEl);
         }
     );
-}catch (e) {
+} catch (e) {
     console.warn(e)
 }
-
 
 /**
  * открываем - закрываем меню текстур
@@ -660,7 +579,6 @@ arrow.addEventListener('click', () => {
         }
     }
 })
-
 
 //todo: сохранять обЪект и загружать его вновь
 

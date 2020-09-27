@@ -47,7 +47,6 @@
         #loadingPercent {
             position: absolute;
             z-index: 5;
-            /*display: none;*/
             background-color: white;
             border-radius: 10px;
             padding: 5px;
@@ -69,17 +68,16 @@
 
             #mats {
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 width: 100vw;
                 position: absolute;
-                /*background-color: #FE843F90;*/
                 overflow: auto;
                 white-space: nowrap;
             }
 
-            #mats::-webkit-scrollbar {
-                width: 0;
-            }
+            /*#mats::-webkit-scrollbar {*/
+            /*    width: 0;*/
+            /*}*/
         }
 
         /*широкий экран (меню слева)*/
@@ -143,7 +141,7 @@
                 color: white;
             }
 
-            .bottom-button{
+            .bottom-button {
                 position: absolute;
                 z-index: 5;
                 bottom: .5em;
@@ -163,17 +161,13 @@
 
         .item {
             text-align: center;
-            /*display: inline-block;*/
             width: 90px;
-            /*background-color: #F1F1F3;*/
             margin: 5px;
-            border-radius: 3px;
         }
 
         .item img {
             margin-top: 5px;
             width: 90px;
-            /*height: 50px;*/
         }
 
         .item p {
@@ -196,21 +190,6 @@
             text-align: center;
         }
 
-        #lamp {
-            position: absolute;
-            z-index: 5;
-
-            top: 10px;
-            right: 10px;
-        }
-
-        #right-buttons {
-            position: absolute;
-            z-index: 5;
-
-            right: 10px;
-        }
-
         #loadingPercent {
             display: none;
             padding-left: 2em;
@@ -222,7 +201,6 @@
             left: 0;
             top: -.25rem;
         }
-
 
         #right-buttons svg:hover {
             fill: #FE843F;
@@ -294,7 +272,12 @@
         <div class="textures"></div>
     </div>
 </div>
-
+<script>
+    const el = document.getElementById('mats');
+    setInterval(()=>{
+        el.style.justifyContent = el.scrollWidth <= el.clientWidth ? 'center' : 'flex-start';
+    },500)
+</script>
 <script src="app.js" type="module"></script>
 </body>
 </html>
