@@ -127,6 +127,11 @@ function showModel(root) {
                 || component.name === 'Лэйбл'
                 || component.name === 'Шнурки'
             ) continue;
+            if (component.name === 'Подкладка') {
+                currentMesh = defineCurrentMesh(component.mesh_name);
+                setTexture('../textures/default-grey.jpg');
+                continue;
+            }
             currentMesh = defineCurrentMesh(component.mesh_name);
             setTexture('../textures/light-texture.jpg');
         }
@@ -176,7 +181,7 @@ function showModel(root) {
         const pos = getCanvasRelativePosition(event);
         pickPosition.x = (pos.x / canvas.width) * 2 - 1;
         pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // обратите внимание, мы переворачиваем Y
-        if (isMobile) pickHelper.pick(pickPosition, scene, camera, 100);
+        pickHelper.pick(pickPosition, scene, camera, 100);
         isItemEventTarget = false;
     }
 
@@ -288,7 +293,7 @@ class PickHelper {
                 ];
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                showItems(currentComponent.textures)
+                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
             } else if (this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.003_0'),
@@ -296,7 +301,7 @@ class PickHelper {
                 ];
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                showItems(currentComponent.textures)
+
             } else if (
                 (this.pickedObject.name === '7' || this.pickedObject.name === '6,5')
             ) {
@@ -309,7 +314,7 @@ class PickHelper {
 
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
                 lightUpComponent(currentComponent.mesh_name);
-                showItems(currentComponent.textures)
+                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
 
             } else {
                 lightUpComponent(this.pickedObject.name);
@@ -317,7 +322,7 @@ class PickHelper {
                     o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
                         o.mesh_name.find(item => item === currentMesh.name) : false)
                 )
-                showItems(currentComponent.textures);
+                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
                 currentMesh = this.pickedObject;
             }
 
@@ -409,7 +414,8 @@ function showComponents(items) {
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
-                currentMesh = ked.children.find(o => o.name === item.mesh_name);
+                ked.children.map(mesh=>unlight(mesh))
+                // currentMesh = ked.children.find(o => o.name === item.mesh_name);
                 currentMesh = defineCurrentMesh(item.mesh_name);
                 console.log(item);
                 if (isMobile) {
