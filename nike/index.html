@@ -78,6 +78,32 @@
             /*#mats::-webkit-scrollbar {*/
             /*    width: 0;*/
             /*}*/
+
+            .top-buttons {
+                position: absolute;
+                z-index: 5;
+                top: .5em;
+                width: 100%;
+                padding-right: 1em;
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .top-button {
+                border-radius: 1.5em;
+                padding: .5em;
+                margin: 0.5em;
+                min-width: 2em;
+                text-align: center;
+                font-weight: bold;
+                background-color: white;
+                /*border: none;*/
+            }
+
+            .top-button.dark {
+                background-color: black;
+                color: white;
+            }
         }
 
         /*широкий экран (меню слева)*/
