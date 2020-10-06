@@ -293,7 +293,7 @@ class PickHelper {
                 ];
                 currentComponent = mindMapModel.components.find(o => o.name === 'Подошва');
                 lightUpComponent(currentComponent.mesh_name);
-                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
+                isMobile ? showItems(currentComponent.textures) : showDesktopItems(currentComponent);
             } else if (this.pickedObject.name === 'Cube.003_0' || this.pickedObject.name === 'Cube.003_1') {
                 currentMesh = [
                     this.scene.children.find(o => o.name === 'Cube.003_0'),
@@ -314,7 +314,7 @@ class PickHelper {
 
                 currentComponent = mindMapModel.components.find(o => o.name === 'Основа');
                 lightUpComponent(currentComponent.mesh_name);
-                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
+                isMobile ? showItems(currentComponent.textures) : showDesktopItems(currentComponent);
 
             } else {
                 lightUpComponent(this.pickedObject.name);
@@ -322,7 +322,7 @@ class PickHelper {
                     o => o.mesh_name === currentMesh.name || (Array.isArray(o.mesh_name) ?
                         o.mesh_name.find(item => item === currentMesh.name) : false)
                 )
-                isMobile?showItems(currentComponent.textures):showDesktopItems(currentComponent);
+                isMobile ? showItems(currentComponent.textures) : showDesktopItems(currentComponent);
                 currentMesh = this.pickedObject;
             }
 
@@ -414,7 +414,7 @@ function showComponents(items) {
             div.innerHTML += ``;
             document.getElementById('mats').appendChild(div);
             div.addEventListener('click', () => {
-                ked.children.map(mesh=>unlight(mesh))
+                ked.children.map(mesh => unlight(mesh))
                 // currentMesh = ked.children.find(o => o.name === item.mesh_name);
                 currentMesh = defineCurrentMesh(item.mesh_name);
                 console.log(item);
@@ -584,7 +584,33 @@ arrow.addEventListener('click', () => {
             matsWrapper.setAttribute('data-id', 'close')
         }
     }
-})
+});
+
+const popupClose = document.querySelector('.popup-close');
+const popup = document.querySelector('.popup');
+
+popupClose.addEventListener('click', () => {
+    popup.style.display = 'none';
+});
+
+const exportBtn = document.querySelector('.top-button.export');
+const saveBtn = document.querySelector('.top-button.save');
+const buyBtn = document.querySelector('.top-button.buy');
+const bottomBtn = document.querySelector('.bottom-button');
+
+exportBtn.addEventListener('click', () => {
+    popup.style.display = 'block'
+});
+saveBtn.addEventListener('click', () => {
+    popup.style.display = 'block'
+});
+buyBtn.addEventListener('click', () => {
+    popup.style.display = 'block'
+});
+bottomBtn.addEventListener('click', () => {
+    popup.style.display = 'block'
+});
+
 
 //todo: сохранять обЪект и загружать его вновь
 
