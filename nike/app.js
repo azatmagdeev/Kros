@@ -598,18 +598,18 @@ const saveBtn = document.querySelector('.top-button.save');
 const buyBtn = document.querySelector('.top-button.buy');
 const bottomBtn = document.querySelector('.bottom-button');
 
-exportBtn.addEventListener('click', () => {
-    popup.style.display = 'block'
-});
-saveBtn.addEventListener('click', () => {
-    popup.style.display = 'block'
-});
+// exportBtn.addEventListener('click', () => {
+//     popup.style.display = 'block'
+// });
+// saveBtn.addEventListener('click', () => {
+//     popup.style.display = 'block'
+// });
 buyBtn.addEventListener('click', () => {
     popup.style.display = 'block'
 });
-bottomBtn.addEventListener('click', () => {
-    popup.style.display = 'block'
-});
+// bottomBtn.addEventListener('click', () => {
+//     popup.style.display = 'block'
+// });
 
 
 //todo: сохранять обЪект и загружать его вновь
