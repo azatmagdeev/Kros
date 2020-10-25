@@ -15,6 +15,12 @@ const loadNumber = document.getElementById('loadNumber');
 const canvas = document.getElementById('c');
 const ked = new THREE.Object3D();
 const textureLoader = new THREE.TextureLoader();
+const camera = new THREE.PerspectiveCamera(
+    50,
+    canvas.width / canvas.height,
+    0.1,
+    100000
+);
 
 let currentMesh = false;
 let currentComponent;
@@ -23,7 +29,8 @@ let isItemEventTarget = false;
 let mindMapModel;
 const defaultTextures = {};
 let savingKey = [];//сюда будем собирать код для сохранения-загрузки
-
+let getImgData = false;
+const resultImg = document.getElementById('result');
 //отсюда будем читать код для кастомизации модели
 const search = window.location.search.replace('?', '');
 
@@ -91,13 +98,8 @@ function showModel(root) {
         antialias: true,
         logarithmicDepthBuffer: true,
     });
-    const camera = new THREE.PerspectiveCamera(
-        50,
-        canvas.width / canvas.height,
-        0.1,
-        100000
-    );
-    camera.position.set(-7, 0, 3.5);
+
+    setCameraDefaultPosition();
 
     const controls = new OrbitControls(camera, canvas);
     controls.maxDistance = 20;
@@ -159,6 +161,29 @@ function showModel(root) {
     function render() {
         resizeRendererToDisplaySize(renderer);
         renderer.render(scene, camera);
+
+        if (getImgData) {
+            resultImg.src = renderer.domElement.toDataURL('image/png', 0.1);
+            getImgData = false;
+        }
+
+        if (needToMove) {
+            [
+                [camera.position.x, defaultX],
+                [camera.position.y, defaultY],
+                [camera.position.z, defaultZ]
+            ].map(i => {
+                i[0] >= i[1] ? i[0] -= .1 : i[0] += .1
+            })
+
+            needToMove = !(
+                camera.position.x === defaultX &&
+                camera.position.y === defaultY &&
+                camera.position.z === defaultZ
+            )
+            console.log(needToMove);
+        }
+
         requestAnimationFrame(render);
     }
 
@@ -502,7 +527,6 @@ function showItems(items) {
             })
         });
     }
-    // document.getElementById('mats').style.visibility = 'visible';
 }
 
 function lightUpComponent(name) {
@@ -593,24 +617,41 @@ popupClose.addEventListener('click', () => {
     popup.style.display = 'none';
 });
 
-const exportBtn = document.querySelector('.top-button.export');
-const saveBtn = document.querySelector('.top-button.save');
 const buyBtn = document.querySelector('.top-button.buy');
-const bottomBtn = document.querySelector('.bottom-button');
 
-// exportBtn.addEventListener('click', () => {
-//     popup.style.display = 'block'
-// });
-// saveBtn.addEventListener('click', () => {
-//     popup.style.display = 'block'
-// });
 buyBtn.addEventListener('click', () => {
-    popup.style.display = 'block'
+    // popup.style.display = 'block';
+    canvasToImage();
 });
-// bottomBtn.addEventListener('click', () => {
-//     popup.style.display = 'block'
-// });
 
+function canvasToImage() {
+    moveCameraToDefaultPosition(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z,
+    )
+
+    // resultImg.width = (canvas.width / canvas.height) * resultImg.height;
+    // getImgData = true;
+}
+
+let needToMove = false;
+const defaultX = -7;
+const defaultY = 0;
+const defaultZ = 3.5;
+
+function moveCameraToDefaultPosition(currentX, currentY, currentZ) {
+    needToMove = currentX !== defaultX || currentY !== defaultY || currentZ !== defaultZ
+
+}
+
+function setCameraDefaultPosition() {
+    camera.position.set(
+        defaultX,
+        defaultY,
+        defaultZ
+    );
+}
 
 //todo: сохранять обЪект и загружать его вновь
 
