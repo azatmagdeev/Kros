@@ -104,6 +104,8 @@ function showModel(root) {
     const controls = new OrbitControls(camera, canvas);
     controls.maxDistance = 20;
     controls.minDistance = 3;
+    controls.saveState();
+    // controls.enableDamping = true;
     controls.update();
 
     root.rotation.x = -100;
@@ -168,20 +170,8 @@ function showModel(root) {
         }
 
         if (needToMove) {
-            [
-                [camera.position.x, defaultX],
-                [camera.position.y, defaultY],
-                [camera.position.z, defaultZ]
-            ].map(i => {
-                i[0] >= i[1] ? i[0] -= .1 : i[0] += .1
-            })
-
-            needToMove = !(
-                camera.position.x === defaultX &&
-                camera.position.y === defaultY &&
-                camera.position.z === defaultZ
-            )
-            console.log(needToMove);
+            controls.reset();
+            needToMove = false;
         }
 
         requestAnimationFrame(render);
