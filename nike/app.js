@@ -21,6 +21,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     100000
 );
+const controls = new OrbitControls(camera, canvas);
 
 let currentMesh = false;
 let currentComponent;
@@ -60,7 +61,7 @@ function loadModel(modelUrl) {
 function showModel(root) {
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#e2e2e5');
+    scene.background = new THREE.Color('ghostwhite');
 
     {
         const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -101,11 +102,11 @@ function showModel(root) {
 
     setCameraDefaultPosition();
 
-    const controls = new OrbitControls(camera, canvas);
+
     controls.maxDistance = 20;
     controls.minDistance = 3;
+
     controls.saveState();
-    // controls.enableDamping = true;
     controls.update();
 
     root.rotation.x = -100;
@@ -122,7 +123,7 @@ function showModel(root) {
 
     if (search.length > 1) loadSavedTextures();
 
-    scene.add(root);
+
 
     setTimeout(() => {
         for (const component of mindMapModel.components) {
@@ -143,6 +144,8 @@ function showModel(root) {
         ked.children.map(mesh => {
             defaultTextures[mesh.name] = mesh.material.map.image;
         })
+
+        scene.add(root);
     }, 0);
 
     showComponents(mindMapModel.components);
@@ -610,30 +613,23 @@ popupClose.addEventListener('click', () => {
 const buyBtn = document.querySelector('.top-button.buy');
 
 buyBtn.addEventListener('click', () => {
-    // popup.style.display = 'block';
+    ked.children.map(mesh=>unlight(mesh));
+    controls.reset();
     canvasToImage();
+    popup.style.display = 'block';
+
+
 });
 
 function canvasToImage() {
-    moveCameraToDefaultPosition(
-        camera.position.x,
-        camera.position.y,
-        camera.position.z,
-    )
-
-    // resultImg.width = (canvas.width / canvas.height) * resultImg.height;
-    // getImgData = true;
+    resultImg.width = (canvas.width / canvas.height) * resultImg.height;
+    getImgData = true;
 }
 
 let needToMove = false;
 const defaultX = -7;
 const defaultY = 0;
 const defaultZ = 3.5;
-
-function moveCameraToDefaultPosition(currentX, currentY, currentZ) {
-    needToMove = currentX !== defaultX || currentY !== defaultY || currentZ !== defaultZ
-
-}
 
 function setCameraDefaultPosition() {
     camera.position.set(
