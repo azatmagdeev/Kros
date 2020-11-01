@@ -360,8 +360,15 @@ function hideMats() {
  * функция устанавливает текстуру на текущий меш(меши)
  * @param item string - url of new texture picture
  *          or object - mesh names : urls
+ * @param item_name
  */
-function setTexture(item) {
+function setTexture(item, item_name) {
+    console.log(
+        currentComponent?currentComponent.name:'no currentComponent',
+        item_name? item_name: ' no item_name'
+    );
+
+    if(currentComponent){currentComponent.choice = item_name}
 
     //если урл строка - текущему мешу загружаем текстуру
     if (typeof item === 'string') {
@@ -443,7 +450,7 @@ function showComponents(items) {
                     if (item.mesh_name) lightUpComponent(item.mesh_name);
                     if (!item.textures && !item.mesh_name) {
                         savingKey[currentComponent.id] = item.id;
-                        setTexture(item.urls ? item.urls : item.url)
+                        setTexture(item.urls ? item.urls : item.url, )
                     }
                 } else {
                     showDesktopItems(item);
@@ -480,7 +487,7 @@ function showDesktopItems(item) {
                     img.className = 'desktopTextureImg';
                     desktopMatsTextures.appendChild(img);
                     img.addEventListener('click', () => {
-                        setTexture(texture.url)
+                        setTexture(texture.url, texture.name)
                     })
                 })
             });
@@ -491,7 +498,7 @@ function showDesktopItems(item) {
             img.className = 'desktopTextureImg';
             desktopMatsTextures.appendChild(img);
             img.addEventListener('click', () => {
-                setTexture(item.url)
+                setTexture(item.url, item.name)
             })
         }
     })
@@ -616,9 +623,11 @@ buyBtn.addEventListener('click', () => {
     ked.children.map(mesh=>unlight(mesh));
     controls.reset();
     canvasToImage();
+    document.querySelector('.popup-title').textContent = mindMapModel.name
     popup.style.display = 'block';
-
-
+    mindMapModel.components.map(component=>{
+        console.log(component.name, component.choice)
+    })
 });
 
 function canvasToImage() {
