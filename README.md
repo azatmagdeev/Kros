@@ -1,1 +1,1 @@
-https://azatmagdeev.github.io/Kros/
+https://azatmagdeev.github.io/Kros/nike/
